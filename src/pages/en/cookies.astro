@@ -1,0 +1,117 @@
+---
+import LegalLayout from '@/layouts/LegalLayout.astro';
+---
+
+<LegalLayout
+  locale="en"
+  title="Cookie Policy"
+  effectiveDate="Effective May 17, 2026"
+  tldr={[
+    'We use strictly necessary cookies and one analytics tool to improve DailyMood.',
+    'Analytics (Google Analytics) only runs after you click "Accept all" on the consent banner.',
+    'No advertising cookies. We never sell your data.',
+    'You can withdraw consent anytime by clearing your browser cookies.',
+  ]}
+>
+  <h2>1. Scope of this policy</h2>
+  <p>
+    This policy covers both <strong>dailymood.me</strong> (the landing site)
+    and <strong>my.dailymood.me</strong> (the actual web app). Each domain
+    sets its own cookies; the list below covers both.
+  </p>
+
+  <h2>2. Strictly necessary cookies</h2>
+  <p>
+    These are required for the service to function. Under PDPA, they don't
+    require consent. If you block them, the site won't work.
+  </p>
+  <ul>
+    <li>
+      <strong>Session cookie</strong> (`next-auth.session-token`) —
+      keeps you logged in on my.dailymood.me. Managed by NextAuth.js.
+    </li>
+    <li>
+      <strong>CSRF token</strong> — protects against cross-site request
+      forgery attacks.
+    </li>
+    <li>
+      <strong>Stripe</strong> (`m`, `__stripe_mid`) — set when you reach
+      Stripe Checkout to prevent fraud. Set directly by Stripe.
+    </li>
+    <li>
+      <strong>`dm-consent`</strong> — stores your cookie consent choice
+      (value is `all` or `necessary`). Lives in your browser's localStorage.
+    </li>
+  </ul>
+
+  <h2>3. Preference cookies</h2>
+  <ul>
+    <li>
+      <strong>`NEXT_LOCALE` / `dm-lang`</strong> — remembers your language
+      choice (Thai or English) so you see the right one on your next visit.
+    </li>
+  </ul>
+
+  <h2>4. Analytics cookies — consent required</h2>
+  <p>
+    We use <strong>Google Analytics 4 (GA4)</strong> to understand how
+    people use the site (which pages get the most visits, which browsers
+    people use, etc.). We don't identify individuals.
+  </p>
+  <p>Cookies set by GA4:</p>
+  <ul>
+    <li><strong>`_ga`</strong> — distinguishes unique users. 2-year expiry.</li>
+    <li><strong>`_ga_*`</strong> — session state per property.</li>
+  </ul>
+  <p>
+    These cookies do <strong>not load</strong> until you click "Accept all"
+    on the consent banner. If you choose "Only necessary" — or don't
+    interact with the banner — Google Analytics is never loaded.
+  </p>
+
+  <h2>5. What we don't use</h2>
+  <p>To be clear, we do not use:</p>
+  <ul>
+    <li>Advertising cookies (Google Ads, Meta Pixel, TikTok Pixel)</li>
+    <li>Session recording tools (Hotjar, FullStory)</li>
+    <li>Third-party chat widgets (Intercom, Crisp)</li>
+    <li>Embedded YouTube / Twitter / Instagram on our pages</li>
+  </ul>
+
+  <h2>6. Third-party data processors</h2>
+  <p>
+    The providers below process data server-side — they don't set cookies
+    in your browser, but PDPA requires us to disclose them:
+  </p>
+  <ul>
+    <li><strong>Google</strong> — OAuth (login) and AI models for AI features.</li>
+    <li><strong>Stripe</strong> — payment processing for Pro.</li>
+    <li><strong>Resend</strong> — transactional email (verification, password reset).</li>
+    <li><strong>Cloudflare R2</strong> — image and avatar storage.</li>
+    <li><strong>Cloud hosting provider</strong> — runs our app and database.</li>
+  </ul>
+  <p>
+    See our <a href="/en/privacy">Privacy Policy</a> for more detail.
+  </p>
+
+  <h2>7. Managing and withdrawing consent</h2>
+  <p>You can change your mind anytime:</p>
+  <ul>
+    <li>
+      <strong>Clear your browser's localStorage and cookies</strong> to make
+      the consent banner appear again (Chrome: Settings → Privacy → Cookies).
+    </li>
+    <li>Block all cookies via your browser settings.</li>
+  </ul>
+  <p>
+    <strong>Note:</strong> If you block strictly-necessary cookies, you
+    won't be able to log in and core DailyMood features won't work.
+  </p>
+
+  <h2>8. Contact our DPO</h2>
+  <p>
+    For questions about cookies or data protection, contact our Data
+    Protection Officer at
+    <a href="mailto:hello@dailymood.me">hello@dailymood.me</a>.
+  </p>
+</LegalLayout>

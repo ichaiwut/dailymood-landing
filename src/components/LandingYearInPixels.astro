@@ -1,0 +1,99 @@
+---
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const y = getMessages(locale).landing.year;
+const months = y.months;
+
+const palette = [
+  'var(--peach)',
+  'var(--yellow)',
+  'var(--mint)',
+  'var(--lavender)',
+  'var(--blue)',
+  'var(--purple)',
+];
+
+function cell(m: number, d: number): string | null {
+  const key = (m * 31 + d * 7) % 100;
+  if (key < 8) return null;
+  if (key < 22) return palette[0];
+  if (key < 38) return palette[1];
+  if (key < 58) return palette[2];
+  if (key < 72) return palette[3];
+  if (key < 86) return palette[4];
+  return palette[5];
+}
+
+const moodColors: { key: keyof typeof y.moods; color: string }[] = [
+  { key: 'great', color: 'var(--peach)' },
+  { key: 'good', color: 'var(--yellow)' },
+  { key: 'okay', color: 'var(--mint)' },
+  { key: 'meh', color: 'var(--lavender)' },
+  { key: 'bad', color: 'var(--blue)' },
+  { key: 'awful', color: 'var(--purple)' },
+];
+---
+
+<section class="section" style="background:var(--page-2)">
+  <div
+    class="container l-year"
+    style="display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:center"
+  >
+    <div>
+      <span class="eyebrow"><span class="dot"></span> {y.eyebrow}</span>
+      <h2 class="h-display" style="font-size:clamp(32px, 4vw, 52px);margin:22px 0 18px">
+        {y.title}
+      </h2>
+      <p style="font-size:18px;color:var(--ink-2);max-width:460px">{y.sub}</p>
+
+      <div style="display:flex;gap:14px;margin-top:28px;flex-wrap:wrap">
+        {
+          moodColors.map((m) => (
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style={`width:14px;height:14px;border-radius:4px;background:${m.color}`} />
+              <span style="font-size:13px;font-weight:600;color:var(--ink-2)">
+                {y.moods[m.key]}
+              </span>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="l-year-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+        <span style="font-size:18px;font-weight:800;font-family:var(--font-display)">
+          {y.cardYear}
+        </span>
+        <span style="font-size:12px;color:var(--ink-3);font-weight:600">
+          {y.cardDaysLogged}
+        </span>
+      </div>
+      <div style="display:grid;grid-template-columns:auto minmax(0, 1fr);gap:8px">
+        {
+          months.map((label: string, mi: number) => (
+            <>
+              <div style="font-size:11px;font-weight:700;color:var(--ink-3);align-self:center;padding-right:4px;text-align:right">
+                {label}
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(31, minmax(0, 1fr));gap:3px;min-width:0">
+                {Array.from({ length: 31 }).map((_, di) => {
+                  const c = cell(mi, di);
+                  return (
+                    <div
+                      style={`aspect-ratio:1;border-radius:3px;background:${c || '#F0EAE0'};min-width:0`}
+                    />
+                  );
+                })}
+              </div>
+            </>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

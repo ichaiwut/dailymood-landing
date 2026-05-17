@@ -1,0 +1,28 @@
+# dependencies
+node_modules
+
+# astro
+.astro
+dist
+
+# build artifacts
+*.tsbuildinfo
+
+# env files
+.env*
+!.env.example
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# IDE
+.idea
+.vscode
+.DS_Store
+.history
+
+# Claude Code local settings
+.claude/

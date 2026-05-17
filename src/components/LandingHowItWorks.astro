@@ -1,0 +1,55 @@
+---
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const h = getMessages(locale).landing.how;
+
+const steps = [
+  { title: h.s1t, desc: h.s1d, color: 'var(--peach)' },
+  { title: h.s2t, desc: h.s2d, color: 'var(--purple)' },
+  { title: h.s3t, desc: h.s3d, color: 'var(--mint)' },
+];
+---
+
+<section class="section">
+  <div class="container">
+    <div style="text-align:center;max-width:720px;margin:0 auto 64px">
+      <span class="eyebrow"><span class="dot"></span> {h.eyebrow}</span>
+      <h2 class="h-display" style="font-size:clamp(32px, 4.5vw, 52px);margin-top:22px">
+        {h.title}
+      </h2>
+    </div>
+
+    <div
+      class="l-how"
+      style="display:grid;grid-template-columns:repeat(3, 1fr);gap:24px;position:relative"
+    >
+      <svg
+        aria-hidden="true"
+        preserveAspectRatio="none"
+        viewBox="0 0 100 2"
+        style="position:absolute;top:50px;left:8%;right:8%;width:84%;height:2px;z-index:0"
+      >
+        <line x1="0" y1="1" x2="100" y2="1" stroke="var(--rule)" stroke-width="2" stroke-dasharray="4 4"></line>
+      </svg>
+      {
+        steps.map((s, i) => (
+          <div style="text-align:center;position:relative;z-index:1">
+            <div
+              style={`width:100px;height:100px;border-radius:28px;background:#fff;box-shadow:0 18px 36px -16px rgba(70,32,100,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:36px;font-weight:800;color:${
+                s.color
+              };transform:rotate(${(i - 1) * 4}deg);font-family:var(--font-display)`}
+            >
+              0{i + 1}
+            </div>
+            <h3 class="h-display" style="font-size:24px;margin-bottom:10px">{s.title}</h3>
+            <p style="color:var(--ink-2);font-size:16px;max-width:280px;margin:0 auto">{s.desc}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

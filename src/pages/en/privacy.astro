@@ -1,0 +1,107 @@
+---
+import LegalLayout from '@/layouts/LegalLayout.astro';
+---
+
+<LegalLayout
+  locale="en"
+  title="Privacy Policy"
+  effectiveDate="Effective May 17, 2026"
+  tldr={[
+    'We only collect what we need to run DailyMood.',
+    'Your entries are yours — we never sell or share them.',
+    'We use Google Analytics for traffic stats (only after you consent). No ad cookies.',
+    'You can access, edit, export, or delete your data anytime.',
+  ]}
+>
+  <h2>1. What we collect</h2>
+  <p>When you sign up and use DailyMood, we collect:</p>
+  <ul>
+    <li>
+      <strong>Account info:</strong> your email, display name, password
+      (stored so we can't read it — only you know it), and any OAuth
+      profile data if you sign in with Google.
+    </li>
+    <li>
+      <strong>Mood entries:</strong> the mood you choose, notes you type,
+      tags, photos (if you upload any), and the date/time.
+    </li>
+    <li>
+      <strong>AI usage:</strong> how many AI calls you make per day, used
+      to enforce rate limits.
+    </li>
+    <li>
+      <strong>Payments:</strong> if you subscribe to Pro, we store a Stripe
+      customer ID only — we never see your card number. Stripe handles that.
+    </li>
+  </ul>
+
+  <h2>2. How we use AI</h2>
+  <p>
+    When you use AI-powered features (entry summary, photo analysis, Ask AI),
+    we send your text or image to an external AI provider (currently Google)
+    for stateless processing — your entries are not retained by the AI
+    provider, and they are never used to train any AI model.
+  </p>
+
+  <h2>3. Images</h2>
+  <p>
+    If you upload a photo, we store it on Cloudflare R2 and serve it via
+    signed URLs that expire within 1 hour. Your photos are never publicly
+    accessible — only you can view them.
+  </p>
+
+  <h2>4. Analytics</h2>
+  <p>
+    We use <strong>Google Analytics 4</strong> to understand how people
+    use our site (which pages are visited most, which browsers people use,
+    etc.). We don't identify individuals. Google Analytics
+    <strong>only runs after you click "Accept all"</strong> on the cookie
+    banner — see <a href="/en/cookies">Cookie Policy</a> for details.
+  </p>
+
+  <h2>5. Third-party services</h2>
+  <p>We rely on the following providers to run DailyMood:</p>
+  <ul>
+    <li><strong>Google</strong> — OAuth for login, AI models for AI features, and Google Analytics for traffic stats.</li>
+    <li><strong>Stripe</strong> — payment processing for Pro.</li>
+    <li><strong>Resend</strong> — transactional email (verification, password reset).</li>
+    <li><strong>Cloudflare R2</strong> — image and avatar storage.</li>
+    <li><strong>Cloud hosting provider</strong> — runs our app and database.</li>
+  </ul>
+  <p>
+    Each provider has its own privacy policy. Your data may be transferred
+    outside Thailand depending on where these services operate.
+  </p>
+
+  <h2>6. Data retention</h2>
+  <p>
+    We keep your data as long as your account is active. If you delete your
+    account, we remove all your entries and images within 30 days, except
+    data we're required to retain by law (e.g., payment receipts).
+  </p>
+
+  <h2>7. Your rights under PDPA</h2>
+  <p>
+    Under Thailand's Personal Data Protection Act (PDPA) B.E. 2562, you
+    have the right to:
+  </p>
+  <ul>
+    <li>Access and request a copy of your data</li>
+    <li>Correct inaccurate information</li>
+    <li>Request deletion</li>
+    <li>Restrict or object to processing</li>
+    <li>Export your data (data portability)</li>
+    <li>Withdraw consent</li>
+  </ul>
+  <p>
+    Send rights requests to
+    <a href="mailto:hello@dailymood.me">hello@dailymood.me</a>. We respond
+    within 30 days.
+  </p>
+
+  <h2>8. Contact</h2>
+  <p>
+    Questions about privacy or your data? Reach us at
+    <a href="mailto:hello@dailymood.me">hello@dailymood.me</a>.
+  </p>
+</LegalLayout>

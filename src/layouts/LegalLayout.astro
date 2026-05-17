@@ -1,0 +1,115 @@
+---
+import Layout from './Layout.astro';
+import LandingNav from '@/components/LandingNav.astro';
+import LandingFooter from '@/components/LandingFooter.astro';
+import type { Locale } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+  title: string;
+  effectiveDate: string;
+  tldr: string[];
+}
+const { locale, title, effectiveDate, tldr } = Astro.props;
+---
+
+<Layout locale={locale}>
+  <LandingNav locale={locale} />
+
+  <main style="padding:80px 0 120px;background:var(--page)">
+    <div class="container" style="max-width:780px">
+      <!-- Header -->
+      <header style="margin-bottom:48px">
+        <h1
+          class="h-display"
+          style="font-size:clamp(36px, 4.5vw, 56px);margin:0 0 12px"
+        >
+          {title}
+        </h1>
+        <p style="color:var(--ink-3);font-size:14px;margin:0">
+          {effectiveDate}
+        </p>
+      </header>
+
+      <!-- TL;DR card -->
+      <aside
+        style="background:#fff;border:1px solid var(--rule);border-radius:20px;padding:28px 32px;margin-bottom:48px"
+      >
+        <div
+          style="font-size:11px;font-weight:800;color:var(--purple-strong);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px"
+        >
+          TL;DR
+        </div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px">
+          {
+            tldr.map((line) => (
+              <li style="display:flex;align-items:flex-start;gap:10px;font-size:16px;line-height:1.6">
+                <span
+                  aria-hidden="true"
+                  style="flex-shrink:0;margin-top:9px;width:6px;height:6px;border-radius:50%;background:var(--peach)"
+                />
+                <span>{line}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+
+      <!-- Body — sections rendered by the slot -->
+      <article class="legal-body">
+        <slot />
+      </article>
+    </div>
+  </main>
+
+  <LandingFooter locale={locale} />
+</Layout>
+
+<style is:global>
+  .legal-body {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--ink-2);
+  }
+  .legal-body h2 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    font-size: 24px;
+    color: var(--ink);
+    margin: 40px 0 12px;
+  }
+  .thai .legal-body h2 {
+    letter-spacing: 0;
+  }
+  .legal-body h2:first-child {
+    margin-top: 0;
+  }
+  .legal-body p {
+    margin: 0 0 14px;
+  }
+  .legal-body ul {
+    margin: 0 0 14px;
+    padding-left: 22px;
+  }
+  .legal-body ul li {
+    margin-bottom: 6px;
+  }
+  .legal-body strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+  .legal-body a {
+    color: var(--purple-strong);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .legal-body a:hover {
+    text-decoration: none;
+  }
+  .legal-body hr {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 32px 0;
+  }
+</style>

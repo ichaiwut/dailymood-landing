@@ -1,0 +1,127 @@
+---
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const f = getMessages(locale).landing.faq;
+const items = f.items as { q: string; a: string }[];
+---
+
+<section id="faq" class="section">
+  <div
+    class="container l-faq"
+    style="display:grid;grid-template-columns:1fr 1.6fr;gap:64px;align-items:flex-start"
+  >
+    <div class="l-faq-sticky" style="position:sticky;top:100px">
+      <span class="eyebrow"><span class="dot"></span> {f.eyebrow}</span>
+      <h2 class="h-display" style="font-size:clamp(32px, 4vw, 48px);margin-top:22px">
+        {f.title}
+      </h2>
+    </div>
+    <div class="faq-list">
+      {
+        items.map((it, i) => (
+          <details class="faq-item" open={i === 0}>
+            <summary>
+              <span>{it.q}</span>
+              <span class="faq-mark" aria-hidden="true" />
+            </summary>
+            <div class="faq-answer">
+              <p>{it.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-item {
+    border-bottom: 1px solid var(--rule);
+  }
+  .faq-item > summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 24px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font);
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--ink);
+  }
+  .faq-item > summary::-webkit-details-marker {
+    display: none;
+  }
+  .faq-item > summary > span:first-child {
+    padding-right: 24px;
+  }
+  .faq-mark {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1.5px solid var(--rule);
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .faq-mark::before,
+  .faq-mark::after {
+    content: '';
+    position: absolute;
+    background: var(--ink);
+    transition: background 0.2s;
+  }
+  .faq-mark::before {
+    width: 12px;
+    height: 1.8px;
+  }
+  .faq-mark::after {
+    width: 1.8px;
+    height: 12px;
+  }
+  .faq-item[open] .faq-mark {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .faq-item[open] .faq-mark::before {
+    background: #fff;
+  }
+  .faq-item[open] .faq-mark::after {
+    display: none;
+  }
+  .faq-answer {
+    padding-bottom: 24px;
+  }
+  .faq-answer p {
+    margin: 0;
+    font-size: 16px;
+    color: var(--ink-2);
+    line-height: 1.65;
+    max-width: 620px;
+  }
+</style>
+
+<script>
+  // One-open-at-a-time accordion behaviour.
+  const list = document.querySelector('.faq-list');
+  if (list) {
+    list.addEventListener('toggle', (e) => {
+      const target = e.target as HTMLDetailsElement;
+      if (!(target instanceof HTMLDetailsElement) || !target.open) return;
+      list
+        .querySelectorAll<HTMLDetailsElement>('details[open]')
+        .forEach((d) => {
+          if (d !== target) d.open = false;
+        });
+    }, true);
+  }
+</script>

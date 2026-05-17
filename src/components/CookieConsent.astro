@@ -1,0 +1,94 @@
+---
+import { type Locale, getMessages, localeHref } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getMessages(locale).landing.consent;
+const cookiesHref = locale === 'th' ? '/cookies' : '/en/cookies';
+---
+
+<aside
+  id="dm-consent"
+  role="dialog"
+  aria-labelledby="dm-consent-title"
+  aria-describedby="dm-consent-sub"
+  hidden
+  style="position:fixed;left:16px;right:16px;bottom:16px;z-index:60;max-width:680px;margin-inline:auto;background:#fff;border:1px solid var(--rule);border-radius:18px;box-shadow:0 24px 60px -16px rgba(70,32,100,.25);padding:20px 24px;font-family:var(--font)"
+>
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap">
+    <div style="flex:1;min-width:260px">
+      <div
+        id="dm-consent-title"
+        style="font-weight:800;font-size:16px;color:var(--ink);margin-bottom:6px;line-height:1.3"
+      >
+        🍪 {c.title}
+      </div>
+      <p
+        id="dm-consent-sub"
+        style="margin:0;font-size:14px;color:var(--ink-2);line-height:1.55"
+      >
+        {c.sub}{' '}
+        <a
+          href={cookiesHref}
+          style="color:var(--purple-strong);text-decoration:underline;text-underline-offset:3px"
+        >
+          {c.readMore}
+        </a>
+      </p>
+    </div>
+    <div
+      style="display:flex;gap:8px;flex-wrap:wrap;align-self:center"
+    >
+      <button
+        type="button"
+        data-consent="necessary"
+        class="btn btn-ghost"
+        style="height:40px;padding:0 16px;font-size:14px"
+      >
+        {c.necessaryOnly}
+      </button>
+      <button
+        type="button"
+        data-consent="all"
+        class="btn btn-peach"
+        style="height:40px;padding:0 18px;font-size:14px"
+      >
+        {c.acceptAll}
+      </button>
+    </div>
+  </div>
+</aside>
+
+<script>
+  const KEY = 'dm-consent';
+  const banner = document.getElementById('dm-consent');
+  if (banner) {
+    const stored = (() => {
+      try {
+        return localStorage.getItem(KEY);
+      } catch {
+        return null;
+      }
+    })();
+
+    if (stored !== 'all' && stored !== 'necessary') {
+      banner.hidden = false;
+    }
+
+    banner.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const btn = target.closest<HTMLElement>('[data-consent]');
+      if (!btn) return;
+      const choice = btn.dataset.consent === 'all' ? 'all' : 'necessary';
+      try {
+        localStorage.setItem(KEY, choice);
+      } catch {}
+      banner.hidden = true;
+      window.dispatchEvent(
+        new CustomEvent('dm:consent', { detail: { choice } }),
+      );
+    });
+  }
+</script>

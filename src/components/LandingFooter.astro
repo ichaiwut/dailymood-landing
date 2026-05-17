@@ -1,0 +1,49 @@
+---
+import { type Locale, getMessages, otherLocale, localeHref } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const f = getMessages(locale).landing.footer;
+const legalLinks = f.legalLinks as [string, string][];
+const altLocale = otherLocale(locale);
+const altHref = localeHref(altLocale);
+---
+
+<footer
+  style="background:var(--night);color:#fff;padding:24px 0;border-top:1px solid rgba(255,255,255,.08)"
+>
+  <div
+    class="container"
+    style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px 24px"
+  >
+    <div style="color:rgba(255,255,255,.55);font-size:13px">{f.copy}</div>
+
+    <nav
+      aria-label="Legal"
+      style="display:flex;align-items:center;gap:20px;flex-wrap:wrap"
+    >
+      {
+        legalLinks.map(([name, href]) => (
+          <a
+            href={href}
+            style="color:rgba(255,255,255,.7);text-decoration:none;font-size:13px"
+          >
+            {name}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div style="display:flex;align-items:center;gap:14px">
+      <a
+        href={altHref}
+        style="padding:7px 14px;border-radius:100px;border:1px solid rgba(255,255,255,.15);background:transparent;color:#fff;font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;text-decoration:none"
+      >
+        🌐 {f.altLang} ↔
+      </a>
+      <span style="color:rgba(255,255,255,.45);font-size:13px">dailymood.me</span>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,31 @@
+---
+import type { Locale } from '@/lib/i18n';
+import LandingNav from './LandingNav.astro';
+import LandingHero from './LandingHero.astro';
+import LandingAI from './LandingAI.astro';
+import LandingHowItWorks from './LandingHowItWorks.astro';
+import LandingYearInPixels from './LandingYearInPixels.astro';
+import LandingFeaturesGrid from './LandingFeaturesGrid.astro';
+import LandingTestimonials from './LandingTestimonials.astro';
+import LandingPricing from './LandingPricing.astro';
+import LandingFAQ from './LandingFAQ.astro';
+import LandingCTABanner from './LandingCTABanner.astro';
+import LandingFooter from './LandingFooter.astro';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+---
+
+<LandingNav locale={locale} />
+<LandingHero locale={locale} />
+<LandingAI locale={locale} />
+<LandingHowItWorks locale={locale} />
+<LandingYearInPixels locale={locale} />
+<LandingFeaturesGrid locale={locale} />
+<LandingTestimonials locale={locale} />
+<LandingPricing locale={locale} />
+<LandingFAQ locale={locale} />
+<LandingCTABanner locale={locale} />
+<LandingFooter locale={locale} />

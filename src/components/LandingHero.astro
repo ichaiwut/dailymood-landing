@@ -1,0 +1,97 @@
+---
+import CheckCircle from './CheckCircle.astro';
+import LandingBrowserMockup from './LandingBrowserMockup.astro';
+import { type Locale, getMessages } from '@/lib/i18n';
+import { loginHref } from '@/lib/cta';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const m = getMessages(locale).landing;
+const h = m.hero;
+const ai = m.ai;
+const mk = m.mockup;
+---
+
+<section
+  id="top"
+  style="position:relative;overflow:clip;overflow-clip-margin:24px;padding-top:50px;padding-bottom:100px"
+>
+  <div class="blob" style="background:var(--peach);width:480px;height:480px;top:-120px;right:-120px"></div>
+  <div class="blob" style="background:var(--lavender);width:520px;height:520px;top:100px;left:-200px;opacity:.45"></div>
+
+  <div
+    class="container l-hero"
+    style="position:relative;display:grid;grid-template-columns:1fr 1.05fr;gap:64px;align-items:center"
+  >
+    <div>
+      <span class="eyebrow"><span class="dot"></span> {h.eyebrow}</span>
+      <h1
+        class="h-display fade-up"
+        style="font-size:clamp(40px, 6vw, 78px);margin:24px 0 22px"
+      >
+        {h.h1a}<br />
+        {h.h1b}{' '}
+        <span
+          class="swash"
+          style="background:linear-gradient(135deg,var(--peach) 0%,var(--purple) 80%);-webkit-background-clip:text;background-clip:text;color:transparent"
+        >
+          {h.h1c}
+        </span>
+      </h1>
+      <p style="font-size:19px;color:var(--ink-2);max-width:540px;margin-bottom:28px">
+        {h.sub}
+      </p>
+
+      <div style="display:flex;align-items:center;gap:18px;margin-bottom:14px;flex-wrap:wrap">
+        <a
+          href={loginHref()}
+          class="btn btn-peach"
+          style="height:56px;padding:0 28px;font-size:16px"
+        >
+          {h.ctaMain} →
+        </a>
+        <span style="font-size:13px;color:var(--ink-3)">{h.ctaSub}</span>
+      </div>
+
+      <div style="display:flex;gap:22px;margin-top:26px;flex-wrap:wrap">
+        {
+          [h.trust1, h.trust2, h.trust3].map((tx) => (
+            <span style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--ink-2)">
+              <CheckCircle /> {tx}
+            </span>
+          ))
+        }
+      </div>
+    </div>
+
+    <div style="position:relative">
+      <div
+        class="float-y"
+        style="--r:-6deg;position:absolute;top:-18px;right:60px;padding:8px 14px;border-radius:100px;background:#fff;font-size:13px;font-weight:700;color:var(--ink);box-shadow:0 8px 24px -6px rgba(0,0,0,.18);z-index:5;transform:rotate(-6deg);animation-delay:0s"
+      >
+        {ai.f1tag}
+      </div>
+      <div
+        class="float-y"
+        style="--r:-10deg;position:absolute;top:120px;left:-32px;padding:8px 14px;border-radius:100px;background:var(--mint);font-size:13px;font-weight:700;color:var(--ink);box-shadow:0 8px 24px -6px rgba(0,0,0,.18);z-index:5;transform:rotate(-10deg);animation-delay:.5s"
+      >
+        {mk.chipStreak}
+      </div>
+      <div
+        class="float-y"
+        style="--r:8deg;position:absolute;bottom:80px;right:-24px;padding:8px 14px;border-radius:100px;background:var(--peach);font-size:13px;font-weight:700;color:#fff;box-shadow:0 8px 24px -6px rgba(0,0,0,.18);z-index:5;transform:rotate(8deg);animation-delay:1s"
+      >
+        {mk.chipGreat}
+      </div>
+      <div
+        class="float-y"
+        style="--r:-4deg;position:absolute;bottom:-12px;left:80px;padding:8px 14px;border-radius:100px;background:var(--purple);font-size:13px;font-weight:700;color:#fff;box-shadow:0 8px 24px -6px rgba(0,0,0,.18);z-index:5;transform:rotate(-4deg);animation-delay:1.5s"
+      >
+        {ai.f3tag}
+      </div>
+      <LandingBrowserMockup locale={locale} />
+    </div>
+  </div>
+</section>

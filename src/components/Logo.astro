@@ -1,0 +1,22 @@
+---
+interface Props {
+  /** Rendered height in pixels. Width is computed from the wordmark's natural aspect ratio. */
+  size?: number;
+}
+const { size = 32 } = Astro.props;
+const LOGO_URL = 'https://pub-f0f688a68f884179942645789862cf54.r2.dev/assets/logo.png';
+
+// Natural dimensions of the source PNG (249x80). Setting width + height attrs
+// preserves space before the image loads (no CLS).
+const ASPECT = 249 / 80;
+const width = Math.round(size * ASPECT);
+---
+
+<img
+  src={LOGO_URL}
+  width={width}
+  height={size}
+  alt="DailyMood"
+  decoding="async"
+  style={`display:block;height:${size}px;width:auto`}
+/>

@@ -1,0 +1,60 @@
+---
+import FeatIcon from './FeatIcon.astro';
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const f = getMessages(locale).landing.features;
+
+type ColorKey = 'peach' | 'purple' | 'mint' | 'yellow' | 'lav' | 'blue';
+const colorMap: Record<ColorKey, { bg: string; stroke: string }> = {
+  peach: { bg: 'rgba(252,164,91,.12)', stroke: 'var(--peach)' },
+  purple: { bg: 'rgba(166,115,241,.12)', stroke: 'var(--purple)' },
+  mint: { bg: 'rgba(133,236,203,.18)', stroke: '#39B58A' },
+  yellow: { bg: 'rgba(253,203,86,.18)', stroke: '#D9A41A' },
+  lav: { bg: 'rgba(212,190,228,.30)', stroke: 'var(--purple)' },
+  blue: { bg: 'rgba(154,205,226,.30)', stroke: '#5A9CB7' },
+};
+
+const list = f.list as { t: string; d: string; c: ColorKey }[];
+---
+
+<section id="features" class="section">
+  <div class="container">
+    <div style="max-width:720px;margin-bottom:48px">
+      <span class="eyebrow"><span class="dot"></span> {f.eyebrow}</span>
+      <h2 class="h-display" style="font-size:clamp(32px, 4.5vw, 52px);margin-top:22px">
+        {f.title}
+      </h2>
+    </div>
+    <div
+      class="l-features"
+      style="display:grid;grid-template-columns:repeat(3, 1fr);gap:18px"
+    >
+      {
+        list.map((item, i) => {
+          const cm = colorMap[item.c];
+          return (
+            <div
+              style="padding:28px;border-radius:20px;background:#fff;border:1px solid var(--rule);display:flex;flex-direction:column;gap:16px"
+            >
+              <div
+                style={`width:48px;height:48px;border-radius:14px;background:${cm.bg};color:${cm.stroke};display:flex;align-items:center;justify-content:center`}
+              >
+                <FeatIcon i={i} stroke={cm.stroke} />
+              </div>
+              <div>
+                <h3 style="font-size:20px;font-weight:800;margin:0 0 8px">{item.t}</h3>
+                <p style="color:var(--ink-2);font-size:15px;margin:0;line-height:1.55">
+                  {item.d}
+                </p>
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

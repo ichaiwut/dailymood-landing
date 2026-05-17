@@ -1,0 +1,102 @@
+---
+import '@/styles/globals.css';
+import CookieConsent from '@/components/CookieConsent.astro';
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const m = getMessages(locale).landing;
+const SITE_URL =
+  (import.meta.env.PUBLIC_SITE_URL as string | undefined) ?? 'https://dailymood.me';
+const GA_ID = (import.meta.env.PUBLIC_GA_ID as string | undefined) ?? '';
+
+const ogLocale = locale === 'th' ? 'th_TH' : 'en_US';
+const altOgLocale = locale === 'th' ? 'en_US' : 'th_TH';
+const canonical = locale === 'th' ? `${SITE_URL}/` : `${SITE_URL}/en/`;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'DailyMood',
+  operatingSystem: 'Web',
+  applicationCategory: 'LifestyleApplication',
+  url: `${SITE_URL}/`,
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'THB' },
+  inLanguage: ['th', 'en'],
+};
+---
+
+<!doctype html>
+<html lang={locale} class={locale === 'th' ? 'thai' : undefined}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{m.meta.title}</title>
+    <meta name="description" content={m.meta.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="th" href={`${SITE_URL}/`} />
+    <link rel="alternate" hreflang="en" href={`${SITE_URL}/en/`} />
+    <link rel="alternate" hreflang="x-default" href={`${SITE_URL}/`} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={m.meta.ogTitle} />
+    <meta property="og:description" content={m.meta.description} />
+    <meta property="og:image" content={`${SITE_URL}/og.png`} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={altOgLocale} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={m.meta.ogTitle} />
+    <meta name="twitter:description" content={m.meta.description} />
+    <meta name="twitter:image" content={`${SITE_URL}/og.png`} />
+
+    <meta name="theme-color" content="#FBF6EE" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='28' height='28' rx='9' fill='%23FCA45B'/%3E%3Ccircle cx='12' cy='14' r='1.6' fill='%231A1320'/%3E%3Ccircle cx='20' cy='14' r='1.6' fill='%231A1320'/%3E%3Cpath d='M 11 20 Q 16 24 21 20' stroke='%231A1320' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(jsonLd)}
+    />
+  </head>
+  <body class={locale === 'th' ? 'thai' : undefined}>
+    <slot />
+
+    <CookieConsent locale={locale} />
+
+    {
+      GA_ID && (
+        <script is:inline define:vars={{ GA_ID }}>
+          var KEY = 'dm-consent';
+          var loaded = false;
+          function loadGA() {
+            if (loaded) return;
+            loaded = true;
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+            document.head.appendChild(s);
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ window.dataLayer.push(arguments); }
+            window.gtag = gtag;
+            gtag('js', new Date());
+            gtag('config', GA_ID, { anonymize_ip: true });
+          }
+          try {
+            if (localStorage.getItem(KEY) === 'all') loadGA();
+          } catch (_) {}
+          window.addEventListener('dm:consent', function (e) {
+            if (e && e.detail && e.detail.choice === 'all') loadGA();
+          });
+        </script>
+      )
+    }
+  </body>
+</html>

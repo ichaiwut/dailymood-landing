@@ -1,0 +1,90 @@
+---
+import Logo from './Logo.astro';
+import { type Locale, getMessages, otherLocale, localeHref } from '@/lib/i18n';
+import { loginHref } from '@/lib/cta';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const n = getMessages(locale).landing.nav;
+const altLocale = otherLocale(locale);
+const altHref = localeHref(altLocale);
+
+// Home base for the current locale. Used to prefix in-page anchors so they
+// resolve from any sub-page (e.g. /cookies, /privacy) — clicking "AI" on
+// /cookies should jump to "/#ai", not "/cookies#ai".
+const home = localeHref(locale);
+---
+
+<nav id="landing-nav" data-scrolled="false">
+  <div
+    class="container"
+    style="display:flex;align-items:center;justify-content:space-between;height:72px"
+  >
+    <a
+      href={home}
+      style="display:flex;align-items:center;text-decoration:none;color:var(--ink)"
+      aria-label="DailyMood"
+    >
+      <Logo size={40} />
+    </a>
+
+    <div class="l-nav-links" style="display:flex;align-items:center;gap:30px">
+      <a href={`${home}#features`} style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px">{n.features}</a>
+      <a href={`${home}#ai`} style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px">{n.ai}</a>
+      <a href={`${home}#pricing`} style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px">{n.pricing}</a>
+      <a href={`${home}#faq`} style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px">{n.faq}</a>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px">
+      <a
+        href={altHref}
+        aria-label="Switch language"
+        style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:100px;border:1.5px solid var(--rule);background:transparent;font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;color:var(--ink-2);text-decoration:none"
+      >
+        <span style={`opacity:${locale === 'th' ? 1 : 0.4}`}>TH</span>
+        <span style="opacity:0.3">/</span>
+        <span style={`opacity:${locale === 'en' ? 1 : 0.4}`}>EN</span>
+      </a>
+      <a
+        href={loginHref()}
+        class="l-hide-sm"
+        style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px"
+      >
+        {n.signin}
+      </a>
+      <a href={loginHref()} class="btn btn-ink" style="height:42px;font-size:14px">
+        {n.cta}
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: saturate(180%) blur(14px);
+    -webkit-backdrop-filter: saturate(180%) blur(14px);
+    background: transparent;
+    border-bottom: 1px solid transparent;
+    transition: all 0.25s ease;
+  }
+  nav[data-scrolled='true'] {
+    background: rgba(251, 246, 238, 0.85);
+    border-bottom-color: var(--rule);
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('landing-nav');
+  if (nav) {
+    const onScroll = () => {
+      nav.dataset.scrolled = window.scrollY > 12 ? 'true' : 'false';
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+</script>

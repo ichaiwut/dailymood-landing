@@ -1,0 +1,57 @@
+---
+type FaceKind = 'great' | 'good' | 'okay' | 'meh' | 'bad' | 'awful' | 'calm';
+
+interface Props {
+  face: FaceKind;
+  size?: number;
+  bg?: string;
+}
+const { face, size = 48, bg = '#fff' } = Astro.props;
+const w = size;
+
+const mouthPath: Record<FaceKind, string | null> = {
+  great: `M ${w * 0.32} ${w * 0.62} Q ${w * 0.5} ${w * 0.82} ${w * 0.68} ${w * 0.62}`,
+  good: `M ${w * 0.34} ${w * 0.62} Q ${w * 0.5} ${w * 0.74} ${w * 0.66} ${w * 0.62}`,
+  okay: null, // straight line, handled below
+  meh: `M ${w * 0.34} ${w * 0.68} Q ${w * 0.5} ${w * 0.62} ${w * 0.66} ${w * 0.68}`,
+  bad: `M ${w * 0.34} ${w * 0.72} Q ${w * 0.5} ${w * 0.58} ${w * 0.66} ${w * 0.72}`,
+  awful: `M ${w * 0.32} ${w * 0.74} Q ${w * 0.5} ${w * 0.54} ${w * 0.68} ${w * 0.74}`,
+  calm: null, // dot mouth
+};
+const sw = size * 0.05;
+---
+
+<svg width={w} height={w} viewBox={`0 0 ${w} ${w}`} aria-hidden="true">
+  <circle cx={w * 0.5} cy={w * 0.5} r={w * 0.48} fill={bg}></circle>
+  <circle cx={w * 0.36} cy={w * 0.42} r={size * 0.06} fill="#1A1320"></circle>
+  <circle cx={w * 0.64} cy={w * 0.42} r={size * 0.06} fill="#1A1320"></circle>
+  {
+    face === 'okay' && (
+      <line
+        x1={w * 0.36}
+        y1={w * 0.66}
+        x2={w * 0.64}
+        y2={w * 0.66}
+        stroke="#1A1320"
+        stroke-width={sw}
+        stroke-linecap="round"
+      />
+    )
+  }
+  {
+    face === 'calm' && (
+      <circle cx={w * 0.5} cy={w * 0.66} r={size * 0.05} fill="#1A1320" />
+    )
+  }
+  {
+    mouthPath[face] && (
+      <path
+        d={mouthPath[face]!}
+        stroke="#1A1320"
+        stroke-width={sw}
+        fill="none"
+        stroke-linecap="round"
+      />
+    )
+  }
+</svg>
