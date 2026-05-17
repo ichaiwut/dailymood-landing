@@ -1,5 +1,7 @@
 # Railway sets $PORT at runtime; default to 8080 for local docker run.
-{$PORT:8080} {
+# The leading `:` makes Caddy listen on all interfaces (0.0.0.0) on that
+# port — without it Caddy treats the value as a hostname and binds nothing.
+:{$PORT:8080} {
 	root * /usr/share/caddy
 	encode zstd gzip
 
