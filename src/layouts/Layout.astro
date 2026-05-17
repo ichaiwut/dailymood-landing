@@ -1,23 +1,53 @@
 ---
 import '@/styles/globals.css';
 import CookieConsent from '@/components/CookieConsent.astro';
-import { type Locale, getMessages } from '@/lib/i18n';
+import { type Locale, getMessages, localeHref } from '@/lib/i18n';
 
 interface Props {
   locale: Locale;
+  /** Override the <title>. Defaults to the landing's title from messages. */
+  title?: string;
+  /** Override the description meta. Defaults to the landing's description. */
+  description?: string;
+  /**
+   * Pathname under the locale root (e.g. "/privacy"). Used to build the
+   * canonical URL and hreflang alternates. Defaults to "/" (the landing).
+   */
+  pathname?: string;
+  /** Robots directive override. Defaults to "index,follow". */
+  robots?: string;
 }
 
-const { locale } = Astro.props;
+const { locale, title, description, pathname = '/', robots = 'index,follow' } = Astro.props;
 const m = getMessages(locale).landing;
 const SITE_URL =
   (import.meta.env.PUBLIC_SITE_URL as string | undefined) ?? 'https://dailymood.me';
 const GA_ID = (import.meta.env.PUBLIC_GA_ID as string | undefined) ?? '';
 
+// Resolve title/description: explicit prop wins, otherwise landing defaults.
+const pageTitle = title ?? m.meta.title;
+const pageDesc = description ?? m.meta.description;
+const ogTitle = title ?? m.meta.ogTitle;
+
+// Build absolute URLs for the current page in both locales. Astro serves
+// pages with trailing slashes by default, so canonicals/hreflang use them too.
+const homeForLocale = (l: Locale) => `${SITE_URL}${localeHref(l)}`.replace(/\/$/, '');
+const thHome = homeForLocale('th');
+const enHome = homeForLocale('en');
+const rawPath = pathname.startsWith('/') ? pathname : `/${pathname}`;
+const path = rawPath === '/' ? '/' : rawPath.replace(/\/?$/, '/');
+const thPageUrl = `${thHome}${path}`;
+const enPageUrl = `${enHome}${path}`;
+const canonical = locale === 'th' ? thPageUrl : enPageUrl;
+
 const ogLocale = locale === 'th' ? 'th_TH' : 'en_US';
 const altOgLocale = locale === 'th' ? 'en_US' : 'th_TH';
-const canonical = locale === 'th' ? `${SITE_URL}/` : `${SITE_URL}/en/`;
+const ogImage = 'https://pub-f0f688a68f884179942645789862cf54.r2.dev/assets/og.png';
 
-const jsonLd = {
+// JSON-LD: SoftwareApplication for the product itself + Organization (publisher)
+// + WebSite for the canonical site (helps Google build a knowledge-panel entry
+// and the search sitelinks block).
+const jsonLdSoftware = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'DailyMood',
@@ -27,6 +57,20 @@ const jsonLd = {
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'THB' },
   inLanguage: ['th', 'en'],
 };
+const jsonLdOrg = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'DailyMood',
+  url: `${SITE_URL}/`,
+  logo: 'https://pub-f0f688a68f884179942645789862cf54.r2.dev/assets/logo.png',
+};
+const jsonLdSite = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'DailyMood',
+  url: `${SITE_URL}/`,
+  inLanguage: ['th', 'en'],
+};
 ---
 
 <!doctype html>
@@ -34,37 +78,58 @@ const jsonLd = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{m.meta.title}</title>
-    <meta name="description" content={m.meta.description} />
-    <link rel="canonical" href={canonical} />
-    <link rel="alternate" hreflang="th" href={`${SITE_URL}/`} />
-    <link rel="alternate" hreflang="en" href={`${SITE_URL}/en/`} />
-    <link rel="alternate" hreflang="x-default" href={`${SITE_URL}/`} />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <meta name="author" content="DailyMood" />
+    <meta name="robots" content={robots} />
+    <meta name="format-detection" content="telephone=no" />
 
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="th" href={thPageUrl} />
+    <link rel="alternate" hreflang="en" href={enPageUrl} />
+    <link rel="alternate" hreflang="x-default" href={thPageUrl} />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="DailyMood" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:title" content={m.meta.ogTitle} />
-    <meta property="og:description" content={m.meta.description} />
-    <meta property="og:image" content={`${SITE_URL}/og.png`} />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content={ogTitle} />
     <meta property="og:locale" content={ogLocale} />
     <meta property="og:locale:alternate" content={altOgLocale} />
 
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content={m.meta.ogTitle} />
-    <meta name="twitter:description" content={m.meta.description} />
-    <meta name="twitter:image" content={`${SITE_URL}/og.png`} />
+    <meta name="twitter:title" content={ogTitle} />
+    <meta name="twitter:description" content={pageDesc} />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogTitle} />
 
+    <!-- Theme + icons -->
     <meta name="theme-color" content="#FBF6EE" />
     <link
       rel="icon"
+      type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='28' height='28' rx='9' fill='%23FCA45B'/%3E%3Ccircle cx='12' cy='14' r='1.6' fill='%231A1320'/%3E%3Ccircle cx='20' cy='14' r='1.6' fill='%231A1320'/%3E%3Cpath d='M 11 20 Q 16 24 21 20' stroke='%231A1320' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"
     />
-
-    <script
-      is:inline
-      type="application/ld+json"
-      set:html={JSON.stringify(jsonLd)}
+    <link
+      rel="apple-touch-icon"
+      href="https://pub-f0f688a68f884179942645789862cf54.r2.dev/assets/logo.png"
     />
+
+    <!-- Perf: warm up the Google Fonts CDN we import in globals.css -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Structured data -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLdSoftware)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLdOrg)} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLdSite)} />
   </head>
   <body class={locale === 'th' ? 'thai' : undefined}>
     <slot />

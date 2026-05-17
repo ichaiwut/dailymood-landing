@@ -143,6 +143,70 @@ Required env vars (see `.env.example`) — all prefixed `PUBLIC_` so Astro expos
 - `PUBLIC_SITE_URL` — defaults to `https://dailymood.me`. Used for canonical + OG URLs.
 - `PUBLIC_GA_ID` — Google Analytics 4 measurement ID (`G-XXXXXXXXXX`). When set, the layout injects a consent-gated GA loader that fires **only after the user clicks "Accept all"** on the cookie banner. Leave empty to disable GA entirely.
 
+## Deployment (Railway)
+
+This repo deploys to Railway as a Docker container — `node:20-alpine` builds the static site, `caddy:2-alpine` serves `dist/`.
+
+### Files involved
+
+- `Dockerfile` — multi-stage build (Astro build → Caddy)
+- `Caddyfile` — listens on `$PORT`, sets cache headers + standard security headers, has `/healthz` for Railway's healthcheck
+- `.dockerignore` — keeps `node_modules`, `dist`, `.git`, `prototype/`, etc. out of the build context
+- `railway.toml` — pins `builder = "DOCKERFILE"`, healthcheck path, restart policy
+
+### Project link
+
+Project ID: `20e55920-ab03-41d5-a854-d67cc3f343f1` ("Dailymood Landing"), environment `production`.
+
+```bash
+# One-time, in this repo:
+railway link -p 20e55920-ab03-41d5-a854-d67cc3f343f1
+railway status   # confirm
+```
+
+### Env vars to set in the Railway dashboard
+
+All are `PUBLIC_*` so Astro inlines them into the static output. They must be set on the **service** in Railway (Settings → Variables), not just locally:
+
+| Var | Value | What it does |
+|---|---|---|
+| `PUBLIC_SITE_URL` | `https://dailymood.me` | Canonical/OG/hreflang URLs |
+| `PUBLIC_APP_URL` | `https://my.dailymood.me` | Every CTA link via `src/lib/cta.ts` |
+| `PUBLIC_GA_ID` | `G-XXXXXXXXXX` (production GA4) | Loaded only after cookie consent |
+
+If you change any of these, **the container must be rebuilt** — Astro bakes them in at build time.
+
+### Deploying
+
+Two paths, pick one and stick with it:
+
+**A. GitHub auto-deploy (recommended)** — in the Railway dashboard, connect this repo (`github.com/ichaiwut/dailymood-landing`) to the service. Every push to `main` triggers a build + deploy.
+
+**B. CLI push (`railway up`)** — uploads the current dir as the build context, builds, deploys. Faster iteration but bypasses git history.
+
+```bash
+railway up --detach
+railway logs -d   # tail
+```
+
+### Custom domain
+
+In the Railway dashboard → Settings → Networking → Custom Domains, add `dailymood.me`. Railway issues a Let's Encrypt cert automatically. Point the DNS `CNAME` at the Railway-provided target. **Do not also point `my.dailymood.me` here** — that's the separate app service.
+
+### Rolling back
+
+Railway keeps every deployment. To roll back: dashboard → Deployments → click an older one → Rollback. Or via CLI: `railway redeploy --from <deployment-id>`.
+
+### Local smoke test of the production container
+
+```bash
+docker build -t dailymood-landing .
+docker run --rm -p 8080:8080 \
+  -e PORT=8080 \
+  dailymood-landing
+# Open http://localhost:8080
+```
+
 ## Cookie consent flow
 
 PDPA requires opt-in consent for non-essential cookies. Implementation:

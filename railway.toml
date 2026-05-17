@@ -1,0 +1,17 @@
+# Railway service config. Project ID is fixed via `railway link` (see
+# CLAUDE.md → Deployment). This file pins build/runtime behaviour so
+# everyone gets the same Caddy-based static deploy.
+
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
+
+[deploy]
+# Health check Railway will poll. Matches the /healthz route in Caddyfile.
+healthcheckPath = "/healthz"
+healthcheckTimeout = 30
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 5
+# Use multiple Caddy replicas only after a real traffic check — single
+# replica is plenty for a static landing page.
+numReplicas = 1

@@ -9,11 +9,22 @@ interface Props {
   title: string;
   effectiveDate: string;
   tldr: string[];
+  /** Pathname for this page, e.g. "/privacy". Used for canonical + hreflang. */
+  pathname: string;
+  /** SEO description meta. Defaults to the page title if omitted. */
+  metaDescription?: string;
 }
-const { locale, title, effectiveDate, tldr } = Astro.props;
+const { locale, title, effectiveDate, tldr, pathname, metaDescription } = Astro.props;
+const pageTitle = `${title} · DailyMood`;
+const pageDesc = metaDescription ?? title;
 ---
 
-<Layout locale={locale}>
+<Layout
+  locale={locale}
+  title={pageTitle}
+  description={pageDesc}
+  pathname={pathname}
+>
   <LandingNav locale={locale} />
 
   <main style="padding:80px 0 120px;background:var(--page)">
