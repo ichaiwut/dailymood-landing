@@ -23,6 +23,7 @@ const m = getMessages(locale).landing;
 const SITE_URL =
   (import.meta.env.PUBLIC_SITE_URL as string | undefined) ?? 'https://dailymood.me';
 const GA_ID = (import.meta.env.PUBLIC_GA_ID as string | undefined) ?? '';
+const GADS_ID = (import.meta.env.PUBLIC_GADS_ID as string | undefined) ?? '';
 
 // Resolve title/description: explicit prop wins, otherwise landing defaults.
 const pageTitle = title ?? m.meta.title;
@@ -137,20 +138,22 @@ const jsonLdSite = {
     <CookieConsent locale={locale} />
 
     {
-      GA_ID && (
-        <script is:inline define:vars={{ GA_ID }}>
+      (GA_ID || GADS_ID) && (
+        <script is:inline define:vars={{ GA_ID, GADS_ID }}>
           // PDPA "informed notice" — the cookie banner just notifies users;
-          // GA loads on every page load. anonymize_ip stays on as a soft
-          // privacy default.
+          // tags load on every page load. anonymize_ip stays on for GA as a
+          // soft privacy default. Disclosed in /cookies.
+          var firstId = GA_ID || GADS_ID;
           var s = document.createElement('script');
           s.async = true;
-          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + firstId;
           document.head.appendChild(s);
           window.dataLayer = window.dataLayer || [];
           function gtag(){ window.dataLayer.push(arguments); }
           window.gtag = gtag;
           gtag('js', new Date());
-          gtag('config', GA_ID, { anonymize_ip: true });
+          if (GA_ID) gtag('config', GA_ID, { anonymize_ip: true });
+          if (GADS_ID) gtag('config', GADS_ID);
         </script>
       )
     }

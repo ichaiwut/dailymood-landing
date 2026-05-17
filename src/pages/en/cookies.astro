@@ -6,13 +6,13 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
   locale="en"
   pathname="/cookies"
   title="Cookie Policy"
-  metaDescription="Cookies used by DailyMood across dailymood.me and my.dailymood.me. Essential cookies + Google Analytics with anonymised IPs. No ad cookies, no third-party trackers beyond GA."
+  metaDescription="Cookies used by DailyMood across dailymood.me and my.dailymood.me. Essential cookies, Google Analytics, and Google Ads conversion tracking. We don't sell your data."
   effectiveDate="Effective May 17, 2026"
   tldr={[
-    'We use essential cookies and Google Analytics to improve DailyMood.',
-    'No advertising cookies, no third-party trackers beyond GA.',
+    'We use essential cookies, Google Analytics for stats, and Google Ads to measure ad conversions.',
+    "We don't sell your data and don't use Meta Pixel, TikTok Pixel, or session recording.",
     'A banner notifies you on first visit — continued use is acknowledgement.',
-    'You can opt out of GA tracking via your browser settings.',
+    'You can opt out via your browser settings or Google Ad Settings.',
   ]}
 >
   <h2>1. Scope of this policy</h2>
@@ -74,16 +74,34 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>.
   </p>
 
-  <h2>5. What we don't use</h2>
+  <h2>5. Conversion measurement (Google Ads)</h2>
+  <p>
+    When you reach this site by clicking one of our ads on Google Search,
+    Display, or YouTube, we use a <strong>Google Ads conversion tag</strong>
+    to count that ad as having reached you. We don't identify you
+    individually and don't use this data to build a personal profile.
+  </p>
+  <p>Cookies set by Google Ads:</p>
+  <ul>
+    <li><strong>`_gcl_au`</strong> — links an ad click to a site visit. 3-month expiry.</li>
+    <li><strong>`_gcl_*`</strong> — tracks campaign-level conversions.</li>
+  </ul>
+  <p>
+    To opt out of Google Ads tracking, manage your ad preferences at
+    <a href="https://adssettings.google.com/" target="_blank" rel="noopener">Google Ad Settings</a>
+    or block cookies in your browser settings.
+  </p>
+
+  <h2>6. What we don't use</h2>
   <p>To be clear, we do not use:</p>
   <ul>
-    <li>Advertising cookies (Google Ads, Meta Pixel, TikTok Pixel)</li>
-    <li>Session recording tools (Hotjar, FullStory)</li>
+    <li>Meta Pixel (Facebook/Instagram), TikTok Pixel, LinkedIn Insight Tag</li>
+    <li>Session recording tools (Hotjar, FullStory, Microsoft Clarity)</li>
     <li>Third-party chat widgets (Intercom, Crisp)</li>
     <li>Embedded YouTube / Twitter / Instagram on our pages</li>
   </ul>
 
-  <h2>6. Third-party data processors</h2>
+  <h2>7. Third-party data processors</h2>
   <p>
     The providers below process data server-side — they don't set cookies
     in your browser, but PDPA requires us to disclose them:
@@ -99,13 +117,17 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     See our <a href="/en/privacy">Privacy Policy</a> for more detail.
   </p>
 
-  <h2>7. Managing cookies and opting out</h2>
-  <p>To opt out of analytics tracking:</p>
+  <h2>8. Managing cookies and opting out</h2>
+  <p>To opt out of analytics or conversion tracking:</p>
   <ul>
     <li>
       <strong>Block Google Analytics cookies</strong> via your browser
       settings, or install the
       <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>.
+    </li>
+    <li>
+      <strong>Disable Google Ads tracking</strong> via
+      <a href="https://adssettings.google.com/" target="_blank" rel="noopener">Google Ad Settings</a>.
     </li>
     <li>Enable Do Not Track in your browser.</li>
     <li>
@@ -118,7 +140,7 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     won't be able to log in and core DailyMood features won't work.
   </p>
 
-  <h2>8. Contact our DPO</h2>
+  <h2>9. Contact our DPO</h2>
   <p>
     For questions about cookies or data protection, contact our Data
     Protection Officer at

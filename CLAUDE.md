@@ -141,7 +141,8 @@ Note: Astro ignores the `PORT` env var. Use `--port` on the CLI.
 Required env vars (see `.env.example`) — all prefixed `PUBLIC_` so Astro exposes them to the build:
 - `PUBLIC_APP_URL` — defaults to `https://my.dailymood.me`. Used by `src/lib/cta.ts`.
 - `PUBLIC_SITE_URL` — defaults to `https://dailymood.me`. Used for canonical + OG URLs.
-- `PUBLIC_GA_ID` — Google Analytics 4 measurement ID (`G-XXXXXXXXXX`). When set, the layout injects a consent-gated GA loader that fires **only after the user clicks "Accept all"** on the cookie banner. Leave empty to disable GA entirely.
+- `PUBLIC_GA_ID` — Google Analytics 4 measurement ID (`G-XXXXXXXXXX`). When set, the layout loads `gtag.js` on every page load (PDPA informed-notice model) with `anonymize_ip: true`. Leave empty to disable GA entirely.
+- `PUBLIC_GADS_ID` — Google Ads conversion / remarketing tag ID (`AW-XXXXXXXXX`). When set, configured alongside GA via the same `gtag.js` bootstrap. Disclosed in `/cookies`. Leave empty to disable Google Ads.
 
 ## Deployment (Railway)
 
@@ -172,7 +173,8 @@ All are `PUBLIC_*` so Astro inlines them into the static output. They must be se
 |---|---|---|
 | `PUBLIC_SITE_URL` | `https://dailymood.me` | Canonical/OG/hreflang URLs |
 | `PUBLIC_APP_URL` | `https://my.dailymood.me` | Every CTA link via `src/lib/cta.ts` |
-| `PUBLIC_GA_ID` | `G-XXXXXXXXXX` (production GA4) | Loaded only after cookie consent |
+| `PUBLIC_GA_ID` | `G-XXXXXXXXXX` (production GA4) | Loaded on every page load with `anonymize_ip` |
+| `PUBLIC_GADS_ID` | `AW-XXXXXXXXX` (Google Ads conversion tag) | Loaded alongside GA via same gtag.js |
 
 If you change any of these, **the container must be rebuilt** — Astro bakes them in at build time.
 
@@ -209,14 +211,13 @@ docker run --rm -p 8080:8080 \
 
 ## Cookie consent flow
 
-PDPA requires opt-in consent for non-essential cookies. Implementation:
+Thailand PDPA's **informed-notice** model. The banner notifies first-time visitors; analytics + ad-conversion tags load on every page load with privacy-conservative defaults (`anonymize_ip` on GA). Implementation:
 
-- `src/components/CookieConsent.astro` — bottom-bar banner shown on first visit when `localStorage.dm-consent` is unset. Two buttons: `Accept all` (stores `'all'`) / `Only necessary` (stores `'necessary'`). On click, dispatches a `dm:consent` CustomEvent.
-- `src/layouts/Layout.astro` — when `PUBLIC_GA_ID` is set, emits a tiny inline loader. On page load, the loader checks `localStorage.dm-consent === 'all'` and either loads `gtag.js` immediately or waits for the `dm:consent` event with `detail.choice === 'all'`.
-- **Strict mode**: no `gtag.js` request, no GA cookies, no Google network calls happen until consent is explicit. Chosen over Google Consent Mode v2 for PDPA-clean defaults.
-- Users withdraw consent by clearing browser localStorage + cookies (documented on `/cookies`).
+- `src/components/CookieConsent.astro` — bottom-bar banner shown on first visit when `localStorage.dm-consent-seen` is unset. Single dismiss button; clicking it records that the notice was seen.
+- `src/layouts/Layout.astro` — when `PUBLIC_GA_ID` or `PUBLIC_GADS_ID` is set, emits a single inline `gtag.js` bootstrap that configures both products. GA uses `anonymize_ip: true`.
+- Users withdraw consent by clearing browser localStorage + cookies, or by using Google's per-product opt-out tools (documented on `/cookies`).
 
-Do not add new client-side trackers without (a) adding a category to `/cookies`, (b) gating them through the same `dm:consent` event, and (c) running the forbidden-string grep to make sure no jargon leaks into UI copy.
+Do not add new client-side trackers without (a) adding a section to both `src/pages/cookies.astro` and `src/pages/en/cookies.astro` disclosing the new cookies and the opt-out path, and (b) running the forbidden-string grep to make sure no jargon leaks into UI copy.
 
 ## Acceptance grep (do before declaring landing work done)
 

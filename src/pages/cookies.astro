@@ -6,13 +6,13 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
   locale="th"
   pathname="/cookies"
   title="นโยบายคุกกี้"
-  metaDescription="คุกกี้ที่ DailyMood ใช้ ทั้งบน dailymood.me และ my.dailymood.me — Google Analytics ทำงานเฉพาะหลังคุณกดยอมรับ ไม่มีคุกกี้โฆษณา"
+  metaDescription="คุกกี้ที่ DailyMood ใช้ ทั้งบน dailymood.me และ my.dailymood.me — Google Analytics, Google Ads วัด conversion จากโฆษณา ไม่ขายข้อมูลใคร"
   effectiveDate="มีผลบังคับใช้ 17 พฤษภาคม 2026"
   tldr={[
-    'เราใช้คุกกี้ที่จำเป็นและ Google Analytics เพื่อปรับปรุง DailyMood',
-    'ไม่มีคุกกี้โฆษณา ไม่ขายข้อมูลใคร',
+    'เราใช้คุกกี้ที่จำเป็น สถิติ (Google Analytics) และวัด conversion จากโฆษณา (Google Ads)',
+    'ไม่ขายข้อมูลใคร ไม่ใช้ Meta Pixel / TikTok Pixel / session recording',
     'เมื่อคุณเข้าเว็บไซต์ครั้งแรก จะมี banner แจ้งให้ทราบ',
-    'ถ้าไม่ต้องการให้ Google Analytics ติดตาม ปิดได้ที่การตั้งค่าเบราว์เซอร์ของคุณ',
+    'ถ้าไม่ต้องการให้ติดตาม ปิดได้ที่การตั้งค่าเบราว์เซอร์ของคุณ',
   ]}
 >
   <h2>1. ขอบเขตของนโยบายนี้</h2>
@@ -73,16 +73,34 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out</a>
   </p>
 
-  <h2>5. ที่เราไม่ใช้</h2>
+  <h2>5. คุกกี้สำหรับวัด Conversion (Google Ads)</h2>
+  <p>
+    เมื่อคุณเข้าหน้านี้จากการคลิกโฆษณาของเราใน Google Search, Display
+    หรือ YouTube เราใช้ <strong>Google Ads conversion tag</strong>
+    เพื่อนับว่าโฆษณานั้นทำให้คุณเข้าถึงเว็บไซต์ได้สำเร็จ
+    เราไม่ระบุตัวตนของคุณ และไม่ใช้ข้อมูลนี้สร้างโปรไฟล์ส่วนตัว
+  </p>
+  <p>คุกกี้ที่ Google Ads ตั้ง:</p>
+  <ul>
+    <li><strong>`_gcl_au`</strong> — สำหรับเชื่อมโยงคลิกโฆษณากับการเข้าเว็บ อายุ 3 เดือน</li>
+    <li><strong>`_gcl_*`</strong> — ติดตาม conversion ของแต่ละแคมเปญ</li>
+  </ul>
+  <p>
+    หากต้องการปิดการติดตาม Google Ads สามารถจัดการได้ที่
+    <a href="https://adssettings.google.com/" target="_blank" rel="noopener">Google Ad Settings</a>
+    หรือบล็อกคุกกี้ผ่านการตั้งค่าเบราว์เซอร์
+  </p>
+
+  <h2>6. ที่เราไม่ใช้</h2>
   <p>เพื่อให้ชัดเจน เราไม่ใช้:</p>
   <ul>
-    <li>คุกกี้สำหรับโฆษณา (Google Ads, Meta Pixel, TikTok Pixel)</li>
-    <li>เครื่องมือบันทึกเซสชัน (Hotjar, FullStory)</li>
+    <li>Meta Pixel (Facebook/Instagram), TikTok Pixel, LinkedIn Insight Tag</li>
+    <li>เครื่องมือบันทึกเซสชัน (Hotjar, FullStory, Microsoft Clarity)</li>
     <li>Chat widget ของบุคคลที่สาม (Intercom, Crisp)</li>
     <li>การฝัง YouTube/Twitter/Instagram บนหน้าเว็บ</li>
   </ul>
 
-  <h2>6. ผู้ให้บริการบุคคลที่สาม (Data Processors)</h2>
+  <h2>7. ผู้ให้บริการบุคคลที่สาม (Data Processors)</h2>
   <p>
     ผู้ให้บริการต่อไปนี้ประมวลผลข้อมูลฝั่งเซิร์ฟเวอร์ — ไม่ได้ตั้งคุกกี้ที่เบราว์เซอร์ของคุณ
     แต่ PDPA กำหนดให้เปิดเผยรายชื่อไว้:
@@ -99,13 +117,17 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     <a href="/privacy">นโยบายความเป็นส่วนตัว</a>
   </p>
 
-  <h2>7. การจัดการคุกกี้และการคัดค้าน</h2>
-  <p>หากต้องการคัดค้านการประมวลผลข้อมูลแบบสถิติ:</p>
+  <h2>8. การจัดการคุกกี้และการคัดค้าน</h2>
+  <p>หากต้องการคัดค้านการประมวลผลข้อมูลแบบสถิติหรือการวัด conversion:</p>
   <ul>
     <li>
       <strong>บล็อกคุกกี้ของ Google Analytics</strong> ผ่านการตั้งค่าเบราว์เซอร์
       หรือใช้
       <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>
+    </li>
+    <li>
+      <strong>ปิดการติดตามโฆษณาของ Google Ads</strong> ผ่าน
+      <a href="https://adssettings.google.com/" target="_blank" rel="noopener">Google Ad Settings</a>
     </li>
     <li>เปิด Do Not Track ในเบราว์เซอร์ของคุณ</li>
     <li>
@@ -118,7 +140,7 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     และฟีเจอร์หลักของ DailyMood จะใช้งานไม่ได้
   </p>
 
-  <h2>8. การติดต่อ DPO</h2>
+  <h2>9. การติดต่อ DPO</h2>
   <p>
     คำถามเกี่ยวกับคุกกี้หรือการคุ้มครองข้อมูลส่วนบุคคล ติดต่อเจ้าหน้าที่
     คุ้มครองข้อมูลส่วนบุคคล (DPO) ของเราที่
