@@ -16,9 +16,11 @@ RUN npm ci --no-audit --no-fund
 ARG PUBLIC_SITE_URL=https://dailymood.me
 ARG PUBLIC_APP_URL=https://my.dailymood.me
 ARG PUBLIC_GA_ID=
+ARG PUBLIC_GADS_ID=
 ENV PUBLIC_SITE_URL=$PUBLIC_SITE_URL \
     PUBLIC_APP_URL=$PUBLIC_APP_URL \
-    PUBLIC_GA_ID=$PUBLIC_GA_ID
+    PUBLIC_GA_ID=$PUBLIC_GA_ID \
+    PUBLIC_GADS_ID=$PUBLIC_GADS_ID
 
 COPY . .
 RUN npm run build
