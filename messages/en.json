@@ -187,10 +187,9 @@
       "ogTitle": "DailyMood — AI-powered mood journal"
     },
     "consent": {
-      "title": "We use cookies to make DailyMood better",
-      "sub": "Some cookies are essential. Others help us understand how people use the site so we can improve it. Your call.",
-      "acceptAll": "Accept all",
-      "necessaryOnly": "Only necessary",
+      "title": "This site uses cookies",
+      "sub": "We use essential cookies and Google Analytics to understand how people use DailyMood — so we can improve it. No ads, no third-party trackers beyond GA.",
+      "acknowledge": "Got it",
       "readMore": "Read cookie policy"
     }
   }

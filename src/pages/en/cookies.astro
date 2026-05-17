@@ -6,13 +6,13 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
   locale="en"
   pathname="/cookies"
   title="Cookie Policy"
-  metaDescription="Cookies used by DailyMood across dailymood.me and my.dailymood.me. Google Analytics only runs after you click Accept. No ad cookies, no third-party trackers."
+  metaDescription="Cookies used by DailyMood across dailymood.me and my.dailymood.me. Essential cookies + Google Analytics with anonymised IPs. No ad cookies, no third-party trackers beyond GA."
   effectiveDate="Effective May 17, 2026"
   tldr={[
-    'We use strictly necessary cookies and one analytics tool to improve DailyMood.',
-    'Analytics (Google Analytics) only runs after you click "Accept all" on the consent banner.',
-    'No advertising cookies. We never sell your data.',
-    'You can withdraw consent anytime by clearing your browser cookies.',
+    'We use essential cookies and Google Analytics to improve DailyMood.',
+    'No advertising cookies, no third-party trackers beyond GA.',
+    'A banner notifies you on first visit — continued use is acknowledgement.',
+    'You can opt out of GA tracking via your browser settings.',
   ]}
 >
   <h2>1. Scope of this policy</h2>
@@ -41,8 +41,9 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
       Stripe Checkout to prevent fraud. Set directly by Stripe.
     </li>
     <li>
-      <strong>`dm-consent`</strong> — stores your cookie consent choice
-      (value is `all` or `necessary`). Lives in your browser's localStorage.
+      <strong>`dm-consent-seen`</strong> — records that you've seen the
+      cookie notice banner, so we don't show it again. Lives in your
+      browser's localStorage.
     </li>
   </ul>
 
@@ -54,11 +55,12 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     </li>
   </ul>
 
-  <h2>4. Analytics cookies — consent required</h2>
+  <h2>4. Analytics cookies</h2>
   <p>
     We use <strong>Google Analytics 4 (GA4)</strong> to understand how
     people use the site (which pages get the most visits, which browsers
-    people use, etc.). We don't identify individuals.
+    people use, etc.). We don't identify individuals. We enable
+    <code>anonymize_ip</code> so your IP isn't stored in full.
   </p>
   <p>Cookies set by GA4:</p>
   <ul>
@@ -66,9 +68,10 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     <li><strong>`_ga_*`</strong> — session state per property.</li>
   </ul>
   <p>
-    These cookies do <strong>not load</strong> until you click "Accept all"
-    on the consent banner. If you choose "Only necessary" — or don't
-    interact with the banner — Google Analytics is never loaded.
+    A banner notifies you on first visit that cookies are in use; continued
+    use is treated as acknowledgement. To opt out of GA, block its cookies
+    via your browser settings or install the
+    <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>.
   </p>
 
   <h2>5. What we don't use</h2>
@@ -96,14 +99,19 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     See our <a href="/en/privacy">Privacy Policy</a> for more detail.
   </p>
 
-  <h2>7. Managing and withdrawing consent</h2>
-  <p>You can change your mind anytime:</p>
+  <h2>7. Managing cookies and opting out</h2>
+  <p>To opt out of analytics tracking:</p>
   <ul>
     <li>
-      <strong>Clear your browser's localStorage and cookies</strong> to make
-      the consent banner appear again (Chrome: Settings → Privacy → Cookies).
+      <strong>Block Google Analytics cookies</strong> via your browser
+      settings, or install the
+      <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>.
     </li>
-    <li>Block all cookies via your browser settings.</li>
+    <li>Enable Do Not Track in your browser.</li>
+    <li>
+      Send a written objection request to
+      <a href="mailto:hello@dailymood.me">hello@dailymood.me</a>.
+    </li>
   </ul>
   <p>
     <strong>Note:</strong> If you block strictly-necessary cookies, you

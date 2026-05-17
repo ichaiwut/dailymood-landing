@@ -38,57 +38,44 @@ const cookiesHref = locale === 'th' ? '/cookies' : '/en/cookies';
         </a>
       </p>
     </div>
-    <div
-      style="display:flex;gap:8px;flex-wrap:wrap;align-self:center"
-    >
+    <div style="align-self:center">
       <button
         type="button"
-        data-consent="necessary"
-        class="btn btn-ghost"
-        style="height:40px;padding:0 16px;font-size:14px"
-      >
-        {c.necessaryOnly}
-      </button>
-      <button
-        type="button"
-        data-consent="all"
+        data-consent-dismiss
         class="btn btn-peach"
-        style="height:40px;padding:0 18px;font-size:14px"
+        style="height:40px;padding:0 22px;font-size:14px"
       >
-        {c.acceptAll}
+        {c.acknowledge}
       </button>
     </div>
   </div>
 </aside>
 
 <script>
-  const KEY = 'dm-consent';
+  // PDPA "informed notice" model — banner is informational. GA loads
+  // regardless of the user's interaction (see Layout.astro). Storing the
+  // dismiss flag just suppresses the banner on subsequent visits.
+  const KEY = 'dm-consent-seen';
   const banner = document.getElementById('dm-consent');
   if (banner) {
-    const stored = (() => {
+    const seen = (() => {
       try {
-        return localStorage.getItem(KEY);
+        return localStorage.getItem(KEY) === '1';
       } catch {
-        return null;
+        return false;
       }
     })();
 
-    if (stored !== 'all' && stored !== 'necessary') {
-      banner.hidden = false;
-    }
+    if (!seen) banner.hidden = false;
 
     banner.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
-      const btn = target.closest<HTMLElement>('[data-consent]');
+      const btn = target.closest<HTMLElement>('[data-consent-dismiss]');
       if (!btn) return;
-      const choice = btn.dataset.consent === 'all' ? 'all' : 'necessary';
       try {
-        localStorage.setItem(KEY, choice);
+        localStorage.setItem(KEY, '1');
       } catch {}
       banner.hidden = true;
-      window.dispatchEvent(
-        new CustomEvent('dm:consent', { detail: { choice } }),
-      );
     });
   }
 </script>

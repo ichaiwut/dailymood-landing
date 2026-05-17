@@ -9,10 +9,10 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
   metaDescription="คุกกี้ที่ DailyMood ใช้ ทั้งบน dailymood.me และ my.dailymood.me — Google Analytics ทำงานเฉพาะหลังคุณกดยอมรับ ไม่มีคุกกี้โฆษณา"
   effectiveDate="มีผลบังคับใช้ 17 พฤษภาคม 2026"
   tldr={[
-    'เราใช้คุกกี้ที่จำเป็นเพื่อให้บริการ และคุกกี้สถิติเพื่อปรับปรุง DailyMood',
-    'คุกกี้สถิติ (Google Analytics) จะทำงานเฉพาะเมื่อคุณกด "ยอมรับทั้งหมด" เท่านั้น',
+    'เราใช้คุกกี้ที่จำเป็นและ Google Analytics เพื่อปรับปรุง DailyMood',
     'ไม่มีคุกกี้โฆษณา ไม่ขายข้อมูลใคร',
-    'เปลี่ยนความยินยอมได้ทุกเมื่อโดยล้างข้อมูลคุกกี้ของเบราว์เซอร์',
+    'เมื่อคุณเข้าเว็บไซต์ครั้งแรก จะมี banner แจ้งให้ทราบ',
+    'ถ้าไม่ต้องการให้ Google Analytics ติดตาม ปิดได้ที่การตั้งค่าเบราว์เซอร์ของคุณ',
   ]}
 >
   <h2>1. ขอบเขตของนโยบายนี้</h2>
@@ -40,8 +40,8 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
       Stripe Checkout เพื่อป้องกันการฉ้อโกง ตั้งโดย Stripe โดยตรง
     </li>
     <li>
-      <strong>`dm-consent`</strong> — เก็บความยินยอมเรื่องคุกกี้ของคุณ
-      (ค่าเป็น `all` หรือ `necessary`) อยู่ใน localStorage ของเบราว์เซอร์
+      <strong>`dm-consent-seen`</strong> — บันทึกว่าคุณเคยเห็น banner
+      แจ้งเรื่องคุกกี้แล้ว เพื่อไม่ให้แสดงซ้ำ อยู่ใน localStorage ของเบราว์เซอร์
     </li>
   </ul>
 
@@ -53,11 +53,12 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     </li>
   </ul>
 
-  <h2>4. คุกกี้สถิติ (Analytics) — ต้องขอความยินยอม</h2>
+  <h2>4. คุกกี้สถิติ (Analytics)</h2>
   <p>
     เราใช้ <strong>Google Analytics 4 (GA4)</strong> เพื่อดูภาพรวมว่า
     คนใช้งานเว็บไซต์เรายังไง (เช่น หน้าไหนถูกเข้ามากที่สุด ใช้เบราว์เซอร์อะไร)
-    ไม่มีการระบุตัวตนรายบุคคล
+    ไม่มีการระบุตัวตนรายบุคคล เราเปิดใช้
+    <code>anonymize_ip</code> เพื่อให้ IP ของคุณไม่ถูกเก็บแบบเต็ม
   </p>
   <p>คุกกี้ที่ GA4 ตั้ง:</p>
   <ul>
@@ -65,10 +66,11 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     <li><strong>`_ga_*`</strong> — เก็บสถานะ session ของแต่ละ property</li>
   </ul>
   <p>
-    คุกกี้กลุ่มนี้จะ <strong>ไม่ทำงาน</strong> จนกว่าคุณจะกดปุ่ม
-    "ยอมรับทั้งหมด" บน banner ความยินยอม
-    หากคุณเลือก "เฉพาะที่จำเป็น" หรือยังไม่ตัดสินใจ
-    Google Analytics จะไม่ถูกโหลดเลย
+    เมื่อคุณเข้าเว็บไซต์ครั้งแรก จะมี banner แจ้งให้ทราบว่ามีการใช้คุกกี้
+    การใช้งานเว็บไซต์ต่อถือว่ารับทราบ
+    หากต้องการปิดการติดตาม สามารถบล็อกคุกกี้ผ่านการตั้งค่าเบราว์เซอร์
+    หรือใช้ส่วนขยายเช่น
+    <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out</a>
   </p>
 
   <h2>5. ที่เราไม่ใช้</h2>
@@ -97,14 +99,19 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
     <a href="/privacy">นโยบายความเป็นส่วนตัว</a>
   </p>
 
-  <h2>7. การจัดการและถอนความยินยอม</h2>
-  <p>เปลี่ยนใจได้ทุกเมื่อ:</p>
+  <h2>7. การจัดการคุกกี้และการคัดค้าน</h2>
+  <p>หากต้องการคัดค้านการประมวลผลข้อมูลแบบสถิติ:</p>
   <ul>
     <li>
-      <strong>ล้าง localStorage และคุกกี้ของเบราว์เซอร์</strong> เพื่อให้
-      banner ความยินยอมแสดงอีกครั้ง (Chrome: Settings → Privacy → Cookies)
+      <strong>บล็อกคุกกี้ของ Google Analytics</strong> ผ่านการตั้งค่าเบราว์เซอร์
+      หรือใช้
+      <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>
     </li>
-    <li>ปิดคุกกี้ทั้งหมดผ่านการตั้งค่าเบราว์เซอร์ของคุณ</li>
+    <li>เปิด Do Not Track ในเบราว์เซอร์ของคุณ</li>
+    <li>
+      ส่งคำขอใช้สิทธิ์คัดค้านมาที่
+      <a href="mailto:hello@dailymood.me">hello@dailymood.me</a>
+    </li>
   </ul>
   <p>
     <strong>หมายเหตุ:</strong> หากปิดคุกกี้ที่จำเป็น คุณจะล็อกอินไม่ได้

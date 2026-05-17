@@ -11,7 +11,7 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
   tldr={[
     'We only collect what we need to run DailyMood.',
     'Your entries are yours — we never sell or share them.',
-    'We use Google Analytics for traffic stats (only after you consent). No ad cookies.',
+    'We use Google Analytics for traffic stats (with anonymised IPs). No ad cookies.',
     'You can access, edit, export, or delete your data anytime.',
   ]}
 >
@@ -56,9 +56,13 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
   <p>
     We use <strong>Google Analytics 4</strong> to understand how people
     use our site (which pages are visited most, which browsers people use,
-    etc.). We don't identify individuals. Google Analytics
-    <strong>only runs after you click "Accept all"</strong> on the cookie
-    banner — see <a href="/en/cookies">Cookie Policy</a> for details.
+    etc.). We don't identify individuals. We enable
+    <code>anonymize_ip</code> so your IP isn't stored in full.
+  </p>
+  <p>
+    A banner notifies you on first visit that cookies are in use; continued
+    use is treated as acknowledgement. For opt-out options, see the
+    <a href="/en/cookies">Cookie Policy</a>.
   </p>
 
   <h2>5. Third-party services</h2>

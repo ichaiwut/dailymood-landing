@@ -139,27 +139,18 @@ const jsonLdSite = {
     {
       GA_ID && (
         <script is:inline define:vars={{ GA_ID }}>
-          var KEY = 'dm-consent';
-          var loaded = false;
-          function loadGA() {
-            if (loaded) return;
-            loaded = true;
-            var s = document.createElement('script');
-            s.async = true;
-            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
-            document.head.appendChild(s);
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){ window.dataLayer.push(arguments); }
-            window.gtag = gtag;
-            gtag('js', new Date());
-            gtag('config', GA_ID, { anonymize_ip: true });
-          }
-          try {
-            if (localStorage.getItem(KEY) === 'all') loadGA();
-          } catch (_) {}
-          window.addEventListener('dm:consent', function (e) {
-            if (e && e.detail && e.detail.choice === 'all') loadGA();
-          });
+          // PDPA "informed notice" — the cookie banner just notifies users;
+          // GA loads on every page load. anonymize_ip stays on as a soft
+          // privacy default.
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){ window.dataLayer.push(arguments); }
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', GA_ID, { anonymize_ip: true });
         </script>
       )
     }
