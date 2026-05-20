@@ -1,0 +1,121 @@
+---
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const t = getMessages(locale).landing.articles;
+
+const APP_URL = (import.meta.env.PUBLIC_APP_URL as string | undefined) ?? 'https://my.dailymood.me';
+const apiUrl = `${APP_URL}/api/articles/latest`;
+const articlesUrl = `${APP_URL}/articles`;
+---
+
+<section class="section" style="background:var(--page-2)">
+  <div class="container">
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:24px">
+      <div style="max-width:600px">
+        <span class="eyebrow"><span class="dot"></span> {t.eyebrow}</span>
+        <h2 class="h-display" style="font-size:clamp(32px, 4.5vw, 52px);margin-top:22px">
+          {t.title}
+        </h2>
+      </div>
+      <a
+        href={articlesUrl}
+        style="display:inline-flex;align-items:center;gap:6px;color:var(--peach);font-weight:700;font-size:15px;text-decoration:none"
+      >
+        {t.viewAll} <span style="font-size:18px">→</span>
+      </a>
+    </div>
+
+    <div
+      id="articles-grid"
+      class="l-articles"
+      style="display:grid;grid-template-columns:repeat(3, 1fr);gap:18px"
+    >
+      {/* Skeleton placeholders — replaced by JS */}
+      {[0, 1, 2].map((i) => (
+        <div class="article-skeleton" style="border-radius:20px;background:#fff;border:1px solid var(--rule);overflow:hidden">
+          <div style={`height:180px;background:linear-gradient(135deg, var(--lavender-light), var(--lavender));opacity:0.5`} />
+          <div style="padding:22px 22px 26px">
+            <div style="height:14px;width:60%;background:var(--rule);border-radius:8px;margin-bottom:16px" />
+            <div style="height:20px;width:90%;background:var(--rule);border-radius:8px;margin-bottom:10px" />
+            <div style="height:20px;width:70%;background:var(--rule);border-radius:8px;margin-bottom:16px" />
+            <div style="height:14px;width:100%;background:var(--rule);border-radius:8px;margin-bottom:6px" />
+            <div style="height:14px;width:80%;background:var(--rule);border-radius:8px" />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ apiUrl, locale, readMore: t.readMore, readTime: t.readTime }}>
+  const TONE_GRADIENTS = {
+    peach: 'linear-gradient(135deg, #F8EDEB 0%, #FEAD8D 50%, #E9DEF6 100%)',
+    lavender: 'linear-gradient(135deg, #E9DEF6 0%, #D4BEE4 50%, #F8EDEB 100%)',
+    mint: 'linear-gradient(135deg, #D4F5E9 0%, #85ECCB 50%, #B3E8D9 100%)',
+    yellow: 'linear-gradient(135deg, #FEF3CD 0%, #FDCB56 50%, #FEAD8D 100%)',
+    blue: 'linear-gradient(135deg, #D4EEF7 0%, #9ACDE2 50%, #D4F5E9 100%)',
+    purple: 'linear-gradient(135deg, #E9DEF6 0%, #A673F1 50%, #D4BEE4 100%)',
+  };
+
+  const APP_BASE = apiUrl.replace('/api/articles/latest', '');
+
+  function formatDate(iso, loc) {
+    const d = new Date(iso);
+    const opts = { day: 'numeric', month: 'short', year: 'numeric' };
+    return d.toLocaleDateString(loc === 'th' ? 'th-TH' : 'en-US', opts);
+  }
+
+  function renderCard(a) {
+    const title = locale === 'th' ? a.titleTh : a.titleEn;
+    const excerpt = locale === 'th' ? a.excerptTh : a.excerptEn;
+    const catLabel = locale === 'th' ? a.categoryLabelTh : a.categoryLabelEn;
+    const gradient = TONE_GRADIENTS[a.tone] || TONE_GRADIENTS.peach;
+    const articleUrl = `${APP_BASE}/articles/${a.slug}`;
+
+    const coverStyle = a.coverImageUrl
+      ? `background:url('${a.coverImageUrl}') center/cover no-repeat`
+      : `background:${gradient}`;
+
+    return `<a href="${articleUrl}" style="text-decoration:none;color:inherit;display:block;border-radius:20px;background:#fff;border:1px solid var(--rule);overflow:hidden;transition:transform 0.15s ease,box-shadow 0.2s ease">
+      <div style="height:180px;position:relative;${coverStyle}">
+        ${catLabel ? `<span style="position:absolute;top:14px;left:14px;display:inline-block;padding:6px 14px;border-radius:100px;background:#fff;font-weight:700;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink)">${catLabel}</span>` : ''}
+      </div>
+      <div style="padding:22px 22px 26px">
+        <div style="font-size:13px;color:var(--ink-3);margin-bottom:10px">
+          ${a.publishedAt ? formatDate(a.publishedAt, locale) : ''} · ${readTime.replace('{m}', a.readingTimeMinutes)}
+        </div>
+        <h3 style="font-size:20px;font-weight:800;margin:0 0 10px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${title}</h3>
+        <p style="color:var(--ink-2);font-size:14px;margin:0 0 18px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${excerpt}</p>
+        <span style="color:var(--peach);font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:4px">${readMore} <span style="font-size:16px">→</span></span>
+      </div>
+    </a>`;
+  }
+
+  async function loadArticles() {
+    try {
+      const res = await fetch(apiUrl);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.articles?.length) return;
+
+      const grid = document.getElementById('articles-grid');
+      if (!grid) return;
+      grid.innerHTML = data.articles.map(renderCard).join('');
+    } catch {
+      // skeleton stays visible on failure
+    }
+  }
+
+  loadArticles();
+</script>
+
+<style>
+  #articles-grid a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.1);
+  }
+</style>

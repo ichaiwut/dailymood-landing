@@ -256,7 +256,8 @@ body {
   .l-faq,
   .l-ai,
   .l-how,
-  .l-features {
+  .l-features,
+  .l-articles {
     grid-template-columns: 1fr !important;
   }
   .l-testimonials {

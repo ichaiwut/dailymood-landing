@@ -5,6 +5,7 @@
       "ai": "AI",
       "pricing": "Pricing",
       "faq": "FAQ",
+      "articles": "Articles",
       "signin": "Sign in",
       "cta": "Get started"
     },
@@ -165,6 +166,13 @@
         { "q": "Can I cancel Pro any time?", "a": "Yes — cancel from your Subscription page any time. You keep Pro features until the period ends." },
         { "q": "Which languages are supported?", "a": "Thai and English for both UI and AI summaries. Switch in settings any time." }
       ]
+    },
+    "articles": {
+      "eyebrow": "ARTICLES",
+      "title": "Latest articles",
+      "readMore": "Read article",
+      "readTime": "{m} min read",
+      "viewAll": "View all"
     },
     "cta": {
       "title": "Ready to know yourself better?",
