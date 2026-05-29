@@ -17,6 +17,10 @@
       "sub": "DailyMood uses AI to understand your mood from text, voice, and photos — surface patterns and see your whole year on one screen. Free forever.",
       "ctaMain": "Get started free",
       "ctaSub": "Free forever · Start instantly",
+      "trialBannerDays": "14",
+      "trialBannerTag": "✨ New",
+      "trialBannerText": "Try Pro free for 14 days — no card, no charge",
+      "trialBannerCta": "Start free",
       "trust1": "Encrypted",
       "trust2": "No ads",
       "trust3": "TH + EN"

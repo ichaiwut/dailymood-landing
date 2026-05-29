@@ -284,4 +284,10 @@ body {
   .l-testimonials > * {
     transform: none !important;
   }
+  .l-trial-banner {
+    flex-wrap: wrap !important;
+  }
+  .l-trial-banner .l-trial-cta {
+    width: 100% !important;
+  }
 }

@@ -2,7 +2,7 @@
 import CheckCircle from './CheckCircle.astro';
 import LandingBrowserMockup from './LandingBrowserMockup.astro';
 import { type Locale, getMessages } from '@/lib/i18n';
-import { loginHref } from '@/lib/cta';
+import { loginHref, subscriptionHref } from '@/lib/cta';
 
 interface Props {
   locale: Locale;
@@ -54,6 +54,23 @@ const mk = m.mockup;
         </a>
         <span style="font-size:13px;color:var(--ink-3)">{h.ctaSub}</span>
       </div>
+
+      <a
+        href={subscriptionHref()}
+        class="l-trial-banner"
+        style="display:flex;align-items:center;gap:16px;max-width:540px;margin-top:22px;padding:16px;border-radius:18px;background:linear-gradient(120deg,var(--lavender-light) 0%,#fde9d6 100%);border:1px solid rgba(166,115,241,.18);text-decoration:none"
+      >
+        <span style="flex:none;display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,var(--lavender) 0%,var(--purple) 110%);color:#fff;font-weight:800;font-size:22px">
+          {h.trialBannerDays}
+        </span>
+        <span style="flex:1;min-width:0">
+          <span style="display:block;font-size:12px;font-weight:700;color:var(--purple-strong);margin-bottom:2px">{h.trialBannerTag}</span>
+          <span style="display:block;font-size:15px;font-weight:700;color:var(--ink);line-height:1.35">{h.trialBannerText}</span>
+        </span>
+        <span class="btn btn-ink l-trial-cta" style="flex:none;height:46px;padding:0 20px;font-size:15px">
+          {h.trialBannerCta} →
+        </span>
+      </a>
 
       <div style="display:flex;gap:22px;margin-top:26px;flex-wrap:wrap">
         {
