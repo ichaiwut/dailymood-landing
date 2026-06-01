@@ -143,6 +143,7 @@ Required env vars (see `.env.example`) — all prefixed `PUBLIC_` so Astro expos
 - `PUBLIC_SITE_URL` — defaults to `https://dailymood.me`. Used for canonical + OG URLs.
 - `PUBLIC_GA_ID` — Google Analytics 4 measurement ID (`G-XXXXXXXXXX`). When set, the layout loads `gtag.js` on every page load (PDPA informed-notice model) with `anonymize_ip: true`. Leave empty to disable GA entirely.
 - `PUBLIC_GADS_ID` — Google Ads conversion / remarketing tag ID (`AW-XXXXXXXXX`). When set, configured alongside GA via the same `gtag.js` bootstrap. Disclosed in `/cookies`. Leave empty to disable Google Ads.
+- `PUBLIC_TURNSTILE_SITE_KEY` — Cloudflare Turnstile site key for the hero "try the AI" widget (anti-bot). When set, the widget renders a Turnstile challenge and sends its token to the app's `/api/guest/analyze`, which verifies it with `TURNSTILE_SECRET_KEY` (set in the **app** repo / Railway). Both keys must be set for the bot check to be active. Disclosed in `/cookies`. Leave empty to disable.
 
 ## Deployment (Railway)
 
@@ -175,6 +176,7 @@ All are `PUBLIC_*` so Astro inlines them into the static output. They must be se
 | `PUBLIC_APP_URL` | `https://my.dailymood.me` | Every CTA link via `src/lib/cta.ts` |
 | `PUBLIC_GA_ID` | `G-XXXXXXXXXX` (production GA4) | Loaded on every page load with `anonymize_ip` |
 | `PUBLIC_GADS_ID` | `AW-XXXXXXXXX` (Google Ads conversion tag) | Loaded alongside GA via same gtag.js |
+| `PUBLIC_TURNSTILE_SITE_KEY` | `0x4AAA…` (Cloudflare Turnstile site key) | Renders the anti-bot challenge in the hero widget; token verified by the app's `TURNSTILE_SECRET_KEY` |
 
 If you change any of these, **the container must be rebuilt** — Astro bakes them in at build time.
 

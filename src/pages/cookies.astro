@@ -43,6 +43,12 @@ import LegalLayout from '@/layouts/LegalLayout.astro';
       <strong>`dm-consent-seen`</strong> — บันทึกว่าคุณเคยเห็น banner
       แจ้งเรื่องคุกกี้แล้ว เพื่อไม่ให้แสดงซ้ำ อยู่ใน localStorage ของเบราว์เซอร์
     </li>
+    <li>
+      <strong>Cloudflare Turnstile</strong> — เครื่องมือตรวจว่าเป็นมนุษย์
+      (ไม่ใช่บอต) เฉพาะตอนใช้กล่อง “ลองวิเคราะห์อารมณ์” ที่หน้าแรก โหลดจาก
+      challenges.cloudflare.com เพื่อป้องกันการสแปมและการยิงระบบอัตโนมัติ เป็นกลไก
+      ความปลอดภัย ไม่ได้ใช้เพื่อติดตามตัวตนหรือโฆษณา
+    </li>
   </ul>
 
   <h2>3. คุกกี้ความชอบ (Preferences)</h2>

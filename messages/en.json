@@ -25,6 +25,40 @@
       "trust2": "No ads",
       "trust3": "TH + EN"
     },
+    "heroWidget": {
+      "eyebrow": "Try it · No signup",
+      "title": "How was your day?",
+      "moodLabel": "Tap a mood (optional)",
+      "moods": {
+        "amazing": "Happy",
+        "happy": "Calm",
+        "neutral": "Neutral",
+        "sad": "Sad",
+        "angry": "Angry",
+        "anxious": "Anxious",
+        "tired": "Tired"
+      },
+      "placeholder": "What happened today? Let it out in a few words...",
+      "analyzeCta": "Analyze my mood ✨",
+      "analyzing": "Analyzing...",
+      "loading": [
+        "Understanding how you feel...",
+        "Reading between the lines...",
+        "Picking up on your day...",
+        "Almost there..."
+      ],
+      "youWrote": "You wrote",
+      "resultEyebrow": "The AI sees",
+      "saveHint": "Save this mood and start tracking your week",
+      "saveCta": "Sign in with Google to save",
+      "tryAgain": "Try again",
+      "errShort": "Write at least 5 characters",
+      "errLong": "Keep it short — 300 characters max",
+      "errRate": "That's a lot of tries today. Take a short break and come back.",
+      "errGeneric": "Sorry, something went wrong. Please try again.",
+      "errCaptcha": "Quick check that you're human — give it a sec, then try again.",
+      "errBusy": "We're a bit busy right now. Please try again in a moment."
+    },
     "mockup": {
       "topbarToday": "Today",
       "topbarCalendar": "Calendar",
