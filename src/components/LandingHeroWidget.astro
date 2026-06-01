@@ -371,6 +371,14 @@ const turnstileSiteKey = (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | 
     // The mood the user tapped (optional). Sent to the API, where it overrides
     // the AI's own guess; empty means "let the AI decide", the original behaviour.
     let selectedMood = '';
+    // The mood shown on the most recent result — attached to the save-click event.
+    let lastResultMood = '';
+
+    // GA4/Ads funnel events. No-ops when gtag isn't loaded (tracking env unset),
+    // so the widget works identically with or without analytics configured.
+    function track(name: string, params?: Record<string, unknown>) {
+      (window as unknown as { gtag?: (...a: unknown[]) => void }).gtag?.('event', name, params || {});
+    }
 
     function clearMood() {
       selectedMood = '';
@@ -386,6 +394,7 @@ const turnstileSiteKey = (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | 
         }
         selectedMood = id;
         moodBtns.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        track('hero_mood_select', { mood: id });
       });
     });
 
@@ -470,6 +479,7 @@ const turnstileSiteKey = (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | 
       analyzeBtn.disabled = true;
       root.dataset.state = 'loading';
       startRotate();
+      track('hero_analyze_click', { has_mood: !!selectedMood, mood: selectedMood || undefined, length: text.length });
 
       try {
         const payload: { text: string; mood?: string; turnstileToken?: string } = { text };
@@ -492,11 +502,17 @@ const turnstileSiteKey = (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | 
           else if (data && data.error === 'too_short') setError(errEl.dataset.short || '');
           else if (data && data.error === 'too_long') setError(errEl.dataset.long || '');
           else setError(errEl.dataset.generic || '');
+          const code = res.status === 429 ? 'rate_limited'
+            : (res.status === 503 || (data && data.error === 'busy')) ? 'busy'
+            : (data && data.error) ? data.error : 'generic';
+          track('hero_analyze_result', { status: 'error', code, http: res.status });
           resetTurnstile(); // the token was consumed by this attempt
           return;
         }
 
         resetTurnstile(); // success — refresh the token for any later attempt
+        lastResultMood = data.moodId || '';
+        track('hero_analyze_result', { status: 'success', mood: data.moodId || undefined });
         saidText.textContent = text;
         card.style.background = data.gradient || 'var(--lavender)';
         // Reset icon state each cycle so a prior result's icon never lingers.
@@ -525,6 +541,7 @@ const turnstileSiteKey = (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | 
         analyzeBtn.disabled = false;
         root.dataset.state = 'idle';
         setError(errEl.dataset.generic || '');
+        track('hero_analyze_result', { status: 'error', code: 'network' });
         resetTurnstile();
       }
     }
@@ -535,6 +552,10 @@ const turnstileSiteKey = (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | 
     });
 
     analyzeBtn.addEventListener('click', analyze);
+    // The key funnel conversion: clicking through to sign in and save the mood.
+    saveLink.addEventListener('click', () => {
+      track('hero_save_click', { mood: lastResultMood || undefined });
+    });
     againBtn.addEventListener('click', () => {
       root.dataset.state = 'idle';
       clearMood();
