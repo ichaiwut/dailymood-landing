@@ -1,4 +1,7 @@
 ---
+import Folder from './paper/Folder.astro';
+import Sticker from './paper/Sticker.astro';
+import Arrow from './paper/Arrow.astro';
 import { type Locale, getMessages } from '@/lib/i18n';
 import { loginHref } from '@/lib/cta';
 
@@ -11,30 +14,38 @@ const c = getMessages(locale).landing.cta;
 
 <section id="cta" class="section" style="padding-bottom:80px">
   <div class="container">
-    <div
-      style="border-radius:32px;padding:72px 48px;background:linear-gradient(135deg, var(--peach) 0%, #F49EAB 45%, var(--purple) 100%);color:#fff;text-align:center;position:relative;overflow:clip;overflow-clip-margin:24px"
+    <Folder
+      tabClass="ink"
+      style="transform:rotate(-.4deg)"
+      bodyStyle="border-radius:4px 26px 26px 26px;padding:64px 40px;text-align:center;background:linear-gradient(135deg,var(--peach) 0%,#F49EAB 48%,var(--purple) 100%);color:#fff;position:relative;overflow:hidden"
     >
-      <div aria-hidden="true" style="position:absolute;top:30px;left:60px;font-size:32px;opacity:.85;transform:rotate(-12deg)">✨</div>
-      <div aria-hidden="true" style="position:absolute;bottom:40px;right:70px;font-size:36px;opacity:.85;transform:rotate(15deg)">🌿</div>
-      <div aria-hidden="true" style="position:absolute;top:50px;right:90px;font-size:26px;opacity:.8;transform:rotate(8deg)">☕</div>
-      <div aria-hidden="true" style="position:absolute;bottom:50px;left:100px;font-size:30px;opacity:.8;transform:rotate(-8deg)">📓</div>
+      <span slot="tab">{c.tab}</span>
 
-      <h2
-        class="h-display"
-        style="font-size:clamp(34px, 5vw, 64px);color:#fff;max-width:760px;margin:0 auto 18px"
-      >
+      <Sticker face="great" color="#fff" size={58} class="floaty" style="top:28px;left:10%;--r:-12deg" />
+      <Sticker
+        face="good"
+        color="#fff"
+        size={48}
+        class="floaty"
+        style="bottom:34px;right:12%;--r:10deg;animation-delay:.6s"
+      />
+      <Sticker
+        face="calm"
+        color="#fff"
+        size={42}
+        class="floaty"
+        style="top:50px;right:18%;--r:6deg;animation-delay:1s"
+      />
+
+      <h2 class="h-display" style="font-size:clamp(32px, 5vw, 62px);color:#fff;max-width:740px;margin:0 auto 16px">
         {c.title}
       </h2>
-      <p style="font-size:19px;color:rgba(255,255,255,.9);max-width:540px;margin:0 auto 32px">
+      <p style="font-size:19px;color:rgba(255,255,255,.92);max-width:520px;margin:0 auto 30px;font-weight:500">
         {c.sub}
       </p>
-      <a
-        href={loginHref()}
-        class="btn"
-        style="background:#fff;color:var(--ink);height:60px;padding:0 32px;font-size:17px;box-shadow:0 16px 40px -12px rgba(0,0,0,.3)"
-      >
-        {c.btn} →
+      <a href={loginHref()} class="btn btn-white" style="height:60px;padding:0 32px;font-size:17px">
+        {c.btn} <Arrow />
       </a>
-    </div>
+    </Folder>
   </div>
 </section>

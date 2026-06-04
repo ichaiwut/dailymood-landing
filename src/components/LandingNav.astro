@@ -20,29 +20,29 @@ const home = localeHref(locale);
 <nav id="landing-nav" data-scrolled="false">
   <div
     class="container"
-    style="display:flex;align-items:center;justify-content:space-between;height:72px"
+    style="display:flex;align-items:center;justify-content:space-between;height:74px"
   >
     <a
       href={home}
       style="display:flex;align-items:center;text-decoration:none;color:var(--ink)"
       aria-label="DailyMood"
     >
-      <Logo size={40} />
+      <Logo size={30} />
     </a>
 
-    <div class="l-nav-links" style="display:flex;align-items:center;gap:30px">
-      <a href={`${home}#features`} style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px">{n.features}</a>
-      <a href={`${home}#ai`} style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px">{n.ai}</a>
-      <a href={`${home}#pricing`} style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px">{n.pricing}</a>
-      <a href={`${home}#faq`} style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px">{n.faq}</a>
-      <a href="https://my.dailymood.me/articles" style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px">{n.articles}</a>
+    <div class="l-nav-links" style="display:flex;align-items:center;gap:28px">
+      <a href={`${home}#features`} class="navlink">{n.features}</a>
+      <a href={`${home}#ai`} class="navlink">{n.ai}</a>
+      <a href={`${home}#pricing`} class="navlink">{n.pricing}</a>
+      <a href={`${home}#faq`} class="navlink">{n.faq}</a>
+      <a href="https://my.dailymood.me/articles" class="navlink">{n.articles}</a>
     </div>
 
     <div style="display:flex;align-items:center;gap:12px">
       <a
         href={altHref}
         aria-label="Switch language"
-        style="display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:100px;border:1.5px solid var(--rule);background:transparent;font-family:var(--font);font-weight:700;font-size:13px;cursor:pointer;color:var(--ink-2);text-decoration:none"
+        style="display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:100px;border:2px solid var(--ink);background:transparent;font-family:var(--font);font-weight:800;font-size:13px;cursor:pointer;color:var(--ink);text-decoration:none"
       >
         <span style={`opacity:${locale === 'th' ? 1 : 0.4}`}>TH</span>
         <span style="opacity:0.3">/</span>
@@ -50,12 +50,9 @@ const home = localeHref(locale);
       </a>
       <a
         href={loginHref()}
-        class="l-hide-sm"
-        style="color:var(--ink-2);text-decoration:none;font-weight:600;font-size:15px"
+        class="btn btn-ink"
+        style="height:44px;font-size:14px;padding:0 18px;border-radius:12px"
       >
-        {n.signin}
-      </a>
-      <a href={loginHref()} class="btn btn-ink" style="height:42px;font-size:14px">
         {n.cta}
       </a>
     </div>
@@ -67,15 +64,25 @@ const home = localeHref(locale);
     position: sticky;
     top: 0;
     z-index: 50;
-    backdrop-filter: saturate(180%) blur(14px);
-    -webkit-backdrop-filter: saturate(180%) blur(14px);
     background: transparent;
     border-bottom: 1px solid transparent;
     transition: all 0.25s ease;
   }
   nav[data-scrolled='true'] {
-    background: rgba(251, 246, 238, 0.85);
-    border-bottom-color: var(--rule);
+    background: rgba(247, 240, 228, 0.88);
+    backdrop-filter: saturate(160%) blur(12px);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
+    border-bottom-color: var(--line);
+  }
+  .navlink {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    opacity: 0.85;
+  }
+  .navlink:hover {
+    opacity: 1;
   }
 </style>
 
@@ -83,7 +90,7 @@ const home = localeHref(locale);
   const nav = document.getElementById('landing-nav');
   if (nav) {
     const onScroll = () => {
-      nav.dataset.scrolled = window.scrollY > 12 ? 'true' : 'false';
+      nav.dataset.scrolled = window.scrollY > 10 ? 'true' : 'false';
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();

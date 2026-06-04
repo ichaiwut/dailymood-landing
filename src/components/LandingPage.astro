@@ -2,6 +2,7 @@
 import type { Locale } from '@/lib/i18n';
 import LandingNav from './LandingNav.astro';
 import LandingHero from './LandingHero.astro';
+import LandingByNumbers from './LandingByNumbers.astro';
 import LandingAI from './LandingAI.astro';
 import LandingHowItWorks from './LandingHowItWorks.astro';
 import LandingYearInPixels from './LandingYearInPixels.astro';
@@ -21,11 +22,12 @@ const { locale } = Astro.props;
 
 <LandingNav locale={locale} />
 <LandingHero locale={locale} />
+<LandingByNumbers locale={locale} />
 <LandingAI locale={locale} />
-<LandingArticles locale={locale} />
 <LandingHowItWorks locale={locale} />
 <LandingYearInPixels locale={locale} />
 <LandingFeaturesGrid locale={locale} />
+<LandingArticles locale={locale} />
 <LandingTestimonials locale={locale} />
 <LandingPricing locale={locale} />
 <LandingFAQ locale={locale} />

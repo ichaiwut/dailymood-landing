@@ -1,4 +1,5 @@
 ---
+import Sticker from './paper/Sticker.astro';
 import { type Locale, getMessages } from '@/lib/i18n';
 
 interface Props {
@@ -9,21 +10,28 @@ const f = getMessages(locale).landing.faq;
 const items = f.items as { q: string; a: string }[];
 ---
 
-<section id="faq" class="section">
+<section id="faq" class="section" style="background:var(--desk-2)">
   <div
-    class="container l-faq"
-    style="display:grid;grid-template-columns:1fr 1.6fr;gap:64px;align-items:flex-start"
+    class="container grid-2"
+    style="display:grid;grid-template-columns:1fr 1.5fr;gap:56px;align-items:flex-start"
   >
     <div class="l-faq-sticky" style="position:sticky;top:100px">
-      <span class="eyebrow"><span class="dot"></span> {f.eyebrow}</span>
-      <h2 class="h-display" style="font-size:clamp(32px, 4vw, 48px);margin-top:22px">
-        {f.title}
-      </h2>
+      <span class="eyebrow">{f.eyebrow}</span>
+      <h2 class="h-display" style="font-size:clamp(30px, 4vw, 48px);margin-top:18px">{f.title}</h2>
+      <div style="position:relative;height:64px;margin-top:32px">
+        <Sticker
+          face="calm"
+          color="var(--mint)"
+          size={64}
+          style="position:relative;top:0;transform:rotate(-8deg)"
+        />
+      </div>
     </div>
+
     <div class="faq-list">
       {
         items.map((it, i) => (
-          <details class="faq-item" open={i === 0}>
+          <details class="faq-item sheet" open={i === 0}>
             <summary>
               <span>{it.q}</span>
               <span class="faq-mark" aria-hidden="true" />
@@ -39,33 +47,39 @@ const items = f.items as { q: string; a: string }[];
 </section>
 
 <style>
+  .faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
   .faq-item {
-    border-bottom: 1px solid var(--rule);
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
   }
   .faq-item > summary {
     list-style: none;
     cursor: pointer;
-    padding: 24px 0;
+    padding: 20px 22px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 16px;
     font-family: var(--font);
-    font-weight: 700;
-    font-size: 18px;
+    font-weight: 800;
+    font-size: 17px;
     color: var(--ink);
   }
   .faq-item > summary::-webkit-details-marker {
     display: none;
-  }
-  .faq-item > summary > span:first-child {
-    padding-right: 24px;
   }
   .faq-mark {
     flex-shrink: 0;
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    border: 1.5px solid var(--rule);
+    border: 2px solid var(--line);
     background: transparent;
     display: flex;
     align-items: center;
@@ -81,12 +95,12 @@ const items = f.items as { q: string; a: string }[];
     transition: background 0.2s;
   }
   .faq-mark::before {
-    width: 12px;
-    height: 1.8px;
+    width: 13px;
+    height: 2px;
   }
   .faq-mark::after {
-    width: 1.8px;
-    height: 12px;
+    width: 2px;
+    height: 13px;
   }
   .faq-item[open] .faq-mark {
     background: var(--ink);
@@ -99,13 +113,13 @@ const items = f.items as { q: string; a: string }[];
     display: none;
   }
   .faq-answer {
-    padding-bottom: 24px;
+    padding: 0 22px 22px;
   }
   .faq-answer p {
     margin: 0;
-    font-size: 16px;
+    font-size: 15px;
     color: var(--ink-2);
-    line-height: 1.65;
+    line-height: 1.6;
     max-width: 620px;
   }
 </style>
@@ -114,14 +128,16 @@ const items = f.items as { q: string; a: string }[];
   // One-open-at-a-time accordion behaviour.
   const list = document.querySelector('.faq-list');
   if (list) {
-    list.addEventListener('toggle', (e) => {
-      const target = e.target as HTMLDetailsElement;
-      if (!(target instanceof HTMLDetailsElement) || !target.open) return;
-      list
-        .querySelectorAll<HTMLDetailsElement>('details[open]')
-        .forEach((d) => {
+    list.addEventListener(
+      'toggle',
+      (e) => {
+        const target = e.target as HTMLDetailsElement;
+        if (!(target instanceof HTMLDetailsElement) || !target.open) return;
+        list.querySelectorAll<HTMLDetailsElement>('details[open]').forEach((d) => {
           if (d !== target) d.open = false;
         });
-    }, true);
+      },
+      true
+    );
   }
 </script>

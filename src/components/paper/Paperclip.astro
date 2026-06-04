@@ -1,0 +1,28 @@
+---
+interface Props {
+  /** Width in px (height is 1.9×). */
+  w?: number;
+  color?: string;
+  /** Override the wrapper class — defaults to `.clip` (absolute positioning). */
+  class?: string;
+  /** Extra inline style, e.g. to flip the clip to the right edge. */
+  style?: string;
+}
+const { w = 34, color = 'var(--clip)', class: cls = 'clip', style = '' } = Astro.props;
+---
+
+<svg
+  class={cls}
+  style={style}
+  width={w}
+  height={w * 1.9}
+  viewBox="0 0 34 64"
+  fill="none"
+  aria-hidden="true"
+>
+  <path
+    d="M24 14v30a8 8 0 0 1-16 0V12a5 5 0 0 1 10 0v30a2.4 2.4 0 0 1-4.8 0V16"
+    stroke={color}
+    stroke-width="3.4"
+    stroke-linecap="round"></path>
+</svg>

@@ -5,7 +5,40 @@
 **Target codebase:** Next.js App Router · TypeScript · Tailwind · next-intl (existing)
 **Route:** `/` (locale-aware: `/th`, `/en`) — marketing page; **no auth check** (auth lives on the separate `my.dailymood.me` app domain, cookies are not shared — decision 2026-05-16)
 **Languages:** TH (default) + EN
-**Status:** Ready to implement
+**Status:** Shipped — superseded by the **2026-06 Paper Desk redesign** below.
+
+---
+
+## 2026-06 Redesign — "Paper Desk" (current, supersedes the spec below)
+
+The landing was re-skinned into a **paper / manila-folder** visual language (folder tabs, paperclips, washi tape, mood-face stickers, layered rotated paper, chunky offset button shadows) on DailyMood's existing warm palette. Direction shipped: **Manila Desk** (`data-dir="desk"` on `<html>`; kraft-cream desk, peach tabs, deep-plum dark folders).
+
+> **Stack note:** this repo is **Astro 5 + pure CSS + Astro i18n** — *not* Next.js/Tailwind/next-intl as the older spec below assumes. Sections are `.astro` server components; the paper aesthetic lives in `src/styles/globals.css` (Paper Desk tokens + `.folder/.tab/.sheet/.stacked/.clip/.washi/.sticker/.mark/.trial-focal` + chunky `.btn`s). Shared paper primitives live in `src/components/paper/` (`Folder`, `Paperclip`, `Sticker`, `Arrow`, `AppDashboard`).
+>
+> **Copy is owned by `messages/th.json` + `messages/en.json`** (`landing.*`). The copy tables further down are historical reference only — the JSON wins.
+
+### New information architecture (top → bottom, 13 sections)
+
+1. **Nav** — logo lockup · 4 anchor links + Articles · TH/EN URL toggle · ink "เริ่มฟรี" CTA. Transparent → kraft blur on scroll (>10px).
+2. **Hero** — *static* (the interactive guest AI widget was removed). Eyebrow · display headline with a highlighter `.mark` swash · sub · focal 14-day-trial card (`.trial-focal` → `/profile/subscription`) · peach CTA · 3 trust ticks · right column = the Today-screen `AppDashboard` inside a folder (tab "วันนี้/Today") with a paperclip + floating mood sticker + "Streak +7" chip.
+3. **By the Numbers** (`LandingByNumbers`) — **new.** 4 stacked paper-sheet cards with honest product facts (`7` moods, `≤10`s/entry, `365` days, `2` languages) + a mood-face sticker each. *Factual, not vanity metrics — distinct from the deleted StatsBand.*
+4. **AI Showcase** — dark plum folder (peach tab) with paperclip; gradient-italic headline; 3 white cards (Text / Vision / Weekly Insights demos). Vision card keeps the real R2 sunset image.
+5. **A Day with DailyMood** (`LandingHowItWorks`, reframed) — dashed vertical **timeline**, 5 time-stamped rows with mood stickers; first row highlighted.
+6. **Year in Pixels** — copy + 6-colour legend (left); a folder (tab "2026") with the 12×31 deterministic mood-pixel grid (right).
+7. **Features Grid** — 3×3 white cards, each with a tinted inline-SVG `FeatIcon` + slight per-card rotation.
+8. **Articles** — moved below Features. 3 cards with washi tape + gradient/real cover. **Still fetches the live feed** from `${PUBLIC_APP_URL}/api/articles/latest` (skeletons until loaded) — not static.
+9. **Testimonials** — 4 stacked-paper cards with a paperclip, alternating vertical offset. No ratings.
+10. **Pricing** — 2 folders: Free (mint tab, ghost CTA) and Pro (plum tab + "ยอดนิยม" badge, dark gradient body, peach CTA → `/profile/subscription`).
+11. **FAQ** — sticky title + mint sticker (left); native `<details>` accordion of paper sheets (right), one open at a time.
+12. **CTA Banner** — folder (tab "เริ่มเลย/Start here") with peach→pink→purple gradient body, floating mood stickers, white pill CTA.
+13. **Footer** — dark plum; inline gradient mark + white "Dailymood" wordmark + tagline; **Product + Legal columns only** (no Company/About/Blog, no social icons — per the deletions list); copyright + locale toggle.
+
+### Changes vs. the older spec
+- **Added:** "By the Numbers" (factual). The old "do not re-add StatsBand" rule still stands for *vanity* metrics ("used by N users", ratings) — By the Numbers carries only honest product facts.
+- **Hero:** the email-pill / guest AI widget is gone; hero is a single CTA + focal trial card.
+- **How It Works** → "A Day with DailyMood" timeline framing (still maps to the same real features).
+- **Articles** relocated to after Features.
+- Everything else (no Premium, no vendor names, no medical framing, no fake social proof, Pro-not-Premium) is unchanged and still enforced.
 
 ---
 
@@ -42,7 +75,9 @@
 | 10 | **CTA Banner** | `<LandingCTABanner />` | Full-width rounded peach→purple gradient panel with floating emoji decorations and a single white pill button. |
 | 11 | **Footer** | `<LandingFooter />` | 3-col grid: brand+tagline / Product / Legal. **No social icons. No Company column.** Locale toggle pill on the bottom row. |
 
-**Removed deliberately:** TrustStrip, StatsBand, aggregateRating schema, "used by X" social proof, per-card star ratings, social icons.
+**Removed deliberately:** TrustStrip, StatsBand (*vanity* metrics — see the 2026-06 redesign note: the factual "By the Numbers" section is allowed, vanity metrics are not), aggregateRating schema, "used by X" social proof, per-card star ratings, social icons.
+
+> ⚠️ The IA table above is the **historical** clean-layout order (11 sections). The shipped order is the **13-section Paper Desk IA** in the redesign note at the top of this file.
 
 ---
 
@@ -522,7 +557,7 @@ Each section is a self-contained Server Component except the three marked `'use 
 
 ## Acceptance checks
 
-- [ ] All 11 sections render in order on `/th` and `/en`.
+- [ ] All **13** Paper Desk sections (see the 2026-06 redesign note) render in order on `/` (TH) and `/en/`.
 - [ ] No "Premium" string anywhere on the page — only "Pro".
 - [ ] No mention of "Gemini" or any specific AI vendor.
 - [ ] No medical/clinical role in testimonials.

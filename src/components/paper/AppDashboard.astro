@@ -1,0 +1,124 @@
+---
+import MoodFace from '../MoodFace.astro';
+import Logo from '../Logo.astro';
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const mk = getMessages(locale).landing.mockup;
+
+// The 7 default moods, in display order. First is the "selected" one.
+const moods = [
+  { color: 'var(--peach)', face: 'great' },
+  { color: 'var(--yellow)', face: 'good' },
+  { color: 'var(--mint)', face: 'okay' },
+  { color: 'var(--lavender)', face: 'meh' },
+  { color: 'var(--blue)', face: 'bad' },
+  { color: 'var(--purple)', face: 'awful' },
+  { color: '#B9D6F2', face: 'calm' },
+] as const;
+
+// Deterministic mini year-in-pixels strip (12 of 31 days filled).
+const cols = [
+  'var(--peach)',
+  'var(--yellow)',
+  'var(--mint)',
+  'var(--lavender)',
+  'var(--blue)',
+  'var(--purple)',
+];
+---
+
+<div style="background:#fff;padding:20px;font-family:var(--font)">
+  <!-- top bar -->
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+    <Logo size={18} />
+    <div style="display:flex;gap:16px;font-size:12px;font-weight:700;color:var(--ink-3)">
+      <span style="color:var(--ink)">{mk.topbarToday}</span>
+      <span>{mk.topbarCalendar}</span>
+      <span>{mk.topbarStats}</span>
+    </div>
+    <div
+      style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--peach),var(--purple))"
+    >
+    </div>
+  </div>
+
+  <!-- greeting + mood picker -->
+  <div
+    style="border-radius:16px;padding:16px 18px;background:linear-gradient(135deg,#F8EDEB,#E9DEF6);margin-bottom:12px"
+  >
+    <div
+      style="font-size:11px;font-weight:800;color:var(--purple-strong);text-transform:uppercase;letter-spacing:.04em"
+    >
+      {mk.greeting}
+    </div>
+    <div style="font-size:18px;font-weight:800;margin-top:6px">{mk.question}</div>
+    <div style="display:flex;gap:6px;margin-top:12px">
+      {
+        moods.map((m, i) => (
+          <div style="flex:1">
+            <div
+              style={`width:100%;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:${i === 0 ? m.color : '#fff'};border:${i === 0 ? 'none' : '1px solid rgba(0,0,0,.05)'};box-shadow:${i === 0 ? '0 6px 14px -2px rgba(252,164,91,.55)' : 'none'}`}
+            >
+              <MoodFace face={m.face} size={26} bg="transparent" />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- AI summary + mini calendar -->
+  <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:10px">
+    <div style="padding:14px;border-radius:14px;border:1px solid var(--hairline)">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px">
+        <span style="font-size:10px;font-weight:800;color:var(--purple-strong);letter-spacing:.06em"
+          >{mk.aiSummaryTag}</span
+        >
+      </div>
+      <div style="font-size:12px;line-height:1.5;color:var(--ink-2)">
+        {mk.aiSummary1}{' '}<b style="color:var(--ink)">{mk.aiSummary1bold}</b>{' '}{mk.aiSummary2}{' '}<b
+          style="color:var(--ink)">{mk.aiSummary2bold}</b
+        >
+      </div>
+      <svg viewBox="0 0 200 36" style="width:100%;height:30px;margin-top:10px" aria-hidden="true">
+        <defs>
+          <linearGradient id="mk-spark" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#A673F1" stop-opacity=".3"></stop>
+            <stop offset="1" stop-color="#A673F1" stop-opacity="0"></stop>
+          </linearGradient>
+        </defs>
+        <path
+          d="M 0 26 L 28 22 L 56 25 L 84 18 L 112 20 L 140 14 L 168 10 L 200 6 L 200 36 L 0 36 Z"
+          fill="url(#mk-spark)"></path>
+        <path
+          d="M 0 26 L 28 22 L 56 25 L 84 18 L 112 20 L 140 14 L 168 10 L 200 6"
+          stroke="#A673F1"
+          stroke-width="1.8"
+          fill="none"
+          stroke-linecap="round"></path>
+      </svg>
+    </div>
+    <div style="padding:12px;border-radius:14px;border:1px solid var(--hairline)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px">
+        <span style="font-size:11px;font-weight:800">{mk.calMonth}</span>
+        <span style="font-size:9px;color:var(--ink-3)">12 / 31</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px">
+        {
+          Array.from({ length: 31 }).map((_, i) => {
+            const filled = i < 12;
+            return (
+              <div
+                style={`aspect-ratio:1;border-radius:4px;background:${filled ? cols[(i * 3) % cols.length] : '#F5F1EB'};border:${i === 11 ? '1.5px solid var(--ink)' : 'none'}`}
+              />
+            );
+          })
+        }
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,55 +1,74 @@
 ---
+import Sticker from './paper/Sticker.astro';
 import { type Locale, getMessages } from '@/lib/i18n';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const h = getMessages(locale).landing.how;
+const d = getMessages(locale).landing.dayTimeline;
+const rows = d.rows as { time: string; t: string; d: string }[];
 
-const steps = [
-  { title: h.s1t, desc: h.s1d, color: 'var(--peach)' },
-  { title: h.s2t, desc: h.s2d, color: 'var(--purple)' },
-  { title: h.s3t, desc: h.s3d, color: 'var(--mint)' },
-];
+// Colour + face + highlight per row (presentational, not translated).
+const meta = [
+  { c: 'var(--peach)', f: 'great', hi: true },
+  { c: 'var(--purple)', f: 'okay', hi: false },
+  { c: 'var(--mint)', f: 'calm', hi: false },
+  { c: 'var(--lavender)', f: 'good', hi: false },
+  { c: 'var(--yellow)', f: 'great', hi: false },
+] as const;
 ---
 
-<section class="section">
+<section class="section" style="background:var(--desk-2)">
   <div class="container">
-    <div style="text-align:center;max-width:720px;margin:0 auto 64px">
-      <span class="eyebrow"><span class="dot"></span> {h.eyebrow}</span>
-      <h2 class="h-display" style="font-size:clamp(32px, 4.5vw, 52px);margin-top:22px">
-        {h.title}
-      </h2>
+    <div style="max-width:720px;margin:0 auto 52px;text-align:center">
+      <span class="eyebrow">{d.eyebrow}</span>
+      <h2 class="h-display" style="font-size:clamp(32px, 4.6vw, 56px);margin:18px 0 0">{d.title}</h2>
+      <p style="font-size:18px;color:var(--ink-2);margin:16px auto 0;max-width:620px">{d.sub}</p>
     </div>
 
-    <div
-      class="l-how"
-      style="display:grid;grid-template-columns:repeat(3, 1fr);gap:24px;position:relative"
-    >
-      <svg
-        aria-hidden="true"
-        preserveAspectRatio="none"
-        viewBox="0 0 100 2"
-        style="position:absolute;top:50px;left:8%;right:8%;width:84%;height:2px;z-index:0"
+    <div style="position:relative;max-width:760px;margin:0 auto">
+      <!-- dashed spine -->
+      <div
+        class="l-hide-sm"
+        style="position:absolute;left:90px;top:14px;bottom:14px;width:3px;background:repeating-linear-gradient(var(--ink) 0 7px, transparent 7px 14px);opacity:.25"
       >
-        <line x1="0" y1="1" x2="100" y2="1" stroke="var(--rule)" stroke-width="2" stroke-dasharray="4 4"></line>
-      </svg>
-      {
-        steps.map((s, i) => (
-          <div style="text-align:center;position:relative;z-index:1">
-            <div
-              style={`width:100px;height:100px;border-radius:28px;background:#fff;box-shadow:0 18px 36px -16px rgba(70,32,100,.25);display:flex;align-items:center;justify-content:center;margin:0 auto 24px;font-size:36px;font-weight:800;color:${
-                s.color
-              };transform:rotate(${(i - 1) * 4}deg);font-family:var(--font-display)`}
-            >
-              0{i + 1}
-            </div>
-            <h3 class="h-display" style="font-size:24px;margin-bottom:10px">{s.title}</h3>
-            <p style="color:var(--ink-2);font-size:16px;max-width:280px;margin:0 auto">{s.desc}</p>
-          </div>
-        ))
-      }
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:18px">
+        {
+          rows.map((r, i) => {
+            const mi = meta[i] ?? meta[meta.length - 1];
+            const onColor = mi.hi ? '#fff' : 'var(--ink)';
+            return (
+              <div style="display:grid;grid-template-columns:76px 28px 1fr;align-items:center;gap:14px">
+                <div style="text-align:right;font-weight:800;font-size:14px;color:var(--ink-2)">
+                  {r.time}
+                </div>
+                <div style="display:grid;place-items:center;position:relative;z-index:1">
+                  <span
+                    style={`width:18px;height:18px;border-radius:50%;background:${mi.c};border:3px solid var(--desk-2);box-shadow:0 0 0 2px ${mi.c}`}
+                  />
+                </div>
+                <div
+                  style={`background:${mi.hi ? mi.c : '#fff'};color:${onColor};border-radius:14px;padding:16px 18px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow-sm)`}
+                >
+                  <Sticker
+                    face={mi.f}
+                    color={mi.hi ? '#fff' : mi.c}
+                    size={42}
+                    style="position:relative;top:0;transform:rotate(-6deg);flex-shrink:0"
+                  />
+                  <div>
+                    <div style="font-weight:800;font-size:17px">{r.t}</div>
+                    <div style="font-size:14px;opacity:.8;margin-top:3px;line-height:1.45">{r.d}</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        }
+      </div>
     </div>
   </div>
 </section>

@@ -1,7 +1,8 @@
 ---
 import CheckCircle from './CheckCircle.astro';
+import Folder from './paper/Folder.astro';
 import { type Locale, getMessages } from '@/lib/i18n';
-import { loginHref } from '@/lib/cta';
+import { loginHref, subscriptionHref } from '@/lib/cta';
 
 interface Props {
   locale: Locale;
@@ -14,35 +15,33 @@ const proFeats = p.proFeats as string[];
 
 <section id="pricing" class="section">
   <div class="container">
-    <div style="text-align:center;max-width:680px;margin:0 auto 56px">
-      <span class="eyebrow"><span class="dot"></span> {p.eyebrow}</span>
-      <h2 class="h-display" style="font-size:clamp(32px, 4.5vw, 52px);margin:22px 0 14px">
+    <div style="text-align:center;max-width:720px;margin:0 auto 52px">
+      <span class="eyebrow">{p.eyebrow}</span>
+      <h2 class="h-display" style="font-size:clamp(32px, 4.6vw, 56px);margin:18px 0 16px">
         {p.title}
       </h2>
-      <p style="font-size:18px;color:var(--ink-2)">{p.sub}</p>
+      <p style="font-size:18px;color:var(--ink-2);margin:0 auto;max-width:560px">{p.sub}</p>
     </div>
 
     <div
-      class="l-pricing"
-      style="display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:920px;margin:0 auto"
+      class="grid-2"
+      style="display:grid;grid-template-columns:1fr 1fr;gap:22px;max-width:900px;margin:0 auto"
     >
       <!-- Free -->
-      <div
-        style="padding:36px;border-radius:24px;background:#fff;border:1.5px solid var(--rule);display:flex;flex-direction:column;gap:22px"
+      <Folder
+        tabClass="mint"
+        style="transform:rotate(-.8deg)"
+        bodyStyle="padding:34px;border-radius:4px 20px 20px 20px;display:flex;flex-direction:column;gap:20px"
       >
-        <div>
-          <div style="font-size:14px;font-weight:700;color:var(--ink-3);text-transform:uppercase;letter-spacing:.04em">
-            {p.freeName}
-          </div>
-          <div style="display:flex;align-items:baseline;gap:8px;margin-top:8px">
-            <span class="h-display" style="font-size:56px">{p.freePrice}</span>
-            <span style="color:var(--ink-3);font-size:15px">{p.freePer}</span>
-          </div>
+        <span slot="tab">{p.freeName}</span>
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span class="h-display" style="font-size:54px">{p.freePrice}</span>
+          <span style="color:var(--ink-3);font-size:15px;font-weight:700">{p.freePer}</span>
         </div>
-        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;flex:1">
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px;flex:1">
           {
             freeFeats.map((feat) => (
-              <li style="display:flex;align-items:flex-start;gap:10px;font-size:15px">
+              <li style="display:flex;gap:10px;font-size:15px;align-items:flex-start">
                 <CheckCircle />
                 <span>{feat}</span>
               </li>
@@ -50,30 +49,28 @@ const proFeats = p.proFeats as string[];
           }
         </ul>
         <a href={loginHref()} class="btn btn-ghost" style="width:100%">{p.freeCta}</a>
-      </div>
+      </Folder>
 
       <!-- Pro -->
-      <div
-        style="padding:36px;border-radius:24px;position:relative;background:linear-gradient(155deg, #2A1F33 0%, #1A1320 100%);color:#fff;display:flex;flex-direction:column;gap:22px;box-shadow:0 30px 60px -20px rgba(166,115,241,.35)"
+      <Folder
+        tabClass="plum"
+        style="transform:rotate(.8deg)"
+        bodyStyle="padding:34px;border-radius:4px 20px 20px 20px;display:flex;flex-direction:column;gap:20px;background:linear-gradient(155deg,var(--plum-2),var(--plum));color:#fff"
       >
-        <div
-          style="position:absolute;top:-12px;right:32px;padding:6px 14px;border-radius:100px;background:var(--peach);color:#fff;font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase"
-        >
-          {p.proBadge}
+        <span slot="tab" style="display:inline-flex;align-items:center;gap:7px">
+          {p.proName}
+          <span style="font-size:11px;background:var(--peach);color:#fff;padding:2px 8px;border-radius:100px"
+            >{p.proBadge}</span
+          >
+        </span>
+        <div style="display:flex;align-items:baseline;gap:8px">
+          <span class="h-display" style="font-size:54px;color:#fff">{p.proPrice}</span>
+          <span style="color:rgba(255,255,255,.6);font-size:14px;font-weight:700">{p.proPer}</span>
         </div>
-        <div>
-          <div style="font-size:14px;font-weight:700;color:#D9C2FF;text-transform:uppercase;letter-spacing:.04em">
-            {p.proName}
-          </div>
-          <div style="display:flex;align-items:baseline;gap:8px;margin-top:8px">
-            <span class="h-display" style="font-size:56px;color:#fff">{p.proPrice}</span>
-            <span style="color:rgba(255,255,255,.6);font-size:14px">{p.proPer}</span>
-          </div>
-        </div>
-        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:12px;flex:1">
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:11px;flex:1">
           {
             proFeats.map((feat) => (
-              <li style="display:flex;align-items:flex-start;gap:10px;font-size:15px;color:rgba(255,255,255,.92)">
+              <li style="display:flex;gap:10px;font-size:15px;align-items:flex-start;color:rgba(255,255,255,.92)">
                 <span style="flex-shrink:0;margin-top:2px">
                   <CheckCircle fill="var(--peach)" />
                 </span>
@@ -82,8 +79,8 @@ const proFeats = p.proFeats as string[];
             ))
           }
         </ul>
-        <a href={loginHref()} class="btn btn-peach" style="width:100%">{p.proCta}</a>
-      </div>
+        <a href={subscriptionHref()} class="btn btn-peach" style="width:100%">{p.proCta}</a>
+      </Folder>
     </div>
   </div>
 </section>

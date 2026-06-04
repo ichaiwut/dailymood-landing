@@ -10,46 +10,41 @@ const f = getMessages(locale).landing.features;
 
 type ColorKey = 'peach' | 'purple' | 'mint' | 'yellow' | 'lav' | 'blue';
 const colorMap: Record<ColorKey, { bg: string; stroke: string }> = {
-  peach: { bg: 'rgba(252,164,91,.12)', stroke: 'var(--peach)' },
-  purple: { bg: 'rgba(166,115,241,.12)', stroke: 'var(--purple)' },
-  mint: { bg: 'rgba(133,236,203,.18)', stroke: '#39B58A' },
-  yellow: { bg: 'rgba(253,203,86,.18)', stroke: '#D9A41A' },
-  lav: { bg: 'rgba(212,190,228,.30)', stroke: 'var(--purple)' },
-  blue: { bg: 'rgba(154,205,226,.30)', stroke: '#5A9CB7' },
+  peach: { bg: 'rgba(252,164,91,.15)', stroke: '#C8742E' },
+  purple: { bg: 'rgba(166,115,241,.15)', stroke: 'var(--purple)' },
+  mint: { bg: 'rgba(133,236,203,.22)', stroke: '#2E9C76' },
+  yellow: { bg: 'rgba(253,203,86,.22)', stroke: '#C79412' },
+  lav: { bg: 'rgba(212,190,228,.35)', stroke: 'var(--purple)' },
+  blue: { bg: 'rgba(154,205,226,.32)', stroke: '#4E8DA8' },
 };
 
 const list = f.list as { t: string; d: string; c: ColorKey }[];
 ---
 
-<section id="features" class="section">
+<section id="features" class="section" style="background:var(--desk-2)">
   <div class="container">
-    <div style="max-width:720px;margin-bottom:48px">
-      <span class="eyebrow"><span class="dot"></span> {f.eyebrow}</span>
-      <h2 class="h-display" style="font-size:clamp(32px, 4.5vw, 52px);margin-top:22px">
+    <div style="max-width:760px;margin-bottom:52px">
+      <span class="eyebrow">{f.eyebrow}</span>
+      <h2 class="h-display" style="font-size:clamp(32px, 4.6vw, 56px);margin-top:18px">
         {f.title}
       </h2>
     </div>
-    <div
-      class="l-features"
-      style="display:grid;grid-template-columns:repeat(3, 1fr);gap:18px"
-    >
+    <div class="grid-3" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:18px">
       {
         list.map((item, i) => {
           const cm = colorMap[item.c];
           return (
             <div
-              style="padding:28px;border-radius:20px;background:#fff;border:1px solid var(--rule);display:flex;flex-direction:column;gap:16px"
+              style={`background:#fff;border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:14px;box-shadow:var(--shadow-sm);transform:rotate(${((i % 3) - 1) * 0.5}deg)`}
             >
               <div
-                style={`width:48px;height:48px;border-radius:14px;background:${cm.bg};color:${cm.stroke};display:flex;align-items:center;justify-content:center`}
+                style={`width:50px;height:50px;border-radius:14px;background:${cm.bg};color:${cm.stroke};display:grid;place-items:center`}
               >
                 <FeatIcon i={i} stroke={cm.stroke} />
               </div>
               <div>
-                <h3 style="font-size:20px;font-weight:800;margin:0 0 8px">{item.t}</h3>
-                <p style="color:var(--ink-2);font-size:15px;margin:0;line-height:1.55">
-                  {item.d}
-                </p>
+                <h3 style="font-size:19px;font-weight:800;margin:0 0 7px">{item.t}</h3>
+                <p style="color:var(--ink-2);font-size:15px;margin:0;line-height:1.5">{item.d}</p>
               </div>
             </div>
           );

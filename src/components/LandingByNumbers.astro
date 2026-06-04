@@ -1,0 +1,48 @@
+---
+import Sticker from './paper/Sticker.astro';
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const items = getMessages(locale).landing.byNumbers.items as { n: string; l: string; s: string }[];
+
+// Colour + sticker face per card (presentational, not translated).
+const meta = [
+  { c: 'var(--peach)', f: 'great' },
+  { c: 'var(--mint)', f: 'okay' },
+  { c: 'var(--lavender)', f: 'calm' },
+  { c: 'var(--yellow)', f: 'good' },
+] as const;
+---
+
+<section style="padding:60px 0 30px;position:relative">
+  <div class="container">
+    <div class="grid-4" style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px">
+      {
+        items.map((it, i) => (
+          <div class="stacked" style={`transform:rotate(${(i % 2 ? 1 : -1) * 1.3}deg)`}>
+            <div class="sheet" style="padding:24px 22px;border-radius:14px;background:#fff">
+              <div style="display:flex;align-items:center;justify-content:space-between">
+                <span class="h-display" style={`font-size:48px;color:${meta[i].c};line-height:1`}>
+                  {it.n}
+                </span>
+                <Sticker
+                  face={meta[i].f}
+                  color={meta[i].c}
+                  size={40}
+                  style="position:relative;top:0;transform:rotate(-6deg)"
+                />
+              </div>
+              <div style="margin-top:12px">
+                <div style="font-weight:800;font-size:16px">{it.l}</div>
+                <div style="font-size:13px;color:var(--ink-3);margin-top:3px">{it.s}</div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

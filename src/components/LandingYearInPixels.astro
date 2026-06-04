@@ -1,4 +1,5 @@
 ---
+import Folder from './paper/Folder.astro';
 import { type Locale, getMessages } from '@/lib/i18n';
 
 interface Props {
@@ -17,6 +18,7 @@ const palette = [
   'var(--purple)',
 ];
 
+// Deterministic pixel colour for (month, day) — stable across builds/locales.
 function cell(m: number, d: number): string | null {
   const key = (m * 31 + d * 7) % 100;
   if (key < 8) return null;
@@ -38,55 +40,54 @@ const moodColors: { key: keyof typeof y.moods; color: string }[] = [
 ];
 ---
 
-<section class="section" style="background:var(--page-2)">
+<section class="section">
   <div
-    class="container l-year"
-    style="display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:center"
+    class="container grid-2"
+    style="display:grid;grid-template-columns:1fr 1.4fr;gap:56px;align-items:center"
   >
     <div>
-      <span class="eyebrow"><span class="dot"></span> {y.eyebrow}</span>
-      <h2 class="h-display" style="font-size:clamp(32px, 4vw, 52px);margin:22px 0 18px">
+      <span class="eyebrow">{y.eyebrow}</span>
+      <h2 class="h-display" style="font-size:clamp(30px, 4vw, 52px);margin:18px 0 16px">
         {y.title}
       </h2>
-      <p style="font-size:18px;color:var(--ink-2);max-width:460px">{y.sub}</p>
+      <p style="font-size:18px;color:var(--ink-2);max-width:440px">{y.sub}</p>
 
-      <div style="display:flex;gap:14px;margin-top:28px;flex-wrap:wrap">
+      <div style="display:flex;gap:14px;margin-top:26px;flex-wrap:wrap">
         {
           moodColors.map((m) => (
-            <div style="display:flex;align-items:center;gap:8px">
+            <div style="display:flex;align-items:center;gap:7px">
               <span style={`width:14px;height:14px;border-radius:4px;background:${m.color}`} />
-              <span style="font-size:13px;font-weight:600;color:var(--ink-2)">
-                {y.moods[m.key]}
-              </span>
+              <span style="font-size:13px;font-weight:700;color:var(--ink-2)">{y.moods[m.key]}</span>
             </div>
           ))
         }
       </div>
     </div>
 
-    <div class="l-year-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
-        <span style="font-size:18px;font-weight:800;font-family:var(--font-display)">
-          {y.cardYear}
-        </span>
-        <span style="font-size:12px;color:var(--ink-3);font-weight:600">
-          {y.cardDaysLogged}
-        </span>
+    <Folder
+      tabClass="ink"
+      clip
+      style="transform:rotate(-.6deg)"
+      bodyStyle="padding:30px;border-radius:4px 22px 22px 22px"
+    >
+      <span slot="tab">{y.cardYear}</span>
+
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+        <span style="font-size:13px;font-weight:800;color:var(--ink-3)">{y.calendarLabel}</span>
+        <span style="font-size:12px;color:var(--ink-3);font-weight:700">{y.cardDaysLogged}</span>
       </div>
-      <div style="display:grid;grid-template-columns:auto minmax(0, 1fr);gap:8px">
+      <div style="display:grid;grid-template-columns:auto minmax(0, 1fr);gap:7px">
         {
           months.map((label: string, mi: number) => (
             <>
-              <div style="font-size:11px;font-weight:700;color:var(--ink-3);align-self:center;padding-right:4px;text-align:right">
+              <div style="font-size:11px;font-weight:800;color:var(--ink-3);align-self:center;text-align:right;padding-right:4px">
                 {label}
               </div>
               <div style="display:grid;grid-template-columns:repeat(31, minmax(0, 1fr));gap:3px;min-width:0">
                 {Array.from({ length: 31 }).map((_, di) => {
                   const c = cell(mi, di);
                   return (
-                    <div
-                      style={`aspect-ratio:1;border-radius:3px;background:${c || '#F0EAE0'};min-width:0`}
-                    />
+                    <div style={`aspect-ratio:1;border-radius:3px;background:${c || '#EFE7D8'};min-width:0`} />
                   );
                 })}
               </div>
@@ -94,6 +95,6 @@ const moodColors: { key: keyof typeof y.moods; color: string }[] = [
           ))
         }
       </div>
-    </div>
+    </Folder>
   </div>
 </section>

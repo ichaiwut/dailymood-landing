@@ -1,0 +1,24 @@
+---
+import MoodFace from '../MoodFace.astro';
+
+type FaceKind = 'great' | 'good' | 'okay' | 'meh' | 'bad' | 'awful' | 'calm';
+
+interface Props {
+  face: FaceKind;
+  /** Disc background colour. */
+  color?: string;
+  size?: number;
+  /** Extra inline style (position offsets, --r rotation var, animationDelay). */
+  style?: string;
+  /** Extra class, e.g. "floaty" | "bouncy". */
+  class?: string;
+}
+const { face, color = '#fff', size = 58, style = '', class: cls = '' } = Astro.props;
+---
+
+<div
+  class={`sticker ${cls}`}
+  style={`width:${size}px;height:${size}px;background:${color};${style}`}
+>
+  <MoodFace face={face} size={Math.round(size * 0.78)} bg="transparent" />
+</div>

@@ -1,0 +1,47 @@
+---
+import Paperclip from './Paperclip.astro';
+
+interface Props {
+  /** Tab colour class: ink | mint | lav | yellow | purple | plum | paper (empty = peach). */
+  tabClass?: string;
+  /** Extra class on the sheet body, e.g. "plum" | "peach" | "kraft". */
+  sheetClass?: string;
+  /** Render a paperclip at the sheet's top edge. */
+  clip?: boolean;
+  /** Render a washi-tape strip at the sheet's top edge. */
+  tape?: boolean;
+  /** Tape colour class: mint | lav | yellow | purple. */
+  tapeClass?: string;
+  /** Inline style on the folder wrapper (rotation, etc). */
+  style?: string;
+  /** Inline style on the sheet body (padding, radius, background overrides). */
+  bodyStyle?: string;
+}
+const {
+  tabClass = '',
+  sheetClass = '',
+  clip = false,
+  tape = false,
+  tapeClass = '',
+  style = '',
+  bodyStyle = '',
+} = Astro.props;
+
+// A `tab` named slot makes the folder show its rounded tab label.
+const hasTab = Astro.slots.has('tab');
+---
+
+<div class="folder" style={style}>
+  {
+    hasTab && (
+      <div class={`tab ${tabClass}`}>
+        <slot name="tab" />
+      </div>
+    )
+  }
+  <div class={`sheet ${sheetClass}`} style={`position:relative;${bodyStyle}`}>
+    {clip && <Paperclip />}
+    {tape && <span class={`washi ${tapeClass}`} />}
+    <slot />
+  </div>
+</div>

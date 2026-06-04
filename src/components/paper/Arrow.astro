@@ -1,0 +1,16 @@
+---
+interface Props {
+  /** Square size in px. Inherits `currentColor`. */
+  s?: number;
+}
+const { s = 16 } = Astro.props;
+---
+
+<svg width={s} height={s} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+  <path
+    d="M3 8h10M9 4l4 4-4 4"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"></path>
+</svg>

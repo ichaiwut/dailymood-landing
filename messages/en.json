@@ -21,6 +21,8 @@
       "trialBannerTag": "✨ New",
       "trialBannerText": "Try Pro free for 14 days — no card, no charge",
       "trialBannerCta": "Start free",
+      "trialFocalTitle": "Try Pro free for 14 days",
+      "trialFocalSub": "No card required · cancel anytime",
       "trust1": "Encrypted",
       "trust2": "No ads",
       "trust3": "TH + EN"
@@ -77,6 +79,26 @@
       "chipStreak": "✨ Streak +7",
       "chipGreat": "😄 Great"
     },
+    "byNumbers": {
+      "items": [
+        { "n": "7", "l": "starter moods", "s": "+ custom moods on Pro" },
+        { "n": "≤10", "l": "seconds per entry", "s": "tap, type, talk, or shoot" },
+        { "n": "365", "l": "days in year-in-pixels", "s": "your whole year on one screen" },
+        { "n": "2", "l": "languages · TH + EN", "s": "both UI and AI summaries" }
+      ]
+    },
+    "dayTimeline": {
+      "eyebrow": "A day with DailyMood",
+      "title": "Just a few seconds a day",
+      "sub": "Log to the rhythm of your day — AI connects the dots across your week.",
+      "rows": [
+        { "time": "08:00", "t": "Tap this morning's mood", "d": "Open the app, pick 1 of 7 moods — done in 10 seconds." },
+        { "time": "12:30", "t": "Type or speak a quick note", "d": "AI extracts mood, tags, and a one-line summary — confirm before saving." },
+        { "time": "15:00", "t": "Snap the moment", "d": "Upload a photo; AI reads context and suggests tags (Pro)." },
+        { "time": "21:00", "t": "Check year-in-pixels", "d": "See your day, week, and whole year on one screen." },
+        { "time": "End of week", "t": "Read your AI Insights", "d": "Summary + patterns + one tailored suggestion, with a sparkline." }
+      ]
+    },
     "ai": {
       "eyebrow": "AI · POWERS EVERYTHING",
       "h2a": "AI that",
@@ -85,7 +107,7 @@
       "sub": "More than a tracker. DailyMood reads your entries, pulls key phrases, finds patterns — just ask by voice or text.",
       "f1tag": "AI · TEXT",
       "f1title": "Type however you want",
-      "f1desc": "Write naturally. AI extracts mood, tags, and a one-sentence summary — review and confirm before saving.",
+      "f1desc": "Type or speak it. AI extracts mood, tags, and a one-sentence summary — review and confirm before saving.",
       "f2tag": "AI · VISION",
       "f2title": "Snap what you see",
       "f2desc": "Upload a photo. AI reads context and suggests tags about the moment (Pro).",
@@ -125,6 +147,7 @@
       "title": "Your whole year, one screen",
       "sub": "One dot per day, coloured by your dominant mood. Spot the good stretches, the rough patches, and your rhythm — instantly.",
       "cardYear": "2026",
+      "calendarLabel": "Mood calendar",
       "cardDaysLogged": "298 days logged",
       "moods": {
         "great": "Great",
@@ -213,11 +236,15 @@
       "viewAll": "View all"
     },
     "cta": {
+      "tab": "Start here",
       "title": "Ready to know yourself better?",
       "sub": "10 seconds a day. Start now.",
       "btn": "Get DailyMood free"
     },
     "footer": {
+      "tag": "Track how you feel. Discover yourself.",
+      "productLabel": "Product",
+      "legalLabel": "Legal",
       "copy": "© 2026 DailyMood",
       "legalLinks": [
         ["Privacy", "/en/privacy"],

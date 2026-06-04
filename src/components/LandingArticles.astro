@@ -1,4 +1,5 @@
 ---
+import Arrow from './paper/Arrow.astro';
 import { type Locale, getMessages } from '@/lib/i18n';
 
 interface Props {
@@ -10,43 +11,52 @@ const t = getMessages(locale).landing.articles;
 const APP_URL = (import.meta.env.PUBLIC_APP_URL as string | undefined) ?? 'https://my.dailymood.me';
 const apiUrl = `${APP_URL}/api/articles/latest`;
 const articlesUrl = `${APP_URL}/articles`;
+
+// Washi-tape colour + card tilt per slot (presentational).
+const tapes = ['', 'mint', 'lav'];
+const tilts = [-0.6, 0.6, -0.6];
 ---
 
-<section class="section" style="background:var(--page-2)">
+<section id="articles" class="section">
   <div class="container">
-    <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:48px;flex-wrap:wrap;gap:24px">
-      <div style="max-width:600px">
-        <span class="eyebrow"><span class="dot"></span> {t.eyebrow}</span>
-        <h2 class="h-display" style="font-size:clamp(32px, 4.5vw, 52px);margin-top:22px">
+    <div
+      style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:44px;flex-wrap:wrap;gap:24px"
+    >
+      <div style="max-width:560px">
+        <span class="eyebrow">{t.eyebrow}</span>
+        <h2 class="h-display" style="font-size:clamp(28px, 3.6vw, 44px);margin:18px 0 10px">
           {t.title}
         </h2>
       </div>
-      <a
-        href={articlesUrl}
-        style="display:inline-flex;align-items:center;gap:6px;color:var(--peach);font-weight:700;font-size:15px;text-decoration:none"
-      >
-        {t.viewAll} <span style="font-size:18px">→</span>
+      <a href={articlesUrl} class="btn btn-ghost l-hide-sm" style="height:48px">
+        {t.viewAll} <Arrow />
       </a>
     </div>
 
     <div
       id="articles-grid"
-      class="l-articles"
-      style="display:grid;grid-template-columns:repeat(3, 1fr);gap:18px"
+      class="grid-3"
+      style="display:grid;grid-template-columns:repeat(3, 1fr);gap:22px"
     >
-      {/* Skeleton placeholders — replaced by JS */}
-      {[0, 1, 2].map((i) => (
-        <div class="article-skeleton" style="border-radius:20px;background:#fff;border:1px solid var(--rule);overflow:hidden">
-          <div style={`height:180px;background:linear-gradient(135deg, var(--lavender-light), var(--lavender));opacity:0.5`} />
-          <div style="padding:22px 22px 26px">
-            <div style="height:14px;width:60%;background:var(--rule);border-radius:8px;margin-bottom:16px" />
-            <div style="height:20px;width:90%;background:var(--rule);border-radius:8px;margin-bottom:10px" />
-            <div style="height:20px;width:70%;background:var(--rule);border-radius:8px;margin-bottom:16px" />
-            <div style="height:14px;width:100%;background:var(--rule);border-radius:8px;margin-bottom:6px" />
-            <div style="height:14px;width:80%;background:var(--rule);border-radius:8px" />
+      {/* Skeleton placeholders — replaced by JS once the feed loads. */}
+      {
+        [0, 1, 2].map((i) => (
+          <div
+            class="article-skeleton"
+            style={`position:relative;border-radius:4px 16px 16px 16px;background:#fff;box-shadow:var(--shadow-sm);overflow:hidden;transform:rotate(${tilts[i]}deg)`}
+          >
+            <span class={`washi ${tapes[i]}`} style="z-index:6" />
+            <div style="aspect-ratio:16/10;background:linear-gradient(135deg, var(--lavender-light), var(--lavender));opacity:.5" />
+            <div style="padding:22px 20px">
+              <div style="height:13px;width:55%;background:var(--line);border-radius:8px;margin-bottom:16px" />
+              <div style="height:18px;width:90%;background:var(--line);border-radius:8px;margin-bottom:10px" />
+              <div style="height:18px;width:70%;background:var(--line);border-radius:8px;margin-bottom:16px" />
+              <div style="height:13px;width:100%;background:var(--line);border-radius:8px;margin-bottom:6px" />
+              <div style="height:13px;width:80%;background:var(--line);border-radius:8px" />
+            </div>
           </div>
-        </div>
-      ))}
+        ))
+      }
     </div>
   </div>
 </section>
@@ -60,6 +70,8 @@ const articlesUrl = `${APP_URL}/articles`;
     blue: 'linear-gradient(135deg, #D4EEF7 0%, #9ACDE2 50%, #D4F5E9 100%)',
     purple: 'linear-gradient(135deg, #E9DEF6 0%, #A673F1 50%, #D4BEE4 100%)',
   };
+  const TAPES = ['', 'mint', 'lav'];
+  const TILTS = [-0.6, 0.6, -0.6];
 
   const APP_BASE = apiUrl.replace('/api/articles/latest', '');
 
@@ -69,28 +81,32 @@ const articlesUrl = `${APP_URL}/articles`;
     return d.toLocaleDateString(loc === 'th' ? 'th-TH' : 'en-US', opts);
   }
 
-  function renderCard(a) {
+  function renderCard(a, i) {
     const title = locale === 'th' ? a.titleTh : a.titleEn;
     const excerpt = locale === 'th' ? a.excerptTh : a.excerptEn;
     const catLabel = locale === 'th' ? a.categoryLabelTh : a.categoryLabelEn;
     const gradient = TONE_GRADIENTS[a.tone] || TONE_GRADIENTS.peach;
     const articleUrl = `${APP_BASE}/articles/${a.slug}`;
+    const tape = TAPES[i % 3];
+    const tilt = TILTS[i % 3];
 
     const coverStyle = a.coverImageUrl
       ? `background:url('${a.coverImageUrl}') center/cover no-repeat`
       : `background:${gradient}`;
 
-    return `<a href="${articleUrl}" style="text-decoration:none;color:inherit;display:block;border-radius:20px;background:#fff;border:1px solid var(--rule);overflow:hidden;transition:transform 0.15s ease,box-shadow 0.2s ease">
-      <div style="height:180px;position:relative;${coverStyle}">
-        ${catLabel ? `<span style="position:absolute;top:14px;left:14px;display:inline-block;padding:6px 14px;border-radius:100px;background:#fff;font-weight:700;font-size:12px;letter-spacing:0.04em;text-transform:uppercase;color:var(--ink)">${catLabel}</span>` : ''}
+    return `<a href="${articleUrl}" class="article-card" style="position:relative;display:flex;flex-direction:column;background:#fff;border-radius:4px 16px 16px 16px;text-decoration:none;color:var(--ink);box-shadow:var(--shadow-sm);transform:rotate(${tilt}deg);transition:transform .25s cubic-bezier(.2,.7,.2,1),box-shadow .25s">
+      <span class="washi ${tape}" style="z-index:6"></span>
+      <div style="aspect-ratio:16/10;position:relative;border-radius:4px 16px 0 0;overflow:hidden;${coverStyle}">
+        <div style="position:absolute;inset:0;opacity:.2;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.2) 0 8px,transparent 8px 18px)"></div>
+        ${catLabel ? `<span class="chip" style="position:absolute;top:16px;left:14px;font-size:11px;letter-spacing:.05em;text-transform:uppercase">${catLabel}</span>` : ''}
       </div>
-      <div style="padding:22px 22px 26px">
-        <div style="font-size:13px;color:var(--ink-3);margin-bottom:10px">
-          ${a.publishedAt ? formatDate(a.publishedAt, locale) : ''} · ${readTime.replace('{m}', a.readingTimeMinutes)}
+      <div style="padding:22px 20px;display:flex;flex-direction:column;gap:11px;flex:1">
+        <div style="display:flex;align-items:center;gap:9px;font-size:12px;color:var(--ink-3);font-weight:700">
+          ${a.publishedAt ? `<span>${formatDate(a.publishedAt, locale)}</span><span style="width:3px;height:3px;border-radius:50%;background:var(--ink-3)"></span>` : ''}<span>${readTime.replace('{m}', a.readingTimeMinutes)}</span>
         </div>
-        <h3 style="font-size:20px;font-weight:800;margin:0 0 10px;line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${title}</h3>
-        <p style="color:var(--ink-2);font-size:14px;margin:0 0 18px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${excerpt}</p>
-        <span style="color:var(--peach);font-weight:700;font-size:14px;display:inline-flex;align-items:center;gap:4px">${readMore} <span style="font-size:16px">→</span></span>
+        <h3 style="font-size:20px;font-weight:800;margin:0;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${title}</h3>
+        <p style="margin:0;color:var(--ink-2);font-size:14px;line-height:1.5;flex:1;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${excerpt}</p>
+        <span style="display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:#C8742E;margin-top:2px">${readMore} →</span>
       </div>
     </a>`;
   }
@@ -114,8 +130,8 @@ const articlesUrl = `${APP_URL}/articles`;
 </script>
 
 <style>
-  #articles-grid a:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.1);
+  #articles-grid .article-card:hover {
+    transform: translateY(-4px) rotate(0deg) !important;
+    box-shadow: var(--shadow-lg);
   }
 </style>

@@ -1,4 +1,6 @@
 ---
+import Folder from './paper/Folder.astro';
+import Paperclip from './paper/Paperclip.astro';
 import { type Locale, getMessages } from '@/lib/i18n';
 
 interface Props {
@@ -8,28 +10,10 @@ const { locale } = Astro.props;
 const a = getMessages(locale).landing.ai;
 
 const cards = [
-  {
-    tag: a.f1tag,
-    title: a.f1title,
-    desc: a.f1desc,
-    bg: 'linear-gradient(160deg, rgba(166,115,241,.15), rgba(252,164,91,.06))',
-    demo: 'nlp' as const,
-  },
-  {
-    tag: a.f2tag,
-    title: a.f2title,
-    desc: a.f2desc,
-    bg: 'linear-gradient(160deg, rgba(133,236,203,.12), rgba(154,205,226,.05))',
-    demo: 'vision' as const,
-  },
-  {
-    tag: a.f3tag,
-    title: a.f3title,
-    desc: a.f3desc,
-    bg: 'linear-gradient(160deg, rgba(252,164,91,.15), rgba(253,203,86,.05))',
-    demo: 'insights' as const,
-  },
-];
+  { tag: a.f1tag, title: a.f1title, desc: a.f1desc, demo: 'nlp' },
+  { tag: a.f2tag, title: a.f2title, desc: a.f2desc, demo: 'vision' },
+  { tag: a.f3tag, title: a.f3title, desc: a.f3desc, demo: 'insights' },
+] as const;
 
 const nlpTags: [string, string][] = [
   [a.demoNlpTag1, 'var(--peach)'],
@@ -37,136 +21,129 @@ const nlpTags: [string, string][] = [
   [a.demoNlpTag3, 'var(--lavender)'],
 ];
 const visionTags = [a.demoVisionTag1, a.demoVisionTag2, a.demoVisionTag3];
-const barHeights = [6, 4, 7, 8, 6, 9, 7];
+const bars = [6, 4, 7, 8, 6, 9, 7];
 ---
 
-<section
-  id="ai"
-  class="section"
-  style="background:var(--night);color:#fff;position:relative;overflow:clip;overflow-clip-margin:24px"
->
-  <div
-    class="blob"
-    style="background:var(--purple);width:600px;height:600px;top:-200px;left:-100px;opacity:.35"
-  ></div>
-  <div
-    class="blob"
-    style="background:var(--peach);width:500px;height:500px;bottom:-200px;right:-150px;opacity:.25"
-  ></div>
-
-  <div class="container" style="position:relative">
-    <div style="max-width:760px;margin-bottom:64px">
-      <span class="eyebrow" style="background:rgba(166,115,241,.18);color:#D9C2FF">
-        <span class="dot" style="background:#D9C2FF;box-shadow:0 0 0 4px rgba(217,194,255,.18)"></span>
-        {a.eyebrow}
-      </span>
-      <h2
-        class="h-display"
-        style="color:#fff;font-size:clamp(36px, 5vw, 64px);margin:24px 0 18px"
-      >
-        {a.h2a}{' '}
-        <span
-          class="swash"
-          style="background:linear-gradient(135deg,#FCA45B,#A673F1);-webkit-background-clip:text;background-clip:text;color:transparent"
-        >
-          {a.h2b}
-        </span>{' '}
-        {a.h2c}
-      </h2>
-      <p style="font-size:19px;color:rgba(255,255,255,.7);max-width:580px">{a.sub}</p>
-    </div>
-
-    <div
-      class="l-ai"
-      style="display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:18px"
+<section id="ai" class="section">
+  <div class="container">
+    <Folder
+      tabClass="peach"
+      sheetClass="plum"
+      bodyStyle="padding:56px 48px;border-radius:4px 26px 26px 26px;overflow:hidden"
     >
-      {
-        cards.map((c) => (
-          <div
-            style={`padding:28px;border-radius:22px;background:${c.bg};border:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;gap:18px`}
-          >
-            <span style="align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.08em;color:#FFC899;text-transform:uppercase;padding:5px 10px;border-radius:100px;background:rgba(252,164,91,.15)">
-              {c.tag}
-            </span>
-            <div style="flex:1;min-height:180px">
-              {c.demo === 'nlp' && (
-                <div style="background:rgba(255,255,255,.06);padding:16px;border-radius:14px;border:1px solid rgba(255,255,255,.08);font-size:14px;line-height:1.5">
-                  <div style="color:rgba(255,255,255,.85);margin-bottom:14px">&ldquo;{a.demoNlpText}&rdquo;</div>
-                  <div style="border-top:1px dashed rgba(255,255,255,.15);padding-top:12px">
-                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-                      <span style="font-size:11px;color:#FFC899;font-weight:700">✨ AI</span>
-                      <span style="font-size:12px;color:rgba(255,255,255,.6)">{a.demoNlpLabel}</span>
-                      <span style="font-size:12px;font-weight:700;color:var(--peach)">{a.demoNlpMood}</span>
-                    </div>
-                    <div style="display:flex;gap:6px;flex-wrap:wrap">
-                      {nlpTags.map(([txt, col]) => (
-                        <span
-                          style={`padding:4px 10px;border-radius:100px;font-size:12px;font-weight:600;background:rgba(255,255,255,.08);color:#fff;border:1px solid ${col}66`}
-                        >
-                          #{txt}
+      <span slot="tab">{a.eyebrow}</span>
+
+      <Paperclip color="#6b6275" style="top:-16px;right:40px;left:auto;transform:rotate(8deg)" />
+
+      <div style="max-width:720px;margin-bottom:44px">
+        <h2 class="h-display" style="color:#fff;font-size:clamp(32px, 4.4vw, 54px);margin:0">
+          {a.h2a}{' '}
+          <span
+            class="swash"
+            style="background:linear-gradient(135deg,#FCA45B,#A673F1);-webkit-background-clip:text;background-clip:text;color:transparent"
+            >{a.h2b}</span
+          >{' '}
+          {a.h2c}
+        </h2>
+        <p style="font-size:18px;color:rgba(255,255,255,.72);max-width:580px;margin-top:16px">
+          {a.sub}
+        </p>
+      </div>
+
+      <div class="grid-3" style="display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:16px">
+        {
+          cards.map((c) => (
+            <div style="background:#fff;border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:16px;color:var(--ink)">
+              <span style="align-self:flex-start;font-size:11px;font-weight:800;letter-spacing:.08em;color:#C8742E;text-transform:uppercase;padding:5px 10px;border-radius:100px;background:rgba(252,164,91,.15)">
+                {c.tag}
+              </span>
+
+              <div style="flex:1">
+                {c.demo === 'nlp' && (
+                  <div style="background:var(--paper-2);padding:15px;border-radius:12px;border:1px solid var(--line);font-size:14px;line-height:1.5">
+                    <div style="color:var(--ink-2);margin-bottom:12px">&ldquo;{a.demoNlpText}&rdquo;</div>
+                    <div style="border-top:1px dashed var(--line);padding-top:11px">
+                      <div style="display:flex;align-items:center;gap:8px;margin-bottom:9px">
+                        <span style="font-size:11px;color:var(--peach);font-weight:800">✨ AI</span>
+                        <span style="font-size:12px;color:var(--ink-3)">{a.demoNlpLabel}</span>
+                        <span style="font-size:12px;font-weight:800;color:var(--peach)">
+                          {a.demoNlpMood}
                         </span>
-                      ))}
+                      </div>
+                      <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        {nlpTags.map(([txt, col]) => (
+                          <span style={`padding:4px 10px;border-radius:100px;font-size:12px;font-weight:700;background:#fff;color:var(--ink);border:1.5px solid ${col}`}>
+                            #{txt}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-              {c.demo === 'vision' && (
-                <div style="display:flex;flex-direction:column;gap:10px">
-                  <div style="height:110px;border-radius:12px;position:relative;overflow:hidden;background:#6B8FAE">
-                    <img
-                      src="https://pub-f0f688a68f884179942645789862cf54.r2.dev/assets/landing-ai-vision-sunset.webp"
-                      alt=""
-                      width="1600"
-                      height="699"
-                      loading="lazy"
-                      decoding="async"
-                      style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"
-                    />
-                    <div style="position:absolute;top:8px;right:8px;padding:4px 8px;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);border-radius:100px;font-size:10px;font-weight:700;color:#fff">📷 IMG_0394</div>
-                  </div>
-                  <div style="background:rgba(255,255,255,.06);padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.08)">
-                    <div style="font-size:11px;color:rgba(255,255,255,.55);margin-bottom:6px">{a.demoVisionSuggests}</div>
-                    <div style="display:flex;gap:6px;flex-wrap:wrap">
-                      {visionTags.map((txt) => (
-                        <span style="padding:3px 8px;border-radius:100px;font-size:11px;font-weight:600;background:rgba(252,164,91,.18);color:#FFC899">
-                          #{txt}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              )}
-              {c.demo === 'insights' && (
-                <div style="background:rgba(255,255,255,.06);padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.08)">
-                  <div style="font-size:10px;color:var(--peach);font-weight:700;margin-bottom:6px">{a.demoInsightsTitle}</div>
-                  <div style="font-size:13px;line-height:1.55;color:rgba(255,255,255,.85)">
-                    {a.demoInsights1} <b style="color:#fff">{a.demoInsights1bold}</b>{a.demoInsights2}{' '}
-                    <b style="color:#fff">{a.demoInsights2bold}</b> {a.demoInsights3}{' '}
-                    <b style="color:var(--peach)">{a.demoInsights3peach}</b>
-                  </div>
-                  <div style="display:flex;gap:4px;margin-top:12px">
-                    {barHeights.map((h, i) => (
-                      <div
-                        style={`flex:1;height:${h * 4}px;border-radius:3px;background:${
-                          i >= 4 ? 'var(--peach)' : 'rgba(255,255,255,.2)'
-                        }`}
+                )}
+
+                {c.demo === 'vision' && (
+                  <div style="display:flex;flex-direction:column;gap:10px">
+                    <div style="height:108px;border-radius:12px;position:relative;overflow:hidden;background:#6B8FAE">
+                      <img
+                        src="https://pub-f0f688a68f884179942645789862cf54.r2.dev/assets/landing-ai-vision-sunset.webp"
+                        alt=""
+                        width="1600"
+                        height="699"
+                        loading="lazy"
+                        decoding="async"
+                        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block"
                       />
-                    ))}
+                      <div style="position:absolute;top:8px;right:8px;padding:4px 8px;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);border-radius:100px;font-size:10px;font-weight:700;color:#fff">
+                        📷 IMG_0394
+                      </div>
+                    </div>
+                    <div style="background:var(--paper-2);padding:12px;border-radius:10px;border:1px solid var(--line)">
+                      <div style="font-size:11px;color:var(--ink-3);margin-bottom:6px">
+                        {a.demoVisionSuggests}
+                      </div>
+                      <div style="display:flex;gap:6px;flex-wrap:wrap">
+                        {visionTags.map((t) => (
+                          <span style="padding:3px 9px;border-radius:100px;font-size:11px;font-weight:700;background:rgba(252,164,91,.16);color:#C8742E">
+                            #{t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+
+                {c.demo === 'insights' && (
+                  <div style="background:var(--paper-2);padding:14px;border-radius:12px;border:1px solid var(--line)">
+                    <div style="font-size:10px;color:var(--peach);font-weight:800;margin-bottom:6px">
+                      {a.demoInsightsTitle}
+                    </div>
+                    <div style="font-size:13px;line-height:1.5;color:var(--ink-2)">
+                      {a.demoInsights1} <b style="color:var(--ink)">{a.demoInsights1bold}</b>
+                      {a.demoInsights2}{' '}
+                      <b style="color:var(--ink)">{a.demoInsights2bold}</b> {a.demoInsights3}{' '}
+                      <b style="color:var(--peach)">{a.demoInsights3peach}</b>
+                    </div>
+                    <div style="display:flex;gap:4px;margin-top:12px;align-items:flex-end;height:38px">
+                      {bars.map((hgt, i) => (
+                        <div
+                          style={`flex:1;height:${hgt * 4}px;border-radius:3px;background:${i >= 4 ? 'var(--peach)' : 'rgba(26,19,32,.14)'}`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div>
+                <h3 style="font-size:20px;font-weight:800;margin:0;line-height:1.2">{c.title}</h3>
+                <p style="font-size:14px;color:var(--ink-2);margin:8px 0 0;line-height:1.5">
+                  {c.desc}
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 style="font-size:22px;font-weight:800;margin:0;line-height:1.2;letter-spacing:-0.01em">
-                {c.title}
-              </h3>
-              <p style="font-size:14px;color:rgba(255,255,255,.65);margin:8px 0 0;line-height:1.5">
-                {c.desc}
-              </p>
-            </div>
-          </div>
-        ))
-      }
-    </div>
+          ))
+        }
+      </div>
+    </Folder>
   </div>
 </section>
