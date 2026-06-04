@@ -85,6 +85,17 @@ const jsonLdSite = {
     <meta name="robots" content={robots} />
     <meta name="format-detection" content="telephone=no" />
 
+    <!-- Enable scroll-reveal only when JS runs AND motion is allowed. Setting
+         the class here (before paint) avoids a flash of unhidden content; if
+         JS is disabled the class is never added and content stays visible. -->
+    <script is:inline>
+      try {
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          document.documentElement.classList.add('js-reveal');
+        }
+      } catch (e) {}
+    </script>
+
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="th" href={thPageUrl} />
     <link rel="alternate" hreflang="en" href={enPageUrl} />

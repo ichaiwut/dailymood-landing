@@ -14,12 +14,12 @@ const cols = ['var(--peach)', 'var(--purple)', 'var(--mint)', 'var(--yellow)'];
 
 <section class="section" style="background:var(--desk-2)">
   <div class="container">
-    <div style="max-width:720px;margin:0 0 52px">
+    <div class="reveal" style="max-width:720px;margin:0 0 52px">
       <span class="eyebrow">{t.eyebrow}</span>
       <h2 class="h-display" style="font-size:clamp(32px, 4.6vw, 56px);margin-top:18px">{t.title}</h2>
     </div>
 
-    <div class="grid-4" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:18px">
+    <div class="grid-4 reveal" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:18px">
       {
         items.map((it, i) => (
           <figure

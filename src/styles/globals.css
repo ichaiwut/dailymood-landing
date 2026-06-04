@@ -667,6 +667,30 @@ body::before {
   }
 }
 
+/* ---------------- scroll reveal ----------------
+   Progressive enhancement via IntersectionObserver (works in every browser,
+   unlike CSS `animation-timeline: view()` which is Chromium-only). Content is
+   NEVER gated behind the animation: the hidden state applies ONLY under
+   `.js-reveal` (added to <html> by an inline script in Layout.astro, and only
+   when JS runs AND motion is allowed). No JS / reduced motion → no `.js-reveal`
+   → elements are fully visible. The observer adds `.in-view` as each element
+   scrolls into view. Apply `.reveal` to non-transformed wrappers (heading
+   blocks, grid/row containers) — not to tilted cards, since the transform
+   would override their rotation. */
+@media (prefers-reduced-motion: no-preference) {
+  .js-reveal .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+      opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .js-reveal .reveal.in-view {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Paper grid responsive collapses (grid-template-columns set inline per section). */
 @media (max-width: 980px) {
   .grid-2,

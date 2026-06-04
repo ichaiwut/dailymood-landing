@@ -33,3 +33,32 @@ const { locale } = Astro.props;
 <LandingFAQ locale={locale} />
 <LandingCTABanner locale={locale} />
 <LandingFooter locale={locale} />
+
+<script is:inline>
+  // Scroll-reveal: add `.in-view` as each `.reveal` enters the viewport.
+  // Hidden state is gated by `.js-reveal` (set in Layout's head). If
+  // IntersectionObserver is missing, reveal everything immediately so nothing
+  // stays hidden.
+  (function () {
+    var els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
+    if (!('IntersectionObserver' in window)) {
+      for (var i = 0; i < els.length; i++) els[i].classList.add('in-view');
+      return;
+    }
+    var io = new IntersectionObserver(
+      function (entries, obs) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('in-view');
+            obs.unobserve(e.target);
+          }
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.12 }
+    );
+    els.forEach(function (el) {
+      io.observe(el);
+    });
+  })();
+</script>
