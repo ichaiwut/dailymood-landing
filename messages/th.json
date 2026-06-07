@@ -251,6 +251,10 @@
         ["Terms", "/terms"],
         ["Cookies", "/cookies"]
       ],
+      "social": [
+        ["Facebook", "https://www.facebook.com/dailymood.me"],
+        ["TikTok", "https://www.tiktok.com/@dailymood.me"]
+      ],
       "langSwitcher": "ภาษาไทย",
       "altLang": "English"
     },

@@ -31,7 +31,7 @@ The landing was re-skinned into a **paper / manila-folder** visual language (fol
 10. **Pricing** — 2 folders: Free (mint tab, ghost CTA) and Pro (plum tab + "ยอดนิยม" badge, dark gradient body, peach CTA → `/profile/subscription`).
 11. **FAQ** — sticky title + mint sticker (left); native `<details>` accordion of paper sheets (right), one open at a time.
 12. **CTA Banner** — folder (tab "เริ่มเลย/Start here") with peach→pink→purple gradient body, floating mood stickers, white pill CTA.
-13. **Footer** — dark plum; inline gradient mark + white "Dailymood" wordmark + tagline; **Product + Legal columns only** (no Company/About/Blog, no social icons — per the deletions list); copyright + locale toggle.
+13. **Footer** — dark plum; inline gradient mark + white "Dailymood" wordmark + tagline; **Product + Legal columns only** (no Company/About/Blog); Facebook + TikTok icon links sit under the brand tagline (the product's own channels — not social proof); copyright + locale toggle.
 
 ### Changes vs. the older spec
 - **Added:** "By the Numbers" (factual). The old "do not re-add StatsBand" rule still stands for *vanity* metrics ("used by N users", ratings) — By the Numbers carries only honest product facts.
@@ -73,9 +73,9 @@ The landing was re-skinned into a **paper / manila-folder** visual language (fol
 | 8 | **Pricing** | `<LandingPricing />` | 2 plans: Free + Pro. Free = white card; Pro = dark gradient card with peach "POPULAR" badge. |
 | 9 | **FAQ** | `<LandingFAQ />` (client) | Sticky title on the left (sticky top: 100px), accordion on the right. 6 questions. |
 | 10 | **CTA Banner** | `<LandingCTABanner />` | Full-width rounded peach→purple gradient panel with floating emoji decorations and a single white pill button. |
-| 11 | **Footer** | `<LandingFooter />` | 3-col grid: brand+tagline / Product / Legal. **No social icons. No Company column.** Locale toggle pill on the bottom row. |
+| 11 | **Footer** | `<LandingFooter />` | 3-col grid: brand+tagline / Product / Legal. Facebook + TikTok icon links under the brand tagline (own channels). **No Company column.** Locale toggle pill on the bottom row. |
 
-**Removed deliberately:** TrustStrip, StatsBand (*vanity* metrics — see the 2026-06 redesign note: the factual "By the Numbers" section is allowed, vanity metrics are not), aggregateRating schema, "used by X" social proof, per-card star ratings, social icons.
+**Removed deliberately:** TrustStrip, StatsBand (*vanity* metrics — see the 2026-06 redesign note: the factual "By the Numbers" section is allowed, vanity metrics are not), aggregateRating schema, "used by X" social proof, per-card star ratings. (Footer links to the product's own Facebook + TikTok channels are allowed — they are channel links, not social proof.)
 
 > ⚠️ The IA table above is the **historical** clean-layout order (11 sections). The shipped order is the **13-section Paper Desk IA** in the redesign note at the top of this file.
 
@@ -258,7 +258,7 @@ Icon palette per feature is in the prototype (`landing/middle.jsx` → `FeatIcon
 ```tsx
 - Dark bg (--night). 72px top, 32px bottom.
 - 3-col grid (1.4fr 1fr 1fr): brand+tagline · Product · Legal.
-- NO social icons. NO Company column.
+- Facebook + TikTok icon links under the brand tagline (own channels, not social proof). NO Company column.
 - Bottom row: copyright (left) + locale toggle pill + "dailymood.me" wordmark (right).
 - Product links: Features (#features), AI (#ai), Pricing (#pricing), What's new (#).
 - Legal links: Privacy (/privacy), Terms (/terms), Cookies (#).
@@ -561,7 +561,7 @@ Each section is a self-contained Server Component except the three marked `'use 
 - [ ] No "Premium" string anywhere on the page — only "Pro".
 - [ ] No mention of "Gemini" or any specific AI vendor.
 - [ ] No medical/clinical role in testimonials.
-- [ ] No social icons / Company column in footer.
+- [ ] No Company column in footer. (Facebook + TikTok own-channel links under the brand tagline are allowed.)
 - [ ] No star ratings or aggregateRating schema.
 - [ ] Lighthouse: ≥ 95 perf, ≥ 95 a11y on desktop.
 - [ ] Layout holds at 1440 / 1280 / 980 / 720 / 390 breakpoints.
