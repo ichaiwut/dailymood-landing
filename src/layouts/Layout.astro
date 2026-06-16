@@ -2,6 +2,7 @@
 import '@/styles/globals.css';
 import CookieConsent from '@/components/CookieConsent.astro';
 import { type Locale, getMessages, localeHref } from '@/lib/i18n';
+import { appStoreHref, playStoreHref } from '@/lib/cta';
 
 interface Props {
   locale: Locale;
@@ -47,14 +48,18 @@ const ogImage = 'https://pub-f0f688a68f884179942645789862cf54.r2.dev/assets/og.p
 
 // JSON-LD: SoftwareApplication for the product itself + Organization (publisher)
 // + WebSite for the canonical site (helps Google build a knowledge-panel entry
-// and the search sitelinks block).
+// and the search sitelinks block). The product now ships on iOS + Android (and
+// still runs in the browser), so advertise all three platforms and link the
+// store listings as downloadUrls once their real URLs are configured.
+const storeUrls = [appStoreHref(), playStoreHref()].filter((u) => u.startsWith('http'));
 const jsonLdSoftware = {
   '@context': 'https://schema.org',
   '@type': 'SoftwareApplication',
   name: 'DailyMood',
-  operatingSystem: 'Web',
+  operatingSystem: 'iOS, Android, Web',
   applicationCategory: 'LifestyleApplication',
   url: `${SITE_URL}/`,
+  ...(storeUrls.length ? { downloadUrl: storeUrls } : {}),
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'THB' },
   inLanguage: ['th', 'en'],
 };

@@ -1,59 +1,42 @@
 ---
 import CheckCircle from './CheckCircle.astro';
-import Folder from './paper/Folder.astro';
 import Sticker from './paper/Sticker.astro';
-import Arrow from './paper/Arrow.astro';
-import AppDashboard from './paper/AppDashboard.astro';
+import PhoneShot from './paper/PhoneShot.astro';
+import StoreBadges from './paper/StoreBadges.astro';
+import heroImg from '@/assets/app/app-01-home.png';
 import { type Locale, getMessages } from '@/lib/i18n';
-import { loginHref, subscriptionHref } from '@/lib/cta';
 
 interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
-const m = getMessages(locale).landing;
-const h = m.hero;
-const mk = m.mockup;
+const h = getMessages(locale).landing.hero;
 ---
 
-<section id="top" style="position:relative;overflow:clip;padding-top:44px;padding-bottom:96px">
+<section id="top" style="position:relative;overflow:hidden;padding-top:40px;padding-bottom:90px">
   <div
     class="container hero-grid"
-    style="position:relative;display:grid;grid-template-columns:1fr 1.04fr;gap:60px;align-items:center"
+    style="position:relative;display:grid;grid-template-columns:1.04fr 1fr;gap:54px;align-items:center"
   >
     <div>
       <span class="eyebrow">{h.eyebrow}</span>
-      <h1 class="h-display" style="font-size:clamp(40px, 6.4vw, 82px);margin:22px 0 22px">
+      <h1 class="h-display" style="font-size:clamp(40px, 6.2vw, 80px);margin:22px 0 22px">
         {h.h1a}<br />
         {h.h1b}{' '}
         <span class="mark">{h.h1c}</span>
       </h1>
-      <p style="font-size:19px;color:var(--ink-2);max-width:520px;margin-bottom:26px;font-weight:500">
+      <p style="font-size:19px;color:var(--ink-2);max-width:500px;margin-bottom:28px;font-weight:500">
         {h.sub}
       </p>
 
-      <!-- focal 14-day trial card -->
-      <a href={subscriptionHref()} class="trial-focal">
-        <span class="trial-badge">{h.trialBannerDays}</span>
-        <span class="trial-txt">
-          <b>{h.trialFocalTitle}</b>
-          <small>{h.trialFocalSub}</small>
-        </span>
-        <span class="trial-arrow"><Arrow s={18} /></span>
-      </a>
+      <!-- primary action -->
+      <StoreBadges locale={locale} size="lg" location="hero" />
 
-      <!-- primary CTA -->
-      <div style="display:flex;gap:14px;margin-top:18px;flex-wrap:wrap;align-items:center">
-        <a href={loginHref()} class="btn btn-peach" style="height:56px;font-size:17px">
-          {h.ctaMain} <Arrow />
-        </a>
-        <span style="font-size:13px;font-weight:700;color:var(--ink-3)">{h.ctaSub}</span>
-      </div>
-
-      <div style="display:flex;gap:18px;margin-top:22px;flex-wrap:wrap">
+      <!-- trust row -->
+      <div style="display:flex;gap:18px;margin-top:24px;flex-wrap:wrap;align-items:center">
         {
           [h.trust1, h.trust2, h.trust3].map((tx) => (
-            <span style="display:flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--ink-2)">
+            <span style="display:flex;align-items:center;gap:7px;font-size:13.5px;font-weight:700;color:var(--ink-2)">
               <CheckCircle /> {tx}
             </span>
           ))
@@ -61,33 +44,38 @@ const mk = m.mockup;
       </div>
     </div>
 
-    <!-- mockup folder -->
-    <div style="position:relative">
+    <!-- hero phone -->
+    <div style="position:relative;display:grid;place-items:center">
+      <div
+        aria-hidden="true"
+        style="position:absolute;border-radius:50%;filter:blur(46px);opacity:.55;background:var(--peach);width:330px;height:330px;top:-10px;right:30px"
+      >
+      </div>
+      <div
+        aria-hidden="true"
+        style="position:absolute;border-radius:50%;filter:blur(46px);opacity:.6;background:var(--lavender);width:300px;height:300px;bottom:0;left:10px"
+      >
+      </div>
       <Sticker
         face="great"
         color="#fff"
-        size={56}
+        size={58}
         class="floaty"
-        style="bottom:50px;right:-22px;--r:10deg;animation-delay:.4s;z-index:9"
+        style="bottom:64px;right:4%;--r:10deg;animation-delay:.4s;z-index:9"
       />
       <div
         class="chip floaty"
-        style="position:absolute;top:140px;left:-30px;z-index:9;--r:-8deg;transform:rotate(-8deg);animation-delay:.9s"
+        style="position:absolute;top:90px;left:2%;z-index:9;--r:-8deg;transform:rotate(-8deg);animation-delay:.9s"
       >
-        {mk.chipStreak}
+        {h.chipStreak}
       </div>
-
-      <Folder
-        clip
-        style="transform:rotate(1.4deg)"
-        bodyStyle="overflow:hidden;border-radius:4px 18px 18px 18px;box-shadow:var(--shadow-lg)"
-      >
-        <span slot="tab" style="display:inline-flex;align-items:center;gap:8px">
-          <span style="width:10px;height:10px;border-radius:50%;background:#fff"></span>
-          {mk.topbarToday}
-        </span>
-        <AppDashboard locale={locale} />
-      </Folder>
+      <PhoneShot
+        src={heroImg}
+        alt="DailyMood — today screen"
+        w={340}
+        eager
+        style="position:relative;z-index:5;transform:rotate(1.4deg)"
+      />
     </div>
   </div>
 </section>

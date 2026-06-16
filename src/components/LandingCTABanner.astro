@@ -1,9 +1,8 @@
 ---
 import Folder from './paper/Folder.astro';
 import Sticker from './paper/Sticker.astro';
-import Arrow from './paper/Arrow.astro';
+import StoreBadges from './paper/StoreBadges.astro';
 import { type Locale, getMessages } from '@/lib/i18n';
-import { loginHref } from '@/lib/cta';
 
 interface Props {
   locale: Locale;
@@ -12,12 +11,12 @@ const { locale } = Astro.props;
 const c = getMessages(locale).landing.cta;
 ---
 
-<section id="cta" class="section" style="padding-bottom:80px">
+<section id="download" class="section" style="padding-bottom:80px">
   <div class="container reveal">
     <Folder
       tabClass="ink"
       style="transform:rotate(-.4deg)"
-      bodyStyle="border-radius:4px 26px 26px 26px;padding:64px 40px;text-align:center;background:linear-gradient(135deg,var(--peach) 0%,#F49EAB 48%,var(--purple) 100%);color:#fff;position:relative;overflow:hidden"
+      bodyStyle="border-radius:4px 26px 26px 26px;padding:60px 40px;text-align:center;background:linear-gradient(135deg,var(--peach) 0%,#F49EAB 48%,var(--purple) 100%);color:#fff;position:relative;overflow:hidden"
     >
       <span slot="tab">{c.tab}</span>
 
@@ -37,15 +36,13 @@ const c = getMessages(locale).landing.cta;
         style="top:50px;right:18%;--r:6deg;animation-delay:1s"
       />
 
-      <h2 class="h-display" style="font-size:clamp(32px, 5vw, 62px);color:#fff;max-width:740px;margin:0 auto 16px">
+      <h2 class="h-display" style="font-size:clamp(32px, 5vw, 60px);color:#fff;max-width:740px;margin:0 auto 14px">
         {c.title}
       </h2>
       <p style="font-size:19px;color:rgba(255,255,255,.92);max-width:520px;margin:0 auto 30px;font-weight:500">
         {c.sub}
       </p>
-      <a href={loginHref()} class="btn btn-white" style="height:60px;padding:0 32px;font-size:17px">
-        {c.btn} <Arrow />
-      </a>
+      <StoreBadges locale={locale} size="lg" location="cta" justify="center" />
     </Folder>
   </div>
 </section>

@@ -5,159 +5,88 @@
       "ai": "AI",
       "pricing": "Pricing",
       "faq": "FAQ",
-      "articles": "Articles",
-      "signin": "Sign in",
-      "cta": "Get started"
+      "download": "Download"
+    },
+    "store": {
+      "appStoreLabel": "Download on the",
+      "playLabel": "Get it on",
+      "androidSoon": "Android coming soon"
     },
     "hero": {
-      "eyebrow": "AI-POWERED MOOD JOURNAL",
-      "h1a": "Track how you feel,",
-      "h1b": "every day,",
-      "h1c": "in 10 seconds.",
-      "sub": "DailyMood uses AI to understand your mood from text, voice, and photos — surface patterns and see your whole year on one screen. Free forever.",
-      "ctaMain": "Get started free",
-      "ctaSub": "Free forever · Start instantly",
-      "trialBannerDays": "14",
-      "trialBannerTag": "✨ New",
-      "trialBannerText": "Try Pro free for 14 days — no card, no charge",
-      "trialBannerCta": "Start free",
-      "trialFocalTitle": "Try Pro free for 14 days",
-      "trialFocalSub": "No card required · cancel anytime",
-      "trust1": "Encrypted",
-      "trust2": "No ads",
-      "trust3": "TH + EN"
-    },
-    "heroWidget": {
-      "eyebrow": "Try it · No signup",
-      "title": "How was your day?",
-      "moodLabel": "Tap a mood (optional)",
-      "moods": {
-        "amazing": "Happy",
-        "happy": "Calm",
-        "neutral": "Neutral",
-        "sad": "Sad",
-        "angry": "Angry",
-        "anxious": "Anxious",
-        "tired": "Tired"
-      },
-      "placeholder": "What happened today? Let it out in a few words...",
-      "analyzeCta": "Analyze my mood ✨",
-      "analyzing": "Analyzing...",
-      "loading": [
-        "Understanding how you feel...",
-        "Reading between the lines...",
-        "Picking up on your day...",
-        "Almost there..."
-      ],
-      "youWrote": "You wrote",
-      "resultEyebrow": "The AI sees",
-      "saveHint": "Save this mood and start tracking your week",
-      "saveCta": "Sign in with Google to save",
-      "tryAgain": "Try again",
-      "errShort": "Write at least 5 characters",
-      "errLong": "Keep it short — 300 characters max",
-      "errRate": "That's a lot of tries today. Take a short break and come back.",
-      "errGeneric": "Sorry, something went wrong. Please try again.",
-      "errCaptcha": "Quick check that you're human — give it a sec, then try again.",
-      "errBusy": "We're a bit busy right now. Please try again in a moment."
-    },
-    "mockup": {
-      "topbarToday": "Today",
-      "topbarCalendar": "Calendar",
-      "topbarStats": "Stats",
-      "topbarInsights": "Insights",
-      "greeting": "Good morning · Mon May 12",
-      "question": "How are you feeling today?",
-      "aiSummaryTag": "✨ AI SUMMARY",
-      "aiSummaryPeriod": "This week",
-      "aiSummary1": "You felt",
-      "aiSummary1bold": "18% better",
-      "aiSummary2": "than last week. Days with exercise scored",
-      "aiSummary2bold": "higher",
-      "aiSummary3": "Try keeping it at 3×/week.",
-      "calMonth": "May",
-      "chipStreak": "✨ Streak +7",
-      "chipGreat": "😄 Great"
+      "eyebrow": "✦ AI mood-journal app",
+      "h1a": "Tell how you feel",
+      "h1b": "in",
+      "h1c": "one tap",
+      "sub": "A mood journal for iPhone and Android. AI reflects your notes, recaps every month, and shows your whole year — in just seconds a day.",
+      "trust1": "Free · no card",
+      "trust2": "14-day Pro trial",
+      "trust3": "TH + EN",
+      "chipStreak": "✨ Streak +7"
     },
     "byNumbers": {
       "items": [
-        { "n": "7", "l": "starter moods", "s": "+ custom moods on Pro" },
-        { "n": "≤10", "l": "seconds per entry", "s": "tap, type, talk, or shoot" },
-        { "n": "365", "l": "days in year-in-pixels", "s": "your whole year on one screen" },
-        { "n": "2", "l": "languages · TH + EN", "s": "both UI and AI summaries" }
+        { "n": "10", "l": "moods to pick", "s": "one tap to log" },
+        { "n": "2", "l": "platforms", "s": "iPhone and Android" },
+        { "n": "365", "l": "days in your year view", "s": "whole year on one screen" },
+        { "n": "2", "l": "languages · TH + EN", "s": "both app and AI summaries" }
       ]
     },
-    "dayTimeline": {
-      "eyebrow": "A day with DailyMood",
-      "title": "Just a few seconds a day",
-      "sub": "Log to the rhythm of your day — AI connects the dots across your week.",
-      "rows": [
-        { "time": "08:00", "t": "Tap this morning's mood", "d": "Open the app, pick 1 of 7 moods — done in 10 seconds." },
-        { "time": "12:30", "t": "Type or speak a quick note", "d": "AI extracts mood, tags, and a one-line summary — confirm before saving." },
-        { "time": "15:00", "t": "Snap the moment", "d": "Upload a photo; AI reads context and suggests tags (Pro)." },
-        { "time": "21:00", "t": "Check year-in-pixels", "d": "See your day, week, and whole year on one screen." },
-        { "time": "End of week", "t": "Read your AI Insights", "d": "Summary + patterns + one tailored suggestion, with a sparkline." }
+    "capture": {
+      "eyebrow": "QUICK CAPTURE",
+      "title": "Write a little. AI gets the rest.",
+      "sub": "Type, talk, snap a photo, or drop a pin, then tag the day's activities — tap Analyse and AI does the rest.",
+      "chip": "🎙️ Just speak",
+      "bullets": [
+        { "ic": "⌨️", "t": "Type a short note or dictate by voice" },
+        { "ic": "📷", "t": "Attach a photo and drop a location pin" },
+        { "ic": "🏷️", "t": "Tag activities — work, exercise, friends" }
       ]
     },
     "ai": {
-      "eyebrow": "AI · POWERS EVERYTHING",
-      "h2a": "AI that",
-      "h2b": "actually understands",
-      "h2c": "you.",
-      "sub": "More than a tracker. DailyMood reads your entries, pulls key phrases, finds patterns — just ask by voice or text.",
-      "f1tag": "AI · TEXT",
-      "f1title": "Type however you want",
-      "f1desc": "Type or speak it. AI extracts mood, tags, and a one-sentence summary — review and confirm before saving.",
-      "f2tag": "AI · VISION",
-      "f2title": "Snap what you see",
-      "f2desc": "Upload a photo. AI reads context and suggests tags about the moment (Pro).",
-      "f3tag": "WEEKLY INSIGHTS",
-      "f3title": "A weekly recap that actually lands",
-      "f3desc": "Summary, patterns, and one tailored suggestion each week — with sparklines and thumbs up/down feedback.",
-      "demoNlpText": "Got through the big presentation. Tired but relieved. Treated myself to coffee from the usual spot ☕",
-      "demoNlpLabel": "detected mood",
-      "demoNlpMood": "· Good",
-      "demoNlpTag1": "work",
-      "demoNlpTag2": "relieved",
-      "demoNlpTag3": "coffee",
-      "demoVisionSuggests": "AI suggests",
-      "demoVisionTag1": "beach",
-      "demoVisionTag2": "evening",
-      "demoVisionTag3": "sunset",
-      "demoInsightsTitle": "✨ Week 19 recap",
-      "demoInsights1": "You felt",
-      "demoInsights1bold": "18% better",
-      "demoInsights2": ".",
-      "demoInsights2bold": "3 days",
-      "demoInsights3": "with high scores matched",
-      "demoInsights3peach": "exercise"
+      "tab": "✦ AI · reflection",
+      "h2a": "Let AI",
+      "h2b": "reflect",
+      "h2c": "your journal",
+      "sub": "After you log, AI reads your entry and reflects it back in three ways.",
+      "modes": [
+        { "tag": "Acknowledge", "d": "AI reflects what you felt — warm, understanding, never judging." },
+        { "tag": "Find what matters", "d": "It surfaces the themes and triggers that shaped your day." },
+        { "tag": "Short summary", "d": "Your entry condensed to a few lines, easy to revisit later." }
+      ],
+      "disclaimer": "Just an AI perspective, to support your own reflection."
     },
-    "how": {
-      "eyebrow": "HOW IT WORKS",
-      "title": "Three steps to start",
-      "s1t": "Tap a mood",
-      "s1d": "Pick one of 7 default moods or design your own (Pro)",
-      "s2t": "Type, talk, or shoot",
-      "s2d": "Add a short note, use voice, or attach a photo. AI summarises and tags.",
-      "s3t": "See the big picture",
-      "s3d": "Year-in-pixels calendar and weekly insights — patterns included."
+    "calendar": {
+      "eyebrow": "CALENDAR · AI RECAP",
+      "title": "A monthly mood recap from AI",
+      "sub": "Month, timeline, and year views — with a recap of your best day, your hardest day, and what shaped them.",
+      "chip": "⭐ Best day",
+      "bullets": [
+        { "ic": "🗓️", "t": "Switch between calendar, timeline, and year" },
+        { "ic": "🔆", "t": "AI highlights your best and hardest days" },
+        { "ic": "🔍", "t": "Detected patterns, each with a short why" }
+      ]
+    },
+    "stats": {
+      "eyebrow": "MOOD STATS",
+      "title": "See your mood trends clearly",
+      "sub": "A weekly trend line and a mood-mix breakdown by percentage — so you can see what lifts you and what drags.",
+      "chip": "📈 Happy 30%",
+      "bullets": [
+        { "ic": "📉", "t": "Weekly and monthly trend lines" },
+        { "ic": "🍩", "t": "Full mood mix, broken down by percentage" },
+        { "ic": "⚡", "t": "How activities push your mood up or down" }
+      ]
     },
     "year": {
-      "eyebrow": "YEAR IN PIXELS",
-      "title": "Your whole year, one screen",
-      "sub": "One dot per day, coloured by your dominant mood. Spot the good stretches, the rough patches, and your rhythm — instantly.",
-      "cardYear": "2026",
-      "calendarLabel": "Mood calendar",
-      "cardDaysLogged": "298 days logged",
-      "moods": {
-        "great": "Great",
-        "good": "Good",
-        "okay": "Okay",
-        "meh": "Meh",
-        "bad": "Bad",
-        "awful": "Awful"
-      },
-      "months": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+      "eyebrow": "YEAR IN REVIEW",
+      "title": "Your whole year, on one screen",
+      "sub": "A full-year AI recap with your standout mood, longest streak, and a downloadable PDF report.",
+      "chip": "🔥 12-day streak",
+      "bullets": [
+        { "ic": "✨", "t": "A short AI story of your whole year" },
+        { "ic": "😊", "t": "Your standout mood and longest streak" },
+        { "ic": "📄", "t": "Download the AI report as a PDF (Pro)" }
+      ]
     },
     "features": {
       "eyebrow": "FEATURES",
@@ -191,20 +120,20 @@
       "freeName": "Free",
       "freePrice": "฿0",
       "freePer": "forever",
-      "freeCta": "Get started",
+      "freeCta": "Download free",
       "freeFeats": [
         "Unlimited entries + quick icons + journal",
         "Voice input (TH + EN)",
         "Mood calendar + timeline + stats",
-        "AI text analysis · 5/day",
+        "AI text analysis · 3/day",
         "Weekly insights (preview)",
         "Achievements + 12 badges"
       ],
       "proName": "Pro",
       "proPrice": "฿99",
-      "proPer": "/mo or ฿949/yr",
+      "proPer": "/mo or ฿790/yr",
       "proBadge": "Popular",
-      "proCta": "Upgrade to Pro",
+      "proCta": "Start 14-day free trial",
       "proFeats": [
         "Everything in Free",
         "Unlimited AI text analysis",
@@ -220,12 +149,12 @@
       "eyebrow": "FAQ",
       "title": "Frequently asked",
       "items": [
-        { "q": "How secure is my data?", "a": "Everything is encrypted and stored securely. Image links rotate every hour. We never sell or share your data." },
+        { "q": "Which devices does it run on?", "a": "DailyMood is available on iPhone (App Store) and Android (Google Play). Your data syncs across devices with one account." },
+        { "q": "How secure is my data?", "a": "Data is encrypted in transit and image links expire in 1 hour. We never sell or share your data." },
         { "q": "Do you train AI on my entries?", "a": "No. Your entries stay in your account only. We never use them to train AI, and we never share them." },
-        { "q": "Does it work on mobile?", "a": "Yes — DailyMood is a web app that works on every browser size. Open instantly without installing; you can also Add to Home Screen for an app-like feel." },
-        { "q": "How is it different from other mood trackers?", "a": "DailyMood is designed for under 10 seconds a day but produces deeper insights with AI — auto summaries, calendar pattern detection, ask AI directly, and photo analysis." },
-        { "q": "Can I cancel Pro any time?", "a": "Yes — cancel from your Subscription page any time. You keep Pro features until the period ends." },
-        { "q": "Which languages are supported?", "a": "Thai and English for both UI and AI summaries. Switch in settings any time." }
+        { "q": "Is it really free?", "a": "Yes — the Free plan is forever, with unlimited entries and 3 AI analyses a day. Upgrade to Pro for unlimited AI and PDF reports." },
+        { "q": "Can I cancel Pro any time?", "a": "Yes — manage it from your App Store or Google Play settings. You keep Pro features until the period ends." },
+        { "q": "Which languages are supported?", "a": "Thai and English for both the app and AI summaries. Switch in settings any time." }
       ]
     },
     "articles": {
@@ -236,13 +165,16 @@
       "viewAll": "View all"
     },
     "cta": {
-      "tab": "Start here",
-      "title": "Ready to know yourself better?",
-      "sub": "10 seconds a day. Start now.",
-      "btn": "Get DailyMood free"
+      "tab": "Get the app",
+      "title": "Start knowing yourself better today",
+      "sub": "Free on iPhone and Android · no credit card required"
     },
     "footer": {
       "tag": "Track how you feel. Discover yourself.",
+      "webappTitle": "Prefer the desktop?",
+      "webappSub": "Open the DailyMood web app in your browser — no install needed.",
+      "webappCta": "Open web app",
+      "webappLink": "Web app",
       "productLabel": "Product",
       "legalLabel": "Legal",
       "copy": "© 2026 DailyMood",
@@ -255,13 +187,12 @@
         ["Facebook", "https://www.facebook.com/dailymood.me"],
         ["TikTok", "https://www.tiktok.com/@dailymood.me"]
       ],
-      "langSwitcher": "English",
       "altLang": "ภาษาไทย"
     },
     "meta": {
-      "title": "DailyMood — Track your mood every day with AI · Free Mood Journal",
-      "description": "DailyMood is a web-based mood journal that uses AI to understand your feelings from text, voice, and photos. Find patterns, see your whole year in pixels, and start free in seconds.",
-      "ogTitle": "DailyMood — AI-powered mood journal"
+      "title": "DailyMood — AI mood journal app for iPhone & Android",
+      "description": "DailyMood is an AI mood-journal app for iPhone and Android. AI reflects your notes, recaps every month, and shows your whole year on one screen. Download free — no card required.",
+      "ogTitle": "DailyMood — AI mood journal app"
     },
     "consent": {
       "title": "This site uses cookies",

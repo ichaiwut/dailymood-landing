@@ -1,5 +1,8 @@
 ---
+import Arrow from './paper/Arrow.astro';
+import StoreBadges from './paper/StoreBadges.astro';
 import { type Locale, getMessages, otherLocale, localeHref } from '@/lib/i18n';
+import { webAppHref } from '@/lib/cta';
 
 interface Props {
   locale: Locale;
@@ -13,6 +16,7 @@ const socialLinks = f.social as [string, string][];
 const altLocale = otherLocale(locale);
 const altHref = localeHref(altLocale);
 const home = localeHref(locale);
+const webApp = webAppHref();
 
 const productLinks: [string, string][] = [
   [n.features, `${home}#features`],
@@ -23,6 +27,25 @@ const productLinks: [string, string][] = [
 
 <footer style="background:var(--plum);color:#fff;padding:64px 0 30px;position:relative;z-index:1">
   <div class="container">
+    <!-- web-app callout -->
+    <a
+      href={webApp}
+      target="_blank"
+      rel="noopener noreferrer"
+      style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;text-decoration:none;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:18px;padding:22px 26px;margin-bottom:44px"
+    >
+      <div style="display:flex;align-items:center;gap:16px">
+        <span style="width:46px;height:46px;border-radius:12px;background:rgba(255,255,255,.1);display:grid;place-items:center;font-size:24px;flex-shrink:0">💻</span>
+        <div>
+          <div style="font-weight:800;font-size:18px">{f.webappTitle}</div>
+          <div style="font-size:14px;color:rgba(255,255,255,.62);margin-top:2px">{f.webappSub}</div>
+        </div>
+      </div>
+      <span style="display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:15px;padding:11px 18px;border-radius:11px;background:#fff;color:var(--plum);flex-shrink:0">
+        {f.webappCta} <Arrow />
+      </span>
+    </a>
+
     <div class="grid-3" style="display:grid;grid-template-columns:1.6fr 1fr 1fr;gap:40px;margin-bottom:48px">
       <div>
         <div style="display:flex;align-items:center;gap:11px;margin-bottom:14px">
@@ -40,7 +63,8 @@ const productLinks: [string, string][] = [
           </svg>
           <span style="font-weight:800;font-size:22px">Dailymood</span>
         </div>
-        <p style="color:rgba(255,255,255,.6);font-size:15px;max-width:300px;margin:0">{f.tag}</p>
+        <p style="color:rgba(255,255,255,.6);font-size:15px;max-width:300px;margin:0 0 18px">{f.tag}</p>
+        <StoreBadges locale={locale} size="sm" location="footer" />
         <div style="display:flex;align-items:center;gap:14px;margin-top:20px">
           {
             socialLinks.map(([name, href]) => (
@@ -80,6 +104,16 @@ const productLinks: [string, string][] = [
               </li>
             ))
           }
+          <li>
+            <a
+              href={webApp}
+              target="_blank"
+              rel="noopener noreferrer"
+              style="color:rgba(255,255,255,.85);text-decoration:none;font-size:15px"
+            >
+              {f.webappLink}
+            </a>
+          </li>
         </ul>
       </div>
 

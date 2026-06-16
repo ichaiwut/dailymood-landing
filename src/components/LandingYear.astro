@@ -1,0 +1,25 @@
+---
+import Spotlight from './paper/Spotlight.astro';
+import yearImg from '@/assets/app/app-06-year.png';
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getMessages(locale).landing.year;
+---
+
+<Spotlight
+  id="year"
+  rot={-1.4}
+  eyebrow={c.eyebrow}
+  title={c.title}
+  sub={c.sub}
+  bullets={c.bullets as { ic: string; t: string }[]}
+  img={yearImg}
+  alt="DailyMood — year in review screen"
+  accent={{ bg: 'rgba(212,190,228,.45)', fg: 'var(--purple)', blob: 'var(--lavender)' }}
+  sticker={{ face: 'great', pos: 'top:36px;right:4%;--r:10deg' }}
+  chip={{ txt: c.chip, rot: '-7deg', pos: 'bottom:80px;left:2%' }}
+/>

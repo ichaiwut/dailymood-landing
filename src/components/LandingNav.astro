@@ -1,7 +1,6 @@
 ---
 import Logo from './Logo.astro';
 import { type Locale, getMessages, otherLocale, localeHref } from '@/lib/i18n';
-import { loginHref } from '@/lib/cta';
 
 interface Props {
   locale: Locale;
@@ -35,7 +34,6 @@ const home = localeHref(locale);
       <a href={`${home}#ai`} class="navlink">{n.ai}</a>
       <a href={`${home}#pricing`} class="navlink">{n.pricing}</a>
       <a href={`${home}#faq`} class="navlink">{n.faq}</a>
-      <a href="https://my.dailymood.me/articles" class="navlink">{n.articles}</a>
     </div>
 
     <div style="display:flex;align-items:center;gap:12px">
@@ -49,11 +47,11 @@ const home = localeHref(locale);
         <span style={`opacity:${locale === 'en' ? 1 : 0.4}`}>EN</span>
       </a>
       <a
-        href={loginHref()}
+        href={`${home}#download`}
         class="btn btn-ink"
         style="height:44px;font-size:14px;padding:0 18px;border-radius:12px"
       >
-        {n.cta}
+        {n.download}
       </a>
     </div>
   </div>

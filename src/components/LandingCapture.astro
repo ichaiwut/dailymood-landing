@@ -1,0 +1,26 @@
+---
+import Spotlight from './paper/Spotlight.astro';
+import captureImg from '@/assets/app/app-02-ai-journal.png';
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getMessages(locale).landing.capture;
+---
+
+<Spotlight
+  id="capture"
+  reverse
+  rot={-1.6}
+  eyebrow={c.eyebrow}
+  title={c.title}
+  sub={c.sub}
+  bullets={c.bullets as { ic: string; t: string }[]}
+  img={captureImg}
+  alt="DailyMood — quick capture screen"
+  accent={{ bg: 'rgba(166,115,241,.16)', fg: 'var(--purple)', blob: 'var(--lavender)' }}
+  sticker={{ face: 'good', pos: 'top:40px;right:6%;--r:8deg' }}
+  chip={{ txt: c.chip, rot: '-7deg', pos: 'bottom:80px;left:2%' }}
+/>

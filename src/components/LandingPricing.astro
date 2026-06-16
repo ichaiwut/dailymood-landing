@@ -2,7 +2,6 @@
 import CheckCircle from './CheckCircle.astro';
 import Folder from './paper/Folder.astro';
 import { type Locale, getMessages } from '@/lib/i18n';
-import { loginHref, subscriptionHref } from '@/lib/cta';
 
 interface Props {
   locale: Locale;
@@ -48,7 +47,7 @@ const proFeats = p.proFeats as string[];
             ))
           }
         </ul>
-        <a href={loginHref()} class="btn btn-ghost" style="width:100%">{p.freeCta}</a>
+        <a href="#download" class="btn btn-ghost" style="width:100%">{p.freeCta}</a>
       </Folder>
 
       <!-- Pro -->
@@ -79,7 +78,7 @@ const proFeats = p.proFeats as string[];
             ))
           }
         </ul>
-        <a href={subscriptionHref()} class="btn btn-peach" style="width:100%">{p.proCta}</a>
+        <a href="#download" class="btn btn-peach" style="width:100%">{p.proCta}</a>
       </Folder>
     </div>
   </div>

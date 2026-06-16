@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+  /** Imported screenshot asset from src/assets/app (optimized at build). */
+  src: ImageMetadata;
+  alt: string;
+  /** Display width in CSS px. The optimized asset is generated at 2× for retina. */
+  w?: number;
+  /** Hero phone loads eagerly (it's the LCP candidate); spotlights stay lazy. */
+  eager?: boolean;
+  /** Override the drop-shadow `filter` (e.g. a stronger shadow on dark folders). */
+  shadow?: string;
+  /** Extra inline style (rotation, z-index, position) merged onto the <img>. */
+  style?: string;
+  class?: string;
+}
+// The default Paper Desk phone drop-shadow (two stacked shadows for a soft, lifted feel).
+const DEFAULT_SHADOW =
+  'drop-shadow(0 44px 64px rgba(40,20,10,.34)) drop-shadow(0 8px 16px rgba(40,20,10,.18))';
+const {
+  src,
+  alt,
+  w = 318,
+  eager = false,
+  shadow = DEFAULT_SHADOW,
+  style = '',
+  class: cls = '',
+} = Astro.props;
+---
+
+<Image
+  src={src}
+  alt={alt}
+  width={w * 2}
+  loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : 'auto'}
+  decoding={eager ? 'auto' : 'async'}
+  class={`phone-shot ${cls}`}
+  style={`width:${w}px;max-width:100%;height:auto;display:block;filter:${shadow};${style}`}
+/>

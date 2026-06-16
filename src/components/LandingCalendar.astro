@@ -1,0 +1,24 @@
+---
+import Spotlight from './paper/Spotlight.astro';
+import calendarImg from '@/assets/app/app-04-calendar.png';
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getMessages(locale).landing.calendar;
+---
+
+<Spotlight
+  id="calendar"
+  eyebrow={c.eyebrow}
+  title={c.title}
+  sub={c.sub}
+  bullets={c.bullets as { ic: string; t: string }[]}
+  img={calendarImg}
+  alt="DailyMood — calendar recap screen"
+  accent={{ bg: 'rgba(252,164,91,.18)', fg: '#C8742E', blob: 'var(--peach)' }}
+  sticker={{ face: 'great', pos: 'top:30px;left:2%;--r:-10deg' }}
+  chip={{ txt: c.chip, rot: '7deg', pos: 'bottom:70px;right:2%' }}
+/>

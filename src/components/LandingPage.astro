@@ -3,14 +3,16 @@ import type { Locale } from '@/lib/i18n';
 import LandingNav from './LandingNav.astro';
 import LandingHero from './LandingHero.astro';
 import LandingByNumbers from './LandingByNumbers.astro';
+import LandingCapture from './LandingCapture.astro';
 import LandingAI from './LandingAI.astro';
-import LandingHowItWorks from './LandingHowItWorks.astro';
-import LandingYearInPixels from './LandingYearInPixels.astro';
+import LandingCalendar from './LandingCalendar.astro';
+import LandingStats from './LandingStats.astro';
+import LandingYear from './LandingYear.astro';
 import LandingFeaturesGrid from './LandingFeaturesGrid.astro';
+import LandingArticles from './LandingArticles.astro';
 import LandingTestimonials from './LandingTestimonials.astro';
 import LandingPricing from './LandingPricing.astro';
 import LandingFAQ from './LandingFAQ.astro';
-import LandingArticles from './LandingArticles.astro';
 import LandingCTABanner from './LandingCTABanner.astro';
 import LandingFooter from './LandingFooter.astro';
 
@@ -18,14 +20,26 @@ interface Props {
   locale: Locale;
 }
 const { locale } = Astro.props;
+
+// Google Ads conversion target for an iOS install click ("AW-XXXX/label").
+// The account id (PUBLIC_GADS_ID) can't fire a conversion on its own — it needs
+// the per-action conversion label too. When either is missing, no conversion is
+// sent (the click still records the GA4 download_click event).
+const GADS_ID = (import.meta.env.PUBLIC_GADS_ID as string | undefined) ?? '';
+const GADS_DOWNLOAD_LABEL =
+  (import.meta.env.PUBLIC_GADS_DOWNLOAD_LABEL as string | undefined) ?? '';
+const gadsDownloadSendTo =
+  GADS_ID && GADS_DOWNLOAD_LABEL ? `${GADS_ID}/${GADS_DOWNLOAD_LABEL}` : '';
 ---
 
 <LandingNav locale={locale} />
 <LandingHero locale={locale} />
 <LandingByNumbers locale={locale} />
+<LandingCapture locale={locale} />
 <LandingAI locale={locale} />
-<LandingHowItWorks locale={locale} />
-<LandingYearInPixels locale={locale} />
+<LandingCalendar locale={locale} />
+<LandingStats locale={locale} />
+<LandingYear locale={locale} />
 <LandingFeaturesGrid locale={locale} />
 <LandingArticles locale={locale} />
 <LandingTestimonials locale={locale} />
@@ -60,5 +74,63 @@ const { locale } = Astro.props;
     els.forEach(function (el) {
       io.observe(el);
     });
+  })();
+</script>
+
+<script is:inline define:vars={{ gadsDownloadSendTo }}>
+  // GA4 + Google Ads tracking. Everything goes through the gtag bootstrapped in
+  // Layout and is a silent no-op when analytics is disabled.
+  (function () {
+    function track(name, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+    }
+
+    document.addEventListener('click', function (e) {
+      var t = e.target;
+      if (!t || !t.closest) return;
+
+      // Store-badge clicks. Live badges are <a data-store>; the disabled
+      // "Android coming soon" badge is a non-link carrying data-android-soon.
+      var store = t.closest('a[data-store]');
+      if (store) {
+        var platform = store.getAttribute('data-store');
+        track('download_click', {
+          platform: platform,
+          location: store.getAttribute('data-dl-loc') || '',
+        });
+        // iOS is live → also count the click as a Google Ads install conversion
+        // so ad spend can optimise toward it. Fires only when configured.
+        if (platform === 'ios' && gadsDownloadSendTo) {
+          track('conversion', { send_to: gadsDownloadSendTo });
+        }
+        return;
+      }
+
+      // Android demand: a tap on the greyed-out badge is an interest signal.
+      var soon = t.closest('[data-android-soon]');
+      if (soon) {
+        track('android_interest', { location: soon.getAttribute('data-dl-loc') || '' });
+      }
+    });
+
+    // Section-view funnel: fire once per section as it first scrolls into view,
+    // so we can see how far down the page visitors actually get.
+    var sections = document.querySelectorAll('section[id]');
+    if (sections.length && 'IntersectionObserver' in window) {
+      var io = new IntersectionObserver(
+        function (entries, obs) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) {
+              track('section_view', { section: en.target.id });
+              obs.unobserve(en.target);
+            }
+          });
+        },
+        { threshold: 0, rootMargin: '0px 0px -20% 0px' }
+      );
+      sections.forEach(function (sec) {
+        io.observe(sec);
+      });
+    }
   })();
 </script>

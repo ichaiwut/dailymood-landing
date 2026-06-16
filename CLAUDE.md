@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **dailymood.me landing page** — the public marketing / SEO surface for the DailyMood.me mood-tracking product. This repo is *not* the app; it sells the app and links users into it.
 
+The landing is **app-download focused**: DailyMood ships as native **iOS + Android** apps, so the page's primary job is driving App Store / Google Play installs (store badges in the hero, the `#download` CTA, and the footer). The **web app** (`my.dailymood.me`) is a secondary option, surfaced as a footer callout. The whole page uses the **"Manila Desk"** paper aesthetic (folders, tabs, paperclips, washi tape, mood stickers) with real app screenshots in the hero + five phone "spotlight" sections.
+
 **Spec lives in `PRD.md`** at the repo root. **Prototype reference lives in `prototype/`** (the original Babel-rendered HTML + JSX from Claude Design). PRD wins on copy and behaviour, prototype wins on visuals — read them before touching landing sections.
 
 ## Stack
@@ -33,7 +35,7 @@ The app repo is indexing-disabled by design. SEO lives **here**. Any "what does 
 
 OAuth callbacks, NextAuth config, Stripe webhooks, Drizzle/Postgres, R2 from the app side, Gemini, etc. all live in the app repo — do not touch them from here.
 
-**CTAs go to `https://my.dailymood.me/login`** (or `/login?email=…` for the hero email-pill pattern). Pricing CTA → app login → `/profile/subscription`. The cross-domain URLs come from `src/lib/cta.ts` — change there if the app domain moves.
+**Primary CTAs are App Store / Google Play store badges** (`src/components/paper/StoreBadges.astro`), in the hero, the `#download` CTA banner, and the footer. The store URLs come from `src/lib/cta.ts` — `appStoreHref()` / `playStoreHref()`, backed by `PUBLIC_IOS_URL` / `PUBLIC_ANDROID_URL`. **Until those env vars are set the badges fall back to the in-page `#download` anchor.** Pricing's Free/Pro buttons also scroll to `#download` (Pro's 14-day trial + IAP start in-app). The **web app** is a secondary footer link via `webAppHref()` (→ `PUBLIC_APP_URL`, default `https://my.dailymood.me`). The legacy `loginHref()` / `subscriptionHref()` helpers remain in `cta.ts` documenting the cross-domain surface but are no longer used by the landing sections. Store-badge clicks fire a GA4 `download_click` event (`platform` + `location`) via a delegated inline script in `LandingPage.astro`. That same script also fires: a Google Ads `conversion` on iOS clicks (when `PUBLIC_GADS_ID` + `PUBLIC_GADS_DOWNLOAD_LABEL` are set); an `android_interest` event (`location`) when the greyed-out "Android coming soon" badge is tapped (`data-android-soon`); and a `section_view` event (`section`) once per `section[id]` as it scrolls into view (a scroll-depth funnel). All are no-ops when GA is disabled.
 
 ## Source-of-truth docs (read before writing)
 
@@ -85,7 +87,7 @@ Cut by the PRD. Do not propose adding back without a PRD update:
 - StatsBand
 - `aggregateRating` schema
 - Per-card star ratings
-- Social icons in footer
+- ~~Social icons in footer~~ — **re-added intentionally** (Facebook + TikTok, commit `cbac87c`); now an accepted exception. Read from `footer.social` in messages.
 - Company / About / Blog columns in footer
 
 ## Project structure
@@ -93,20 +95,29 @@ Cut by the PRD. Do not propose adding back without a PRD update:
 ```
 src/
   components/                  All .astro components (server-rendered at build time)
-    LandingPage.astro            composes the 11 sections
-    LandingNav.astro             includes inline <script> for sticky scroll state
-    LandingHero.astro
-    LandingBrowserMockup.astro   the Today-screen browser mock in the hero
-    LandingAI.astro
-    LandingHowItWorks.astro
-    LandingYearInPixels.astro    deterministic 12×31 mood-pixel grid
+    LandingPage.astro            composes the 15 sections + scroll-reveal & analytics scripts (download_click, conversion, android_interest, section_view)
+    LandingNav.astro             anchor links + Download button; inline <script> for sticky scroll state
+    LandingHero.astro            store badges + trust row + hero phone (app-01-home)
+    LandingByNumbers.astro       4 stacked stat sheets (10 moods · 2 platforms · 365 · 2 langs)
+    LandingCapture.astro         #capture spotlight (app-02-ai-journal)
+    LandingAI.astro              #ai dark-plum "AI reflects" folder + phone (app-03-ai-reflect)
+    LandingCalendar.astro        #calendar spotlight (app-04-calendar)
+    LandingStats.astro           #stats spotlight, tinted band (app-05-stats)
+    LandingYear.astro            #year spotlight (app-06-year)
     LandingFeaturesGrid.astro    9 feature cards, each with a custom inline-SVG icon
+    LandingArticles.astro        client-fetched latest articles from the app API
     LandingTestimonials.astro
-    LandingPricing.astro
+    LandingPricing.astro         Free/Pro folders; both CTAs scroll to #download
     LandingFAQ.astro             uses native <details>; inline <script> enforces one-open-at-a-time
-    LandingCTABanner.astro
-    LandingFooter.astro
+    LandingCTABanner.astro       #download — gradient folder + store badges
+    LandingFooter.astro          web-app callout + store badges + social + legal
+    paper/                       Manila Desk primitives
+      Folder.astro / Sticker.astro / Paperclip.astro / Arrow.astro
+      StoreBadges.astro            App Store + Google Play badges (data-store/-loc for GA)
+      Spotlight.astro              generic text↔phone section (powers Capture/Calendar/Stats/Year)
+      PhoneShot.astro              astro:assets <Image> wrapper (WebP, lazy; hero is eager)
     Logo.astro / MoodFace.astro / FeatIcon.astro / CheckCircle.astro
+  assets/app/                  the 6 real phone screenshots (optimized to WebP by astro:assets at build)
   layouts/
     Layout.astro                 <html>, <head> (meta, OG, canonical, hreflang, JSON-LD), <body>
   pages/
@@ -114,12 +125,13 @@ src/
     en/index.astro               EN landing at /en/
   lib/
     i18n.ts                      getMessages(locale), otherLocale, localeHref
-    cta.ts                       loginHref() / subscriptionHref() — single source of truth for CTAs
+    cta.ts                       appStoreHref()/playStoreHref()/webAppHref() (+ legacy login helpers)
   styles/
     globals.css                  tokens (--ink, --peach, etc) + .container/.btn/.eyebrow + responsive collapses
 messages/
   th.json / en.json              all landing copy under `landing.*`
 prototype/                       reference HTML/JSX bundle from Claude Design (do not import from src)
+examples/landing-paper/          the app-landing design handoff (HTML/JSX/CSS + screenshots; reference only)
 astro.config.mjs                 i18n: locales ['th','en'], defaultLocale 'th', prefixDefaultLocale: false
 ```
 
@@ -139,11 +151,13 @@ npm run typecheck         # astro check (TS + Astro types)
 Note: Astro ignores the `PORT` env var. Use `--port` on the CLI.
 
 Required env vars (see `.env.example`) — all prefixed `PUBLIC_` so Astro exposes them to the build:
-- `PUBLIC_APP_URL` — defaults to `https://my.dailymood.me`. Used by `src/lib/cta.ts`.
+- `PUBLIC_APP_URL` — defaults to `https://my.dailymood.me`. The web-app link (`webAppHref()`) + legacy CTAs in `src/lib/cta.ts`.
+- `PUBLIC_IOS_URL` / `PUBLIC_ANDROID_URL` — App Store / Google Play listing URLs for the download badges (`appStoreHref()` / `playStoreHref()`). Leave empty and the badges fall back to the in-page `#download` anchor.
 - `PUBLIC_SITE_URL` — defaults to `https://dailymood.me`. Used for canonical + OG URLs.
 - `PUBLIC_GA_ID` — Google Analytics 4 measurement ID (`G-XXXXXXXXXX`). When set, the layout loads `gtag.js` on every page load (PDPA informed-notice model) with `anonymize_ip: true`. Leave empty to disable GA entirely.
 - `PUBLIC_GADS_ID` — Google Ads conversion / remarketing tag ID (`AW-XXXXXXXXX`). When set, configured alongside GA via the same `gtag.js` bootstrap. Disclosed in `/cookies`. Leave empty to disable Google Ads.
-- `PUBLIC_TURNSTILE_SITE_KEY` — Cloudflare Turnstile site key for the hero "try the AI" widget (anti-bot). When set, the widget renders a Turnstile challenge and sends its token to the app's `/api/guest/analyze`, which verifies it with `TURNSTILE_SECRET_KEY` (set in the **app** repo / Railway). Both keys must be set for the bot check to be active. Disclosed in `/cookies`. Leave empty to disable.
+- `PUBLIC_GADS_DOWNLOAD_LABEL` — Google Ads conversion *label* (the part after the slash in `AW-XXXXXXXXX/AbC-D_efGh`). When set together with `PUBLIC_GADS_ID`, an App Store (iOS) badge click fires a Google Ads `conversion`. Leave either empty and no conversion is sent (the GA4 `download_click` still fires).
+- `PUBLIC_TURNSTILE_SITE_KEY` — Cloudflare Turnstile site key. **Currently unused** — the interactive "try the AI" hero widget was removed in the app-download redesign (the hero now shows store badges). The var is kept for if/when the widget returns; safe to leave empty.
 
 ## Deployment (Railway)
 
@@ -173,10 +187,13 @@ All are `PUBLIC_*` so Astro inlines them into the static output. They must be se
 | Var | Value | What it does |
 |---|---|---|
 | `PUBLIC_SITE_URL` | `https://dailymood.me` | Canonical/OG/hreflang URLs |
-| `PUBLIC_APP_URL` | `https://my.dailymood.me` | Every CTA link via `src/lib/cta.ts` |
-| `PUBLIC_GA_ID` | `G-XXXXXXXXXX` (production GA4) | Loaded on every page load with `anonymize_ip` |
+| `PUBLIC_APP_URL` | `https://my.dailymood.me` | Web-app footer link + legacy CTAs via `src/lib/cta.ts` |
+| `PUBLIC_IOS_URL` | `https://apps.apple.com/…/idXXXXXXXXX` | App Store badge target. Empty → badges fall back to `#download` |
+| `PUBLIC_ANDROID_URL` | `https://play.google.com/store/apps/details?id=…` | Google Play badge target. Empty → badges fall back to `#download` |
+| `PUBLIC_GA_ID` | `G-XXXXXXXXXX` (production GA4) | Loaded on every page load with `anonymize_ip`; also receives the `download_click` event |
 | `PUBLIC_GADS_ID` | `AW-XXXXXXXXX` (Google Ads conversion tag) | Loaded alongside GA via same gtag.js |
-| `PUBLIC_TURNSTILE_SITE_KEY` | `0x4AAA…` (Cloudflare Turnstile site key) | Renders the anti-bot challenge in the hero widget; token verified by the app's `TURNSTILE_SECRET_KEY` |
+| `PUBLIC_GADS_DOWNLOAD_LABEL` | `AbC-D_efGh1234` (conversion label) | With `PUBLIC_GADS_ID`, fires a Google Ads `conversion` on an iOS badge click. Empty → no conversion |
+| `PUBLIC_TURNSTILE_SITE_KEY` | `0x4AAA…` (Cloudflare Turnstile site key) | Currently unused — the AI hero widget was removed. Safe to leave empty |
 
 If you change any of these, **the container must be rebuilt** — Astro bakes them in at build time.
 

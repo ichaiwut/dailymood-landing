@@ -1,0 +1,27 @@
+---
+import Spotlight from './paper/Spotlight.astro';
+import statsImg from '@/assets/app/app-05-stats.png';
+import { type Locale, getMessages } from '@/lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+const { locale } = Astro.props;
+const c = getMessages(locale).landing.stats;
+---
+
+<Spotlight
+  id="stats"
+  reverse
+  rot={1.5}
+  bg="var(--desk-2)"
+  eyebrow={c.eyebrow}
+  title={c.title}
+  sub={c.sub}
+  bullets={c.bullets as { ic: string; t: string }[]}
+  img={statsImg}
+  alt="DailyMood — mood stats screen"
+  accent={{ bg: 'rgba(133,236,203,.28)', fg: '#2E9C76', blob: 'var(--mint)' }}
+  sticker={{ face: 'okay', pos: 'bottom:70px;left:4%;--r:9deg' }}
+  chip={{ txt: c.chip, rot: '-6deg', pos: 'top:50px;right:2%' }}
+/>

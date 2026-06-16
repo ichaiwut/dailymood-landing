@@ -190,7 +190,7 @@ body::before {
 .btn-peach { background: var(--peach); color:#fff; box-shadow: 0 10px 0 -2px #d97f3b, 0 18px 30px -14px rgba(217,127,59,.7); }
 .btn-peach:hover { filter: brightness(1.03); transform: translateY(-2px); box-shadow: 0 12px 0 -2px #d97f3b, 0 22px 34px -14px rgba(217,127,59,.75); }
 .btn-ink { background: var(--ink); color:#fff; box-shadow: 0 9px 0 -2px #000, 0 18px 30px -16px rgba(0,0,0,.6); }
-.btn-ink:hover { transform: translateY(-2px); }
+.btn-ink:hover { transform: translateY(-2px); box-shadow: 0 12px 0 -2px #000, 0 22px 34px -14px rgba(0,0,0,.7); }
 .btn-white { background:#fff; color: var(--ink); box-shadow: 0 9px 0 -2px #d9cdb8, 0 18px 30px -16px rgba(0,0,0,.3); }
 .btn-white:hover { transform: translateY(-2px); }
 .btn-ghost { background: transparent; color: var(--ink); border: 2px solid var(--ink); }
