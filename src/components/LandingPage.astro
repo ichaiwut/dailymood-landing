@@ -89,8 +89,7 @@ const gadsDownloadSendTo =
       var t = e.target;
       if (!t || !t.closest) return;
 
-      // Store-badge clicks. Live badges are <a data-store>; the disabled
-      // "Android coming soon" badge is a non-link carrying data-android-soon.
+      // Store-badge clicks. Both platforms are live <a data-store> links.
       var store = t.closest('a[data-store]');
       if (store) {
         var platform = store.getAttribute('data-store');
@@ -103,13 +102,6 @@ const gadsDownloadSendTo =
         if (platform === 'ios' && gadsDownloadSendTo) {
           track('conversion', { send_to: gadsDownloadSendTo });
         }
-        return;
-      }
-
-      // Android demand: a tap on the greyed-out badge is an interest signal.
-      var soon = t.closest('[data-android-soon]');
-      if (soon) {
-        track('android_interest', { location: soon.getAttribute('data-dl-loc') || '' });
       }
     });
 

@@ -1,6 +1,6 @@
 ---
 import { type Locale, getMessages } from '@/lib/i18n';
-import { appStoreHref, playStoreHref, isAndroidLive } from '@/lib/cta';
+import { appStoreHref, playStoreHref } from '@/lib/cta';
 
 interface Props {
   locale: Locale;
@@ -24,28 +24,6 @@ const badgeStyle = `display:inline-flex;align-items:center;gap:11px;height:${h}p
 const labelStyle =
   'font-size:10.5px;font-weight:700;letter-spacing:.04em;opacity:.78;line-height:1;text-transform:uppercase';
 const nameStyle = `font-size:${nameSize}px;font-weight:800;letter-spacing:-.01em;line-height:1.05;margin-top:3px`;
-
-// Android isn't published yet → the Google Play badge renders greyed-out and
-// non-clickable (a <span>, with no GA tracking attributes) and a "coming soon"
-// hint sits below the row. Set PUBLIC_ANDROID_URL to flip it live — no code change.
-const androidLive = isAndroidLive();
-const PlayTag = androidLive ? 'a' : 'span';
-const playProps = androidLive
-  ? {
-      href: playStoreHref(),
-      'data-store': 'android',
-      'data-dl-loc': location,
-      'aria-label': `${s.playLabel} Google Play`,
-    }
-  : {
-      'aria-disabled': 'true',
-      'aria-label': `Google Play — ${s.androidSoon}`,
-      // Not a real download link, but a tap = "I want Android" → tracked as an
-      // android_interest event by the delegated listener in LandingPage.astro.
-      'data-android-soon': '',
-      'data-dl-loc': location,
-    };
-const hintAlign = justify === 'center' ? 'center' : justify === 'flex-end' ? 'right' : 'left';
 ---
 
 <div class="store-badges-wrap" style="display:flex;flex-direction:column;gap:9px">
@@ -79,10 +57,13 @@ const hintAlign = justify === 'center' ? 'center' : justify === 'flex-end' ? 'ri
       </span>
     </a>
 
-    <PlayTag
-      class:list={['storebadge', { 'is-disabled': !androidLive }]}
+    <a
+      href={playStoreHref()}
+      class="storebadge"
+      data-store="android"
+      data-dl-loc={location}
+      aria-label={`${s.playLabel} Google Play`}
       style={badgeStyle}
-      {...playProps}
     >
       <svg
         width={playSize}
@@ -103,19 +84,8 @@ const hintAlign = justify === 'center' ? 'center' : justify === 'flex-end' ? 'ri
         <span style={labelStyle}>{s.playLabel}</span>
         <span style={nameStyle}>Google Play</span>
       </span>
-    </PlayTag>
+    </a>
   </div>
-
-  {
-    !androidLive && (
-      <p class="android-soon" style={`text-align:${hintAlign}`}>
-        <span class="android-soon-inner">
-          <span class="android-soon-dot" aria-hidden="true" />
-          {s.androidSoon}
-        </span>
-      </p>
-    )
-  }
 </div>
 
 <style>
@@ -132,42 +102,5 @@ const hintAlign = justify === 'center' ? 'center' : justify === 'flex-end' ? 'ri
   }
   .storebadge:active {
     transform: translateY(0);
-  }
-
-  /* Android not published yet: muted and flat, but still tappable so a click
-     registers as an "I want Android" interest signal. */
-  .storebadge.is-disabled {
-    opacity: 0.4;
-    filter: grayscale(1);
-    cursor: pointer;
-    box-shadow:
-      0 4px 0 -2px #000,
-      0 8px 16px -12px rgba(0, 0, 0, 0.45) !important;
-  }
-  .storebadge.is-disabled:hover {
-    transform: none;
-    box-shadow:
-      0 4px 0 -2px #000,
-      0 8px 16px -12px rgba(0, 0, 0, 0.45) !important;
-  }
-
-  .android-soon {
-    margin: 0;
-    font-size: 12.5px;
-    font-weight: 600;
-    letter-spacing: 0.01em;
-    color: var(--ink-3);
-  }
-  .android-soon-inner {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-  }
-  .android-soon-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    background: var(--peach);
-    box-shadow: 0 0 0 3px rgba(252, 164, 91, 0.22);
   }
 </style>

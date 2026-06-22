@@ -35,7 +35,7 @@ The app repo is indexing-disabled by design. SEO lives **here**. Any "what does 
 
 OAuth callbacks, NextAuth config, Stripe webhooks, Drizzle/Postgres, R2 from the app side, Gemini, etc. all live in the app repo — do not touch them from here.
 
-**Primary CTAs are App Store / Google Play store badges** (`src/components/paper/StoreBadges.astro`), in the hero, the `#download` CTA banner, and the footer. The store URLs come from `src/lib/cta.ts` — `appStoreHref()` / `playStoreHref()`, backed by `PUBLIC_IOS_URL` / `PUBLIC_ANDROID_URL`. **Until those env vars are set the badges fall back to the in-page `#download` anchor.** Pricing's Free/Pro buttons also scroll to `#download` (Pro's 14-day trial + IAP start in-app). The **web app** is a secondary footer link via `webAppHref()` (→ `PUBLIC_APP_URL`, default `https://my.dailymood.me`). The legacy `loginHref()` / `subscriptionHref()` helpers remain in `cta.ts` documenting the cross-domain surface but are no longer used by the landing sections. Store-badge clicks fire a GA4 `download_click` event (`platform` + `location`) via a delegated inline script in `LandingPage.astro`. That same script also fires: a Google Ads `conversion` on iOS clicks (when `PUBLIC_GADS_ID` + `PUBLIC_GADS_DOWNLOAD_LABEL` are set); an `android_interest` event (`location`) when the greyed-out "Android coming soon" badge is tapped (`data-android-soon`); and a `section_view` event (`section`) once per `section[id]` as it scrolls into view (a scroll-depth funnel). All are no-ops when GA is disabled.
+**Primary CTAs are App Store / Google Play store badges** (`src/components/paper/StoreBadges.astro`), in the hero, the `#download` CTA banner, and the footer. The store URLs come from `src/lib/cta.ts` — `appStoreHref()` / `playStoreHref()`, backed by `PUBLIC_IOS_URL` / `PUBLIC_ANDROID_URL`. **Both apps are live, so each URL is hardcoded as the built-in default** in `cta.ts` — leaving the env vars empty still links to the real listings; set them only to override per-environment. (If a var is explicitly blanked, that badge falls back to the in-page `#download` anchor.) Pricing's Free/Pro buttons also scroll to `#download` (Pro's 14-day trial + IAP start in-app). The **web app** is a secondary footer link via `webAppHref()` (→ `PUBLIC_APP_URL`, default `https://my.dailymood.me`). The legacy `loginHref()` / `subscriptionHref()` helpers remain in `cta.ts` documenting the cross-domain surface but are no longer used by the landing sections. Store-badge clicks fire a GA4 `download_click` event (`platform` + `location`) via a delegated inline script in `LandingPage.astro`. That same script also fires: a Google Ads `conversion` on iOS clicks (when `PUBLIC_GADS_ID` + `PUBLIC_GADS_DOWNLOAD_LABEL` are set); and a `section_view` event (`section`) once per `section[id]` as it scrolls into view (a scroll-depth funnel). All are no-ops when GA is disabled.
 
 ## Source-of-truth docs (read before writing)
 
@@ -95,7 +95,7 @@ Cut by the PRD. Do not propose adding back without a PRD update:
 ```
 src/
   components/                  All .astro components (server-rendered at build time)
-    LandingPage.astro            composes the 15 sections + scroll-reveal & analytics scripts (download_click, conversion, android_interest, section_view)
+    LandingPage.astro            composes the 15 sections + scroll-reveal & analytics scripts (download_click, conversion, section_view)
     LandingNav.astro             anchor links + Download button; inline <script> for sticky scroll state
     LandingHero.astro            store badges + trust row + hero phone (app-01-home)
     LandingByNumbers.astro       4 stacked stat sheets (10 moods · 2 platforms · 365 · 2 langs)
@@ -152,7 +152,7 @@ Note: Astro ignores the `PORT` env var. Use `--port` on the CLI.
 
 Required env vars (see `.env.example`) — all prefixed `PUBLIC_` so Astro exposes them to the build:
 - `PUBLIC_APP_URL` — defaults to `https://my.dailymood.me`. The web-app link (`webAppHref()`) + legacy CTAs in `src/lib/cta.ts`.
-- `PUBLIC_IOS_URL` / `PUBLIC_ANDROID_URL` — App Store / Google Play listing URLs for the download badges (`appStoreHref()` / `playStoreHref()`). Leave empty and the badges fall back to the in-page `#download` anchor.
+- `PUBLIC_IOS_URL` / `PUBLIC_ANDROID_URL` — App Store / Google Play listing URLs for the download badges (`appStoreHref()` / `playStoreHref()`). Both apps are live and their real listing URLs are the built-in defaults, so leaving these empty still links to the stores. Set them only to override (e.g. a staging listing). Explicitly blanking one makes that badge fall back to the in-page `#download` anchor.
 - `PUBLIC_SITE_URL` — defaults to `https://dailymood.me`. Used for canonical + OG URLs.
 - `PUBLIC_GA_ID` — Google Analytics 4 measurement ID (`G-XXXXXXXXXX`). When set, the layout loads `gtag.js` on every page load (PDPA informed-notice model) with `anonymize_ip: true`. Leave empty to disable GA entirely.
 - `PUBLIC_GADS_ID` — Google Ads conversion / remarketing tag ID (`AW-XXXXXXXXX`). When set, configured alongside GA via the same `gtag.js` bootstrap. Disclosed in `/cookies`. Leave empty to disable Google Ads.
@@ -188,8 +188,8 @@ All are `PUBLIC_*` so Astro inlines them into the static output. They must be se
 |---|---|---|
 | `PUBLIC_SITE_URL` | `https://dailymood.me` | Canonical/OG/hreflang URLs |
 | `PUBLIC_APP_URL` | `https://my.dailymood.me` | Web-app footer link + legacy CTAs via `src/lib/cta.ts` |
-| `PUBLIC_IOS_URL` | `https://apps.apple.com/…/idXXXXXXXXX` | App Store badge target. Empty → badges fall back to `#download` |
-| `PUBLIC_ANDROID_URL` | `https://play.google.com/store/apps/details?id=…` | Google Play badge target. Empty → badges fall back to `#download` |
+| `PUBLIC_IOS_URL` | `https://apps.apple.com/…/idXXXXXXXXX` | App Store badge target. Optional — real URL is the built-in default in `cta.ts` |
+| `PUBLIC_ANDROID_URL` | `https://play.google.com/store/apps/details?id=…` | Google Play badge target. Optional — real URL is the built-in default in `cta.ts` |
 | `PUBLIC_GA_ID` | `G-XXXXXXXXXX` (production GA4) | Loaded on every page load with `anonymize_ip`; also receives the `download_click` event |
 | `PUBLIC_GADS_ID` | `AW-XXXXXXXXX` (Google Ads conversion tag) | Loaded alongside GA via same gtag.js |
 | `PUBLIC_GADS_DOWNLOAD_LABEL` | `AbC-D_efGh1234` (conversion label) | With `PUBLIC_GADS_ID`, fires a Google Ads `conversion` on an iOS badge click. Empty → no conversion |
@@ -199,16 +199,14 @@ If you change any of these, **the container must be rebuilt** — Astro bakes th
 
 ### Deploying
 
-Two paths, pick one and stick with it:
-
-**A. GitHub auto-deploy (recommended)** — in the Railway dashboard, connect this repo (`github.com/ichaiwut/dailymood-landing`) to the service. Every push to `main` triggers a build + deploy.
-
-**B. CLI push (`railway up`)** — uploads the current dir as the build context, builds, deploys. Faster iteration but bypasses git history.
+**This project deploys MANUALLY via `railway up`. GitHub auto-deploy is NOT connected — pushing to `main` does NOT deploy.** Commit + push `main` for history, then run `railway up` separately to actually ship:
 
 ```bash
 railway up --detach
 railway logs -d   # tail
 ```
+
+(Auto-deploy — connecting the GitHub repo in the Railway dashboard so every `main` push builds — could be enabled later, but is intentionally not on today. Until then, a `git push` alone changes nothing in production.)
 
 ### Custom domain
 
